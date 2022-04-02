@@ -1,8 +1,18 @@
+## Quick Start
+
+```
+git clone https://github.com/depromeet/11th_5team
+$ cd 11th_5team/applications/app-front
+$ npm i
+$ npm run dev (develop mode)
+```
+
 ## 진행상황
 - [x] Next.js
 - [x] TypeScript
-- [ ] Styled-components
-- [ ] eslint, prettier
+- [x] Styled-components
+- [x] eslint (수정중), prettier
+- [ ] 폴더구조, 컨벤션가이드 
 
 ### 기술 스택
 | 이름 | 버전 |
@@ -11,3 +21,4 @@
 | NextJS | v12 |
 | TypeScript | v4 |
 | Styled-components | v5 |
+
