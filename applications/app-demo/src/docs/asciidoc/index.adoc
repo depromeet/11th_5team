@@ -1,0 +1,21 @@
+= Spring REST Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+
+[[Member_API]]
+== Demo API
+
+[[Demo_조회]]
+=== Demo 조회
+
+include::{snippets}/demo-api-test/get-demo/http-request.adoc[]
+include::{snippets}/demo-api-test/get-demo/http-response.adoc[]
