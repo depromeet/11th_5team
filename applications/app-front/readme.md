@@ -1,12 +1,3 @@
-## Quick Start
-
-```
-git clone https://github.com/depromeet/11th_5team
-$ cd 11th_5team/applications/app-front
-$ npm i
-$ npm run dev (develop mode)
-```
-
 ## 진행상황
 - [x] Next.js
 - [x] TypeScript
@@ -21,4 +12,3 @@ $ npm run dev (develop mode)
 | NextJS | v12 |
 | TypeScript | v4 |
 | Styled-components | v5 |
-
