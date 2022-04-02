@@ -31,4 +31,8 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+
+    if (!project.name.contains("app-")) {
+        bootJar { enabled = false }
+    }
 }
