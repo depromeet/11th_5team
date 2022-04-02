@@ -28,10 +28,9 @@ task copyDocument(type: Copy) {
     into file("src/main/resources/static/docs")
 }
 
-jar {
+bootJar {
     dependsOn copyDocument
-}
 
-bootRun {
-    dependsOn jar
+    from file('src/main/resources/static/docs')
+    into file('build/resources/main/static/docs')
 }
