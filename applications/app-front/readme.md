@@ -1,5 +1,13 @@
 ## 진행상황
-- [ ] Next.js
-- [ ] TypeScript
+- [x] Next.js
+- [x] TypeScript
 - [ ] Styled-components
 - [ ] eslint, prettier
+
+### 기술 스택
+| 이름 | 버전 |
+|:---|:---|
+| React | v18 (redux 버그있어서 다운그레이드 할지 고민중) |
+| NextJS | v12 |
+| TypeScript | v4 |
+| Styled-components | v5 |
