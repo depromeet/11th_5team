@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "svgo": "npx svgo -f public/svgs"
+    "svgo": "npx svgo -f public/svgs",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@types/lodash": "^4.14.181",
@@ -27,6 +28,7 @@
     "@typescript-eslint/parser": "^5.17.0",
     "eslint": "^8.12.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.2.0",
     "eslint-config-next": "12.1.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^2.7.1",
@@ -35,6 +37,14 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
     "typescript": "4.6.3"
+  },
+  "lint-staged": {
+    "**/*.{tsx,ts,jsx,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
