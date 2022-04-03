@@ -1,3 +1,36 @@
+plugins {
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+}
+
 dependencies {
     implementation project(':components:module-demo')
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+ext{
+    snippetDir = file('build/generated-snippets')
+}
+
+test {
+    useJUnitPlatform()
+    outputs.dir snippetDir
+}
+
+asciidoctor {
+    inputs.dir snippetDir
+    dependsOn test
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from file("build/docs/asciidoc/")
+    into file("src/main/resources/static/docs")
+}
+
+bootJar {
+    dependsOn copyDocument
+
+    from file('src/main/resources/static/docs')
+    into file('build/resources/main/static/docs')
 }
