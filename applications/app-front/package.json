@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "svgo": "npx svgo -f public/svgs",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@types/lodash": "^4.14.181",
@@ -19,19 +20,19 @@
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^12.1.4",
     "@types/node": "17.0.23",
     "@types/react": "17.0.43",
     "@types/react-dom": "17.0.14",
     "@types/styled-components": "^5.1.24",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
+    "babel-eslint": "^10.1.0",
     "eslint": "^8.12.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.2.0",
-    "eslint-config-next": "12.1.4",
+    "eslint-config-next": "^12.1.4",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
@@ -39,6 +40,7 @@
     "eslint-plugin-react-hooks": "^4.4.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
+    "prettier": "^2.6.2",
     "typescript": "4.6.3"
   },
   "lint-staged": {
