@@ -1,26 +1,24 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "tsconfig.json",
-    "ecmaVersion": 2020,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es2021": true
   },
   "extends": [
     "next",
-    "airbnb-typescript",
+    "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["@typescript-eslint", "import", "react-hooks", "jsx-a11y", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-explicit-any": 2,
     "jsx-a11y/label-has-associated-control": "off",
@@ -41,7 +39,10 @@
     "import/prefer-default-export": "off",
     "no-alert": "off",
     "import/no-unresolved": "off",
-    "react/jsx-wrap-multilines": ["error", { "declaration": false, "assignment": false }],
+    "react/jsx-wrap-multilines": [
+      "error",
+      { "declaration": false, "assignment": false }
+    ],
     "max-params": ["error", 4],
     "max-lines": [
       "error",
@@ -50,12 +51,11 @@
         "skipBlankLines": false,
         "skipComments": false
       }
-    ],
-    "multiline-comment-style": "error"
+    ]
   },
   "overrides": [
     {
-      "files": ["./APIs/**", "./utils/**"],
+      "files": ["./utils/**"],
       "rules": {
         "max-lines": "off",
         "max-lines-per-function": ["error", { "max": 100 }]
