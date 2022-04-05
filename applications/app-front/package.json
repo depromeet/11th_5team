@@ -9,7 +9,7 @@
     "lint": "next lint",
     "svgo": "npx svgo -f public/svgs",
     "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "prepare": "cd .. && cd .. && husky install applications/app-front/.husky"
   },
   "dependencies": {
     "@types/lodash": "^4.14.181",

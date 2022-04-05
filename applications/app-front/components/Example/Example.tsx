@@ -8,7 +8,7 @@ const Example = () => (
   <>
     <ExampleWrap>
       <Header />
-      안녕하세요
+      안녕하세요 안녕하세요 안녕하세요......
       <Image src={SvgIcon} alt="asd" width="283" height="64" />
     </ExampleWrap>
   </>
