@@ -4,7 +4,8 @@ public class SpyKakaoClient implements KakaoClient {
     public String getToken_argumentCode;
 
     @Override
-    public void getToken(String code) {
-        getToken_argumentCode = code;
+    public String getToken(KakaoTokenRequest request) {
+        getToken_argumentCode = request.getCode();
+        return null;
     }
 }

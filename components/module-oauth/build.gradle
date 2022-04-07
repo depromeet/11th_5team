@@ -1,3 +1,4 @@
 dependencies {
     implementation 'com.google.code.gson:gson'
+    implementation project(':components:support-feign')
 }

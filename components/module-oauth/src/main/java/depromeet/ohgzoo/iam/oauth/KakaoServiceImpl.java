@@ -28,7 +28,8 @@ public class KakaoServiceImpl implements KakaoService {
 
     @Override
     public AuthToken getToken(String code) {
-        kakaoClient.getToken(code);
+        KakaoTokenRequest kakaoTokenRequest = new KakaoTokenRequest(clientId, redirectUrl,code);
+        String result = kakaoClient.getToken(kakaoTokenRequest);
 
         return null;
     }
