@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.oauth;
 
+import depromeet.ohgzoo.iam.oauth.kakao.SpyKakaoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;

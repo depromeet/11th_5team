@@ -1,4 +1,4 @@
-package depromeet.ohgzoo.iam.oauth;
+package depromeet.ohgzoo.iam.oauth.kakao;
 
 import feign.form.FormProperty;
 import lombok.Getter;

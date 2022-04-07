@@ -1,5 +1,6 @@
-package depromeet.ohgzoo.iam.oauth;
+package depromeet.ohgzoo.iam.oauth.kakao;
 
+import depromeet.ohgzoo.iam.oauth.OAuth2LoginUrl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,16 @@ class KakaoServiceImplTest {
     void getToken_passesCodeToClient() {
         kakaoService.getToken("givenCode");
 
-        assertThat(spyKakaoClient.getToken_argumentCode).isEqualTo("givenCode");
+        assertThat(spyKakaoClient.getToken_argumentRequest.getCode()).isEqualTo("givenCode");
+    }
+
+    @Test
+    void getToken_passesKakaoTokenResponseToClient() {
+        String givenAccessToken = "accessToken";
+        spyKakaoClient.getToken_returnValue = new KakaoTokenResponse(givenAccessToken, null, null, 0, null);
+
+        kakaoService.getToken(null);
+
+        assertThat(spyKakaoClient.getProfile_argumentAuthorization).isEqualTo("Bearer " + givenAccessToken);
     }
 }
