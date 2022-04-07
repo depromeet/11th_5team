@@ -35,3 +35,8 @@ bootJar {
     from file('src/main/resources/static/docs')
     into file('build/resources/main/static/docs')
 }
+
+bootRun {
+    systemProperty "kakaoClientId", findProperty("kakaoClientId")
+    systemProperty "kakaoRedirectUrl", findProperty("kakaoRedirectUrl")
+}
