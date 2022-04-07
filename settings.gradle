@@ -1,3 +1,4 @@
 rootProject.name = 'iam'
 
 include ':applications:app-demo', ':components:module-demo'
+include ':components:module-oauth'
