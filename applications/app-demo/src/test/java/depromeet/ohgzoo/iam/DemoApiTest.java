@@ -18,7 +18,10 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @ExtendWith(RestDocumentationExtension.class)
-@SpringBootTest
+@SpringBootTest(classes = {
+        DemoApi.class,
+        DemoServiceImpl.class
+})
 class DemoApiTest {
     private MockMvc mockMvc;
     private RestDocumentationResultHandler document;
