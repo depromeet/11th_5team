@@ -49,11 +49,11 @@ class KakaoClientAdapterTest {
     }
 
     @Test
-    void getProfile_returns() {
-        String expectedProfile = "profile";
+    void getProfile_returnsKakaoProfileResponse() {
+        KakaoProfileResponse expectedProfile = new KakaoProfileResponse();
         spyKakaoApiClient.getProfile_returnValue = expectedProfile;
 
-        String result = kakaoClient.getProfile(null);
+        KakaoProfileResponse result = kakaoClient.getProfile(null);
 
         assertThat(result).isEqualTo(expectedProfile);
     }

@@ -12,7 +12,7 @@ public class SpyKakaoClient implements KakaoClient {
     }
 
     @Override
-    public String getProfile(String authorization) {
+    public KakaoProfileResponse getProfile(String authorization) {
         getProfile_argumentAuthorization = authorization;
         return null;
     }

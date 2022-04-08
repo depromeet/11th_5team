@@ -15,7 +15,9 @@ public class KakaoClientAdapter implements KakaoClient {
     }
 
     @Override
-    public String getProfile(String authorization) {
-        return kakaoApiClient.getProfile(authorization);
+    public KakaoProfileResponse getProfile(String authorization) {
+        KakaoProfileResponse profile = kakaoApiClient.getProfile(authorization);
+        System.out.println("profile = " + profile);
+        return profile;
     }
 }

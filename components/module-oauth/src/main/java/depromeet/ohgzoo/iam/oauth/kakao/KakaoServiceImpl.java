@@ -33,10 +33,13 @@ public class KakaoServiceImpl implements KakaoService {
     @Override
     public AuthToken getToken(String code) {
         KakaoTokenResponse kakaoToken = getKakaoToken(code);
-
-        kakaoClient.getProfile("Bearer " + kakaoToken.getAccessToken());
+        KakaoProfileResponse profile = getKakaoProfile(kakaoToken);
 
         return null;
+    }
+
+    private KakaoProfileResponse getKakaoProfile(KakaoTokenResponse kakaoToken) {
+        return kakaoClient.getProfile("Bearer " + kakaoToken.getAccessToken());
     }
 
     private KakaoTokenResponse getKakaoToken(String code) {
