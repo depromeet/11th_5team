@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.oauth.kakao;
 
 import depromeet.ohgzoo.iam.oauth.OAuth2LoginUrl;
+import depromeet.ohgzoo.iam.oauth.OAuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,18 +9,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KakaoServiceImplTest {
 
-    private KakaoService kakaoService;
+    private OAuthService OAuthService;
     private SpyKakaoClient spyKakaoClient;
 
     @BeforeEach
     void setUp() {
         spyKakaoClient = new SpyKakaoClient();
-        kakaoService = new KakaoServiceImpl(spyKakaoClient);
+        OAuthService = new KakaoServiceImpl(spyKakaoClient);
     }
 
     @Test
     void getLoginUrl_returnsOAuth2LoginUrl() {
-        OAuth2LoginUrl result = kakaoService.getLoginUrl();
+        OAuth2LoginUrl result = OAuthService.getLoginUrl();
 
         String expected = new StringBuilder("https://kauth.kakao.com/oauth/authorize")
                 .append("?client_id=null")
@@ -32,7 +33,7 @@ class KakaoServiceImplTest {
 
     @Test
     void getToken_passesCodeToClient() {
-        kakaoService.getToken("givenCode");
+        OAuthService.getToken("givenCode");
 
         assertThat(spyKakaoClient.getToken_argumentRequest.getCode()).isEqualTo("givenCode");
     }
@@ -42,7 +43,7 @@ class KakaoServiceImplTest {
         String givenAccessToken = "accessToken";
         spyKakaoClient.getToken_returnValue = new KakaoTokenResponse(givenAccessToken, null, null, 0, null);
 
-        kakaoService.getToken(null);
+        OAuthService.getToken(null);
 
         assertThat(spyKakaoClient.getProfile_argumentAuthorization).isEqualTo("Bearer " + givenAccessToken);
     }

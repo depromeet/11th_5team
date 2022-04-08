@@ -1,6 +1,6 @@
 package depromeet.ohgzoo.iam.oauth;
 
-import depromeet.ohgzoo.iam.oauth.kakao.SpyKakaoService;
+import depromeet.ohgzoo.iam.oauth.kakao.SpyOAuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,11 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LoginApiTest {
 
     private MockMvc mockMvc;
-    private SpyKakaoService spyKakaoService;
+    private SpyOAuthService spyKakaoService;
 
     @BeforeEach
     void setUp() {
-        spyKakaoService = new SpyKakaoService();
+        spyKakaoService = new SpyOAuthService();
         mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(spyKakaoService))
                 .build();
     }

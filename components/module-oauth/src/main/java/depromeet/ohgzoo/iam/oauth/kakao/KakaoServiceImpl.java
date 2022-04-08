@@ -2,14 +2,14 @@ package depromeet.ohgzoo.iam.oauth.kakao;
 
 import depromeet.ohgzoo.iam.oauth.AuthToken;
 import depromeet.ohgzoo.iam.oauth.OAuth2LoginUrl;
+import depromeet.ohgzoo.iam.oauth.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Service
-public class KakaoServiceImpl implements KakaoService {
+public class KakaoServiceImpl implements OAuthService {
     @Value("${kakaoClientId}")
     private String clientId;
 
@@ -17,7 +17,6 @@ public class KakaoServiceImpl implements KakaoService {
     private String redirectUrl;
 
     private final KakaoClient kakaoClient;
-    private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
     public OAuth2LoginUrl getLoginUrl() {

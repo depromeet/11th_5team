@@ -2,8 +2,9 @@ package depromeet.ohgzoo.iam.oauth.kakao;
 
 import depromeet.ohgzoo.iam.oauth.AuthToken;
 import depromeet.ohgzoo.iam.oauth.OAuth2LoginUrl;
+import depromeet.ohgzoo.iam.oauth.OAuthService;
 
-public class SpyKakaoService implements KakaoService {
+public class SpyOAuthService implements OAuthService {
     public OAuth2LoginUrl getLoginUrl_returnValue;
     public String getToken_argumentCode;
     public AuthToken getToken_returnValue;
