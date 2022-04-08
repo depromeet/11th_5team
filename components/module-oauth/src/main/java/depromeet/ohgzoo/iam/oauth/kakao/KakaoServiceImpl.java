@@ -1,15 +1,16 @@
 package depromeet.ohgzoo.iam.oauth.kakao;
 
+import depromeet.ohgzoo.iam.jwt.JwtService;
 import depromeet.ohgzoo.iam.oauth.AuthToken;
-import depromeet.ohgzoo.iam.oauth.OAuth2LoginUrl;
-import depromeet.ohgzoo.iam.oauth.OAuthService;
+import depromeet.ohgzoo.iam.oauth.Oauth2LoginUrl;
+import depromeet.ohgzoo.iam.oauth.OauthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class KakaoServiceImpl implements OAuthService {
+public class KakaoServiceImpl implements OauthService {
     @Value("${kakaoClientId}")
     private String clientId;
 
@@ -17,10 +18,11 @@ public class KakaoServiceImpl implements OAuthService {
     private String redirectUrl;
 
     private final KakaoClient kakaoClient;
+    private final JwtService jwtService;
 
     @Override
-    public OAuth2LoginUrl getLoginUrl() {
-        return new OAuth2LoginUrl(
+    public Oauth2LoginUrl getLoginUrl() {
+        return new Oauth2LoginUrl(
                 new StringBuilder("https://kauth.kakao.com/oauth/authorize")
                         .append("?client_id=").append(clientId)
                         .append("&response_type=code")
@@ -34,7 +36,10 @@ public class KakaoServiceImpl implements OAuthService {
         KakaoTokenResponse kakaoToken = getKakaoToken(code);
         KakaoProfileResponse profile = getKakaoProfile(kakaoToken);
 
-        return null;
+        return new AuthToken(
+            jwtService.issuedToken(profile.getAccount().getEmail(), "USER", 3600),
+            jwtService.issuedToken(profile.getAccount().getEmail(), "USER", 36000)
+        );
     }
 
     private KakaoProfileResponse getKakaoProfile(KakaoTokenResponse kakaoToken) {

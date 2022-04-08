@@ -1,7 +1,9 @@
 package depromeet.ohgzoo.iam.oauth.kakao;
 
-import depromeet.ohgzoo.iam.oauth.OAuth2LoginUrl;
-import depromeet.ohgzoo.iam.oauth.OAuthService;
+import depromeet.ohgzoo.iam.jwt.SpyJwtService;
+import depromeet.ohgzoo.iam.oauth.Oauth2LoginUrl;
+import depromeet.ohgzoo.iam.oauth.OauthService;
+import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse.KakaoAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,18 +11,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KakaoServiceImplTest {
 
-    private OAuthService OAuthService;
+    private OauthService oauthService;
     private SpyKakaoClient spyKakaoClient;
+    private SpyJwtService spyJwtService;
 
     @BeforeEach
     void setUp() {
         spyKakaoClient = new SpyKakaoClient();
-        OAuthService = new KakaoServiceImpl(spyKakaoClient);
+        spyJwtService = new SpyJwtService();
+        oauthService = new KakaoServiceImpl(spyKakaoClient, spyJwtService);
     }
 
     @Test
     void getLoginUrl_returnsOAuth2LoginUrl() {
-        OAuth2LoginUrl result = OAuthService.getLoginUrl();
+        Oauth2LoginUrl result = oauthService.getLoginUrl();
 
         String expected = new StringBuilder("https://kauth.kakao.com/oauth/authorize")
                 .append("?client_id=null")
@@ -33,7 +37,7 @@ class KakaoServiceImplTest {
 
     @Test
     void getToken_passesCodeToClient() {
-        OAuthService.getToken("givenCode");
+        oauthService.getToken("givenCode");
 
         assertThat(spyKakaoClient.getToken_argumentRequest.getCode()).isEqualTo("givenCode");
     }
@@ -43,8 +47,25 @@ class KakaoServiceImplTest {
         String givenAccessToken = "accessToken";
         spyKakaoClient.getToken_returnValue = new KakaoTokenResponse(givenAccessToken, null, null, 0, null);
 
-        OAuthService.getToken(null);
+        oauthService.getToken(null);
 
         assertThat(spyKakaoClient.getProfile_argumentAuthorization).isEqualTo("Bearer " + givenAccessToken);
+    }
+
+    @Test
+    void getToken_passesProfileEmailToJwtService_forAuthAndRefresh() {
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(null, new KakaoAccount("givenEmail", null));
+
+        oauthService.getToken(null);
+
+        assertThat(spyJwtService.issuedToken_callCount).isEqualTo(2);
+
+        assertThat(spyJwtService.getIssuedToken_argumentSubject()).isEqualTo("givenEmail");
+        assertThat(spyJwtService.getIssuedToken_argumentRole()).isEqualTo("USER");
+        assertThat(spyJwtService.getIssuedToken_argumentPeriod()).isEqualTo(3600);
+
+        assertThat(spyJwtService.getIssuedToken_argumentSubject()).isEqualTo("givenEmail");
+        assertThat(spyJwtService.getIssuedToken_argumentRole()).isEqualTo("USER");
+        assertThat(spyJwtService.getIssuedToken_argumentPeriod()).isEqualTo(36000);
     }
 }

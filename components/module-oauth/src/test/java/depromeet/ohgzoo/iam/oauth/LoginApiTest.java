@@ -1,6 +1,6 @@
 package depromeet.ohgzoo.iam.oauth;
 
-import depromeet.ohgzoo.iam.oauth.kakao.SpyOAuthService;
+import depromeet.ohgzoo.iam.oauth.kakao.SpyOauthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,11 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LoginApiTest {
 
     private MockMvc mockMvc;
-    private SpyOAuthService spyKakaoService;
+    private SpyOauthService spyKakaoService;
 
     @BeforeEach
     void setUp() {
-        spyKakaoService = new SpyOAuthService();
+        spyKakaoService = new SpyOauthService();
         mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(spyKakaoService))
                 .build();
     }
@@ -32,7 +32,7 @@ class LoginApiTest {
 
     @Test
     void login_returnsLoginUrl() throws Exception {
-        spyKakaoService.getLoginUrl_returnValue = new OAuth2LoginUrl("loginUrl");
+        spyKakaoService.getLoginUrl_returnValue = new Oauth2LoginUrl("loginUrl");
 
         mockMvc.perform(get("/oauth2/authorization/kakao"))
                 .andExpect(jsonPath("$.loginUrl", equalTo("loginUrl")));
@@ -53,9 +53,11 @@ class LoginApiTest {
 
     @Test
     void redirectCallback_returnsAuthToken() throws Exception {
-        spyKakaoService.getToken_returnValue = new AuthToken("givenAuthToken");
+        spyKakaoService.getToken_returnValue = new AuthToken("givenAuthToken", "givenRefreshToken");
 
         mockMvc.perform(get("/login/oauth2/code/kakao").param("code", ""))
-                .andExpect(jsonPath("$.auth", equalTo("givenAuthToken")));
+                .andExpect(jsonPath("$.auth", equalTo("givenAuthToken")))
+                .andExpect(jsonPath("$.refresh", equalTo("givenRefreshToken")))
+        ;
     }
 }

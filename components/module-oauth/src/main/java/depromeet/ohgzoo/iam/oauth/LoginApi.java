@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class LoginApi {
-    private final OAuthService OAuthService;
+    private final OauthService OAuthService;
 
     @GetMapping("/oauth2/authorization/kakao")
-    public OAuth2LoginUrl login() {
+    public Oauth2LoginUrl login() {
         return OAuthService.getLoginUrl();
     }
 

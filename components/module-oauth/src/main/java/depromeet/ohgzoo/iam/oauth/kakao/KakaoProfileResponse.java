@@ -1,11 +1,13 @@
 package depromeet.ohgzoo.iam.oauth.kakao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class KakaoProfileResponse {
     @JsonProperty("id")
     private Long id;
@@ -14,7 +16,8 @@ public class KakaoProfileResponse {
 
     @Getter
     @NoArgsConstructor
-    private static class KakaoAccount {
+    @AllArgsConstructor
+    static class KakaoAccount {
         @JsonProperty("email")
         private String email;
         @JsonProperty("profile")
@@ -23,7 +26,7 @@ public class KakaoProfileResponse {
 
     @Getter
     @NoArgsConstructor
-    private static class KakaoProfile {
+    static class KakaoProfile {
         @JsonProperty("nickname")
         private String nickname;
     }
