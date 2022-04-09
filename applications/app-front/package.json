@@ -4,22 +4,25 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "cross-env NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start",
+    "analyzer": "cross-env NODE_ENV=production ANALYZE=true next build",
     "lint": "next lint",
     "svgo": "npx svgo -f public/svgs",
     "lint-staged": "lint-staged",
     "prepare": "cd .. && cd .. && husky install applications/app-front/.husky"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.181",
-    "lodash": "^4.17.21",
+    "@next/bundle-analyzer": "^12.1.4",
+    "cross-env": "^7.0.3",
+    "lodash-es": "^4.17.21",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.6",
     "@types/node": "17.0.23",
     "@types/react": "17.0.43",
     "@types/react-dom": "17.0.14",

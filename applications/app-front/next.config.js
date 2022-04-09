@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
-module.exports = {
+module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   compiler: {
     styledComponents: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   webpack(config) {
     // config.module.rules.push({
@@ -32,4 +38,4 @@ module.exports = {
     // config.resolve.modules.push(__dirname);
     return config;
   },
-};
+});
