@@ -11,11 +11,11 @@ ifndef::snippets[]
 endif::[]
 
 
-[[Member_API]]
-== Demo API
+[[Login_API]]
+== Login API
 
-[[Demo_조회]]
-=== Demo 조회
+[[url_조회]]
+=== kakao Login Url 조회
 
-include::{snippets}/demo-api-test/get-demo/http-request.adoc[]
-include::{snippets}/demo-api-test/get-demo/http-response.adoc[]
+include::{snippets}/login-api-integration-test/login/http-request.adoc[]
+include::{snippets}/login-api-integration-test/login/http-response.adoc[]

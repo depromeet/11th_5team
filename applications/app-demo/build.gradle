@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation project(':components:module-demo')
+    implementation project(':components:module-oauth')
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
@@ -33,4 +34,9 @@ bootJar {
 
     from file('src/main/resources/static/docs')
     into file('build/resources/main/static/docs')
+}
+
+bootRun {
+    systemProperty "kakaoClientId", findProperty("kakaoClientId")
+    systemProperty "kakaoRedirectUrl", findProperty("kakaoRedirectUrl")
 }
