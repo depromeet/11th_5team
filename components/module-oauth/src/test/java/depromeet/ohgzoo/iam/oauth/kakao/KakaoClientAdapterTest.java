@@ -30,7 +30,7 @@ class KakaoClientAdapterTest {
     }
 
     @Test
-    void getToken_returnsKakaoTokenReponse() {
+    void getToken_returnsKakaoTokenResponse() {
         KakaoTokenResponse givenTokenResponse = new KakaoTokenResponse(null, null, null, 0, null);
         spyKakaoAuthClient.getToken_returnValue = givenTokenResponse;
 

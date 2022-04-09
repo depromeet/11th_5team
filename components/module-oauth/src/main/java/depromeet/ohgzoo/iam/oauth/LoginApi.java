@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class LoginApi {
-    private final OauthService OAuthService;
+    private final OauthService oauthService;
 
     @GetMapping("/oauth2/authorization/kakao")
     public Oauth2LoginUrl login() {
-        return OAuthService.getLoginUrl();
+        return oauthService.getLoginUrl();
     }
 
     @GetMapping("/login/oauth2/code/kakao")
     public AuthToken redirectCallback(@RequestParam String code) {
-        return OAuthService.getToken(code);
+        return oauthService.getToken(code);
     }
 }
