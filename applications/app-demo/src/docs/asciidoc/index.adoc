@@ -19,3 +19,21 @@ endif::[]
 
 include::{snippets}/login-api-integration-test/login/http-request.adoc[]
 include::{snippets}/login-api-integration-test/login/http-response.adoc[]
+
+[[Security_API]]
+== Security API
+
+[[refresh_성공]]
+=== refresh_성공
+
+include::{snippets}/token-refresh-controller-test/refresh_성공/http-request.adoc[]
+include::{snippets}/token-refresh-controller-test/refresh_성공/http-response.adoc[]
+include::{snippets}/token-refresh-controller-test/refresh_성공/response-fields.adoc[]
+
+[[refresh_실패]]
+=== refresh_실패
+
+include::{snippets}/token-refresh-controller-test/refresh_실패/http-request.adoc[]
+include::{snippets}/token-refresh-controller-test/refresh_실패/http-response.adoc[]
+include::{snippets}/token-refresh-controller-test/refresh_실패/response-fields.adoc[]
+
