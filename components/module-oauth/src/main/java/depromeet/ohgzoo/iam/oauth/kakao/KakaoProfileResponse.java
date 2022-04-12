@@ -17,7 +17,7 @@ public class KakaoProfileResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    static class KakaoAccount {
+    public static class KakaoAccount {
         @JsonProperty("email")
         private String email;
         @JsonProperty("profile")
@@ -26,7 +26,8 @@ public class KakaoProfileResponse {
 
     @Getter
     @NoArgsConstructor
-    static class KakaoProfile {
+    @AllArgsConstructor
+    public static class KakaoProfile {
         @JsonProperty("nickname")
         private String nickname;
     }
