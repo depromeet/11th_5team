@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation project(':components:module-demo')
     implementation project(':components:module-oauth')
+    implementation project(':components:support-security')
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
