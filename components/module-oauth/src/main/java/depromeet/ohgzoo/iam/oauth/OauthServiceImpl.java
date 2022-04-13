@@ -41,12 +41,12 @@ public class OauthServiceImpl implements OauthService {
         KakaoTokenResponse kakaoToken = getKakaoToken(code);
         KakaoProfileResponse profile = getKakaoProfile(kakaoToken);
 
-        String email = profile.getAccount().getEmail();
-        if (!memberService.alreadyJoin(email)) {
+        String identifyToken = String.valueOf(profile.getId());
+        if (!memberService.alreadyJoin(identifyToken)) {
             memberService.join(mapToMemberJoinRequest(profile));
         }
-        
-        Long memberId = memberService.getMemberId(email);
+
+        Long memberId = memberService.getMemberId(identifyToken);
 
         return new AuthToken(
                 jwtService.issuedToken(memberId.toString(), "USER", 3600),
@@ -56,7 +56,7 @@ public class OauthServiceImpl implements OauthService {
 
     private MemberJoinRequest mapToMemberJoinRequest(KakaoProfileResponse profile) {
         KakaoAccount account = profile.getAccount();
-        return new MemberJoinRequest("", account.getProfile().getNickname(), account.getEmail());
+        return new MemberJoinRequest(account.getProfile().getProfileImg(), account.getProfile().getNickname(), String.valueOf(profile.getId()));
     }
 
     private KakaoProfileResponse getKakaoProfile(KakaoTokenResponse kakaoToken) {

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:test-db
+    url: jdbc:h2:mem:test-db;MODE=LEGACY
     driver-class-name: org.h2.Driver
     username: sa
     password:

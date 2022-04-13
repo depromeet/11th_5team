@@ -23,17 +23,16 @@ public class Member {
 
     private String profileImg;
     private String nickname;
-    private String email;
+    private String identifyToken;
 
     @Builder
-    public Member(Long id, String profileImg, String nickname, String email) {
-        this.id = id;
+    public Member(Long id,String profileImg, String nickname, String identifyToken) {
+        this.id=id;
         this.profileImg = profileImg;
         this.nickname = nickname;
-        this.email = email;
+        this.identifyToken = identifyToken;
     }
-
-    public Member(String profileImg, String nickname, String email) {
-        this(null, profileImg, nickname, email);
+    public Member(String profileImg, String nickname, String identifyToken) {
+        this(null,profileImg,nickname,identifyToken);
     }
 }

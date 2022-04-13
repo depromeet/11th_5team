@@ -11,14 +11,14 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class StubMemberRepository implements MemberRepository {
-    public Member findByEmail_returnValue;
-    public String findByEmail_argumentEmail;
+    public Member findByIdToken_returnValue;
+    public String findByIdToken_argumentIdToken;
     public Member save_argumentMember;
 
     @Override
-    public Optional<Member> findByEmail(String email) {
-        findByEmail_argumentEmail = email;
-        return Optional.ofNullable(findByEmail_returnValue);
+    public Optional<Member> findByIdentifyToken(String identifyToken) {
+        findByIdToken_argumentIdToken = identifyToken;
+        return Optional.ofNullable(findByIdToken_returnValue);
     }
 
     @Override

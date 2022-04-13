@@ -70,46 +70,45 @@ class OauthServiceImplTest {
 
     @Test
     void getToken_passesProfileEmailToMemberService() {
-        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(null, new KakaoAccount("givenEmail", null));
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(1L, new KakaoAccount(new KakaoProfile("givenNickname","givenProfileImg")));
 
         oauthService.getToken(null);
 
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(spyMemberService, times(1)).alreadyJoin(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue()).isEqualTo("givenEmail");
+        assertThat(stringArgumentCaptor.getValue()).isEqualTo("1");
     }
 
     @Test
     void getToken_passesProfileToMemberService_whenMemberIsNotJoined() {
         given(spyMemberService.alreadyJoin(any())).willReturn(false);
         spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(null,
-                new KakaoAccount("givenEmail", new KakaoProfile("givenNickName")));
+                new KakaoAccount(new KakaoProfile("givenNickName","givenProfileImage")));
 
         oauthService.getToken(null);
 
         ArgumentCaptor<MemberJoinRequest> joinRequestArgumentCaptor = ArgumentCaptor.forClass(MemberJoinRequest.class);
         verify(spyMemberService, times(1)).join(joinRequestArgumentCaptor.capture());
 
-        assertThat(joinRequestArgumentCaptor.getValue().getEmail()).isEqualTo("givenEmail");
-        assertThat(joinRequestArgumentCaptor.getValue().getProfileImg()).isEqualTo("");
+        assertThat(joinRequestArgumentCaptor.getValue().getProfileImg()).isEqualTo("givenProfileImage");
         assertThat(joinRequestArgumentCaptor.getValue().getNickname()).isEqualTo("givenNickName");
     }
 
     @Test
     void getToken_inquiryMemberIdFromMemberService() {
-        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(null, new KakaoAccount("givenEmail", null));
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(1L, new KakaoAccount(new KakaoProfile()));
 
         oauthService.getToken(null);
 
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(spyMemberService).getMemberId(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue()).isEqualTo("givenEmail");
+        assertThat(stringArgumentCaptor.getValue()).isEqualTo("1");
     }
 
     @Test
     void getToken_passesMemberIdToJwtService_forAuthAndRefresh() {
         given(spyMemberService.getMemberId(any())).willReturn(1L);
-        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(null, new KakaoAccount("givenEmail", null));
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(1L, new KakaoAccount(new KakaoProfile()));
 
         oauthService.getToken(null);
 

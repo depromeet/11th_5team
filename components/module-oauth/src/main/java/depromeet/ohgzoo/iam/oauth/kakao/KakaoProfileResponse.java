@@ -18,8 +18,6 @@ public class KakaoProfileResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class KakaoAccount {
-        @JsonProperty("email")
-        private String email;
         @JsonProperty("profile")
         private KakaoProfile profile;
     }
@@ -30,5 +28,7 @@ public class KakaoProfileResponse {
     public static class KakaoProfile {
         @JsonProperty("nickname")
         private String nickname;
+        @JsonProperty("profile_image_url")
+        private String profileImg;
     }
 }

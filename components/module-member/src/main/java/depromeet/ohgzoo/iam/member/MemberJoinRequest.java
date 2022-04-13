@@ -6,11 +6,11 @@ import lombok.Getter;
 public class MemberJoinRequest {
     private String profileImg;
     private String nickname;
-    private String email;
+    private String identifyToken;
 
-    public MemberJoinRequest(String profileImg, String nickname, String email) {
+    public MemberJoinRequest(String profileImg, String nickname, String identifyToken) {
         this.profileImg = profileImg;
         this.nickname = nickname;
-        this.email = email;
+        this.identifyToken = identifyToken;
     }
 }

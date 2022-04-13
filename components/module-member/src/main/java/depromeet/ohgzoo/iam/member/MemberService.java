@@ -10,19 +10,19 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public boolean alreadyJoin(String email) {
-        return memberRepository.findByEmail(email)
+    public boolean alreadyJoin(String identifyToken) {
+        return memberRepository.findByIdentifyToken(identifyToken)
                 .isPresent();
     }
 
     public void join(MemberJoinRequest request) {
-        Member member = new Member(request.getProfileImg(), request.getNickname(), request.getEmail());
+        Member member = new Member(request.getProfileImg(), request.getNickname(), request.getIdentifyToken());
 
         memberRepository.save(member);
     }
 
-    public Long getMemberId(String email) {
-        Optional<Member> maybeMember = memberRepository.findByEmail(email);
+    public Long getMemberId(String identifyToken) {
+        Optional<Member> maybeMember = memberRepository.findByIdentifyToken(identifyToken);
         return maybeMember.map(Member::getId)
                 .orElse(null);
     }

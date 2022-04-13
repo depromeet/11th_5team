@@ -17,33 +17,33 @@ class MemberServiceTest {
 
     @Test
     void alreadyJoin_returnsFalse_whenMemberIsNotExisted() {
-        stubMemberRepository.findByEmail_returnValue = null;
+        stubMemberRepository.findByIdToken_returnValue = null;
 
         assertThat(memberService.alreadyJoin("")).isFalse();
     }
 
     @Test
-    void alreadyJoin_passesEmailToRepository() {
-        memberService.alreadyJoin("givenEmail");
+    void alreadyJoin_passesIdTokenToRepository() {
+        memberService.alreadyJoin("givenToken");
 
-        assertThat(stubMemberRepository.findByEmail_argumentEmail).isEqualTo("givenEmail");
+        assertThat(stubMemberRepository.findByIdToken_argumentIdToken).isEqualTo("givenToken");
     }
 
     @Test
     void alreadyJoin_returnsTrue_whenMemberIsExisted() {
-        stubMemberRepository.findByEmail_returnValue = new Member();
+        stubMemberRepository.findByIdToken_returnValue = new Member();
 
         assertThat(memberService.alreadyJoin("")).isTrue();
     }
 
     @Test
     void join_callsSaveInMemberRepository() {
-        MemberJoinRequest request = new MemberJoinRequest("profileImg", "nickname", "email");
+        MemberJoinRequest request = new MemberJoinRequest("profileImg", "nickname", "identifyToken");
 
         memberService.join(request);
 
         assertThat(stubMemberRepository.save_argumentMember.getId()).isNull();
-        assertThat(stubMemberRepository.save_argumentMember.getEmail()).isEqualTo("email");
+        assertThat(stubMemberRepository.save_argumentMember.getIdentifyToken()).isEqualTo("identifyToken");
         assertThat(stubMemberRepository.save_argumentMember.getProfileImg()).isEqualTo("profileImg");
         assertThat(stubMemberRepository.save_argumentMember.getNickname()).isEqualTo("nickname");
     }
@@ -53,28 +53,28 @@ class MemberServiceTest {
         //given
 
         //when
-        memberService.getMemberId("givenEmail");
+        memberService.getMemberId("givenToken");
 
         //then
-        assertThat(stubMemberRepository.findByEmail_argumentEmail).isEqualTo("givenEmail");
+        assertThat(stubMemberRepository.findByIdToken_argumentIdToken).isEqualTo("givenToken");
     }
 
     @Test
     void getMemberId_returnsMemberId() {
-        stubMemberRepository.findByEmail_returnValue = Member.builder()
+        stubMemberRepository.findByIdToken_returnValue = Member.builder()
                 .id(1L)
                 .build();
 
-        Long result = memberService.getMemberId("");
+        Long result = memberService.getMemberId("givenToken");
 
         assertThat(result).isEqualTo(1L);
     }
 
     @Test
     void getMemberId_returnsNull_whenMemberIsNotExisted() {
-        stubMemberRepository.findByEmail_returnValue = null;
+        stubMemberRepository.findByIdToken_returnValue = null;
 
-        Long result = memberService.getMemberId("");
+        Long result = memberService.getMemberId("givenToken");
 
         assertThat(result).isNull();
     }
