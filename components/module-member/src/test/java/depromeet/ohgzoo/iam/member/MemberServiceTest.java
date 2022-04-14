@@ -49,7 +49,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void getMemberId_passesEmailToRepository() {
+    void getMemberId_passesIdTokenToRepository() {
         //given
 
         //when

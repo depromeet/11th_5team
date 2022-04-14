@@ -69,7 +69,7 @@ class OauthServiceImplTest {
     /* mockito example */
 
     @Test
-    void getToken_passesProfileEmailToMemberService() {
+    void passesKakaoIdToMemberService() {
         spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(1L, new KakaoAccount(new KakaoProfile("givenNickname","givenProfileImg")));
 
         oauthService.getToken(null);
