@@ -1,0 +1,12 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+[[Member_API]]
+== Member API
+
+[[내_정보_조회]]
+=== 내 정보 조회
+
+include::{snippets}/member-integration-test/get-my-self/http-request.adoc[]
+include::{snippets}/member-integration-test/get-my-self/http-response.adoc[]

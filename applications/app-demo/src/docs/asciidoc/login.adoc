@@ -1,0 +1,12 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+[[Login_API]]
+== Login API
+
+[[url_조회]]
+=== kakao Login Url 조회
+
+include::{snippets}/login-api-integration-test/login/http-request.adoc[]
+include::{snippets}/login-api-integration-test/login/http-response.adoc[]
