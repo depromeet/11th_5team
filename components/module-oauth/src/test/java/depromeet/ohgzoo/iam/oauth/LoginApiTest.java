@@ -15,12 +15,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LoginApiTest {
 
     private MockMvc mockMvc;
-    private SpyOauthService spyKakaoService;
+    private SpyOauthService spyOauthService;
 
     @BeforeEach
     void setUp() {
-        spyKakaoService = new SpyOauthService();
-        mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(spyKakaoService))
+        spyOauthService = new SpyOauthService();
+        mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(spyOauthService))
                 .build();
     }
 
@@ -32,7 +32,7 @@ class LoginApiTest {
 
     @Test
     void login_returnsLoginUrl() throws Exception {
-        spyKakaoService.getLoginUrl_returnValue = new Oauth2LoginUrl("loginUrl");
+        spyOauthService.getLoginUrl_returnValue = new Oauth2LoginUrl("loginUrl");
 
         mockMvc.perform(get("/oauth2/authorization/kakao"))
                 .andExpect(jsonPath("$.loginUrl", equalTo("loginUrl")));
@@ -48,16 +48,41 @@ class LoginApiTest {
     void redirectCallback_passesCodeToService() throws Exception {
         mockMvc.perform(get("/login/oauth2/code/kakao").param("code", "givenCode"));
 
-        assertThat(spyKakaoService.getToken_argumentCode).isEqualTo("givenCode");
+        assertThat(spyOauthService.getToken_argumentCode).isEqualTo("givenCode");
     }
 
     @Test
     void redirectCallback_returnsAuthToken() throws Exception {
-        spyKakaoService.getToken_returnValue = new AuthToken("givenAuthToken", "givenRefreshToken");
+        spyOauthService.getToken_returnValue = new AuthToken("givenAuthToken", "givenRefreshToken");
 
         mockMvc.perform(get("/login/oauth2/code/kakao").param("code", ""))
                 .andExpect(jsonPath("$.auth", equalTo("givenAuthToken")))
                 .andExpect(jsonPath("$.refresh", equalTo("givenRefreshToken")))
         ;
+    }
+
+    @Test
+    void refreshToken_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/refresh"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void refreshToken_passesRefreshHeaderToService() throws Exception {
+        mockMvc.perform(get("/refresh")
+                .header("REFRESH", "givenRefresh"));
+
+        assertThat(spyOauthService.getRefreshToken_argumentRefreshToken).isEqualTo("givenRefresh");
+    }
+
+    @Test
+    void refreshToken_returnsAuthToken() throws Exception {
+        spyOauthService.getRefreshToken_returnValue = new AuthToken(
+                "auth", "refresh"
+        );
+
+        mockMvc.perform(get("/refresh"))
+                .andExpect(jsonPath("$.auth", equalTo("auth")))
+                .andExpect(jsonPath("$.refresh", equalTo("refresh")));
     }
 }

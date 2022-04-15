@@ -8,6 +8,12 @@ public class SpyJwtService implements JwtService {
     private Queue<String> issuedToken_argumentRole = new LinkedList<>();
     private Queue<Long> issuedToken_argumentPeriod = new LinkedList<>();
     public int issuedToken_callCount = 0;
+    public String verifyToken_argumentToken;
+    public boolean verifyToken_returnValue = true;
+    public String getSubject_argumentToken;
+    public String getSubject_returnValue;
+    public String getIssuedToken_returnValue = "";
+
 
     @Override
     public String issuedToken(String subject, String role, long periodSecond) {
@@ -15,17 +21,19 @@ public class SpyJwtService implements JwtService {
         issuedToken_argumentSubject.add(subject);
         issuedToken_argumentRole.add(role);
         issuedToken_argumentPeriod.add(periodSecond);
-        return null;
+        return getIssuedToken_returnValue;
     }
 
     @Override
     public boolean verifyToken(String token) {
-        return false;
+        verifyToken_argumentToken = token;
+        return verifyToken_returnValue;
     }
 
     @Override
     public String getSubject(String token) {
-        return null;
+        getSubject_argumentToken = token;
+        return getSubject_returnValue;
     }
 
     public String getIssuedToken_argumentSubject() {

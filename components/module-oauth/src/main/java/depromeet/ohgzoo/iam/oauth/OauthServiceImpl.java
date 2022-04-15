@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.oauth;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
+import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
 import depromeet.ohgzoo.iam.member.MemberJoinRequest;
 import depromeet.ohgzoo.iam.member.MemberService;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoClient;
@@ -52,6 +53,18 @@ public class OauthServiceImpl implements OauthService {
                 jwtService.issuedToken(memberId.toString(), "USER", 3600),
                 jwtService.issuedToken(memberId.toString(), "USER", 36000)
         );
+    }
+
+    @Override
+    public AuthToken getRefreshToken(String refreshToken) {
+        if (!jwtService.verifyToken(refreshToken)) {
+            throw new UnAuthenticationException("토큰이 만료되었습니다.");
+        }
+
+        String email = jwtService.getSubject(refreshToken);
+        return new AuthToken(
+                jwtService.issuedToken(email, "USER", 3600),
+                jwtService.issuedToken(email, "USER", 36000));
     }
 
     private MemberJoinRequest mapToMemberJoinRequest(KakaoProfileResponse profile) {
