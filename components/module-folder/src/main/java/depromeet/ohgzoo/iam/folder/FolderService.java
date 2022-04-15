@@ -2,5 +2,6 @@ package depromeet.ohgzoo.iam.folder;
 
 
 public interface FolderService {
-    CreateFolderResponse createFolder(String authToken, String name);
+    FolderResponse createFolder(String authToken, String name);
+    void deleteFolder(String authToken,String id);
 }

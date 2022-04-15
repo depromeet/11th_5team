@@ -1,9 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.member.Member;
-import depromeet.ohgzoo.iam.member.MemberNotExistsException;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +27,6 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolder_extractMemberIdFromJwtService() {
-        folderService.createFolder("givenToken", "");
 
         assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
     }
@@ -37,7 +34,7 @@ public class FolderServiceImplTest {
     @Test
     void createFolder_callsSaveInFolderRepository() {
         spyJwtService.getSubject_returnValue = "1";
-        folderService.createFolder("givenToken","folderName");
+        folderService.createFolder("givenToken", "folderName");
 
         Folder savedFolder = spyFolderRepository.save_argumentFolder;
         assertThat(savedFolder.getId()).isNull();
@@ -47,15 +44,30 @@ public class FolderServiceImplTest {
     }
 
     @Test
-    void createFolder_returnsFolderResponse(){
+    void createFolder_returnsFolderResponse() {
         spyFolderRepository.save_returnValue = Folder.builder()
                 .name("givenFolderName")
                 .memberId(1L)
                 .build();
 
-        CreateFolderResponse result = folderService.createFolder("AUTH_TOKEN", "givenFolderName");
+        FolderResponse result = folderService.createFolder("AUTH_TOKEN", "givenFolderName");
 
         assertThat(result.getFolderId()).isEqualTo(null);
         assertThat(result.getFolderName()).isEqualTo("givenFolderName");
+    }
+
+    @Test
+    void deleteFolder_extractMemberIdFromJwtService() {
+        folderService.deleteFolder("givenToken", "1");
+
+        assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
+    }
+
+    @Test
+    void deleteFolder_callsDeleteFromRepository() {
+        spyJwtService.getSubject_returnValue = "1";
+        folderService.deleteFolder("givenToken", "1");
+
+        assertThat(spyFolderRepository.delete_argumentFolderId).isNotNull();
     }
 }

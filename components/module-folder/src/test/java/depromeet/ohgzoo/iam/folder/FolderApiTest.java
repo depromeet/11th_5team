@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,9 +37,9 @@ class FolderApiTest {
     }
 
     @Test
-    void addFolder_throwsExceptionWhenNameIsNull() throws Exception{
+    void addFolder_throwsExceptionWhenNameIsNull() throws Exception {
         mockMvc.perform(post("/api/v1/folder")
-                .header("AUTH_TOKEN","givenToken")
+                .header("AUTH_TOKEN", "givenToken")
         ).andExpect(status().isBadRequest());
     }
 
@@ -60,12 +61,37 @@ class FolderApiTest {
 
     @Test
     void addFolder_returnsFolderResponse() throws Exception {
-        spyFolderService.createFolder_returnValue = new CreateFolderResponse(1L, "givenFolderName");
+        spyFolderService.createFolder_returnValue = new FolderResponse(1L, "givenFolderName");
 
         mockMvc.perform(post("/api/v1/folder")
                         .header("AUTH_TOKEN", "givenAuth")
                         .param("name", "givenFolderName"))
                 .andExpect(jsonPath("$.folderId", equalTo(1)))
-                .andExpect(jsonPath("$.folderName",equalTo("givenFolderName")));
+                .andExpect(jsonPath("$.folderName", equalTo("givenFolderName")));
     }
+
+    @Test
+    void deleteFolder_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(delete("/api/v1/folder")
+                        .header("AUTH_TOKEN", "givenAuth")
+                        .param("id", "1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteFolder_throwsExceptionWhenNameIsNull() throws Exception {
+        mockMvc.perform(post("/api/v1/folder")
+                .header("AUTH_TOKEN", "givenToken")
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void deleteFolder_passesFolderIdToService() throws Exception {
+        mockMvc.perform(delete("/api/v1/folder")
+                .header("AUTH_TOKEN","givenToken")
+                .param("id","1"));
+
+        assertThat(spyFolderService.deleteFolder_argumentId).isEqualTo("1");
+    }
+
 }

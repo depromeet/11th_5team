@@ -12,6 +12,8 @@ import java.util.function.Function;
 
 public class SpyFolderRepository implements FolderRepository {
     public Folder save_argumentFolder;
+    public Long delete_argumentFolderId;
+
     public Folder save_returnValue = Folder.builder().build();
 
     @Override
@@ -41,7 +43,7 @@ public class SpyFolderRepository implements FolderRepository {
 
     @Override
     public void deleteById(Long aLong) {
-
+        delete_argumentFolderId = aLong;
     }
 
     @Override

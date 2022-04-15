@@ -3,12 +3,14 @@ package depromeet.ohgzoo.iam.folder;
 import lombok.Getter;
 
 @Getter
-public class CreateFolderResponse {
+public class FolderResponse {
     private Long folderId;
     private String folderName;
 
-    public CreateFolderResponse(Long folderId,String folderName){
+    public FolderResponse(Long folderId,String folderName){
         this.folderId=folderId;
         this.folderName=folderName;
     }
+
+
 }
