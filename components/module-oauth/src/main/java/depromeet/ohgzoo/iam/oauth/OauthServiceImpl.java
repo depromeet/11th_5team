@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.oauth;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
+import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoClient;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenRequest;

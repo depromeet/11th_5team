@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.security;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
+import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,6 +21,10 @@ public class SecurityInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader(AUTH_TOKEN);
 
-        return StringUtils.hasText(token) && jwtService.verifyToken(token);
+        if (!jwtService.verifyToken(token)) {
+            throw new UnAuthenticationException("AUTH_TOKEN 만료되었습니다.");
+        }
+
+        return true;
     }
 }
