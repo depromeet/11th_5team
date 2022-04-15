@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class StubMemberRepository implements MemberRepository {
+public class SpyMemberRepository implements MemberRepository {
     public Member findByIdToken_returnValue;
     public String findByIdToken_argumentIdToken;
     public Member save_argumentMember;
+    public Long findById_argumentId;
+    public Member findById_returnValue = Member.builder().build();
 
     @Override
     public Optional<Member> findByIdentifyToken(String identifyToken) {
@@ -84,7 +86,8 @@ public class StubMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> findById(Long aLong) {
-        return Optional.empty();
+        findById_argumentId = aLong;
+        return Optional.ofNullable(findById_returnValue);
     }
 
     @Override
