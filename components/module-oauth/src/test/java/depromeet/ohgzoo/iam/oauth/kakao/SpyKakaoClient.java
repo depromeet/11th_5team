@@ -6,7 +6,7 @@ public class SpyKakaoClient implements KakaoClient {
     public KakaoTokenRequest getToken_argumentRequest;
     public KakaoTokenResponse getToken_returnValue = new KakaoTokenResponse(null, null, null, 0, null);
     public String getProfile_argumentAuthorization;
-    public KakaoProfileResponse getProfile_returnValue = new KakaoProfileResponse(null, new KakaoAccount(null, null));
+    public KakaoProfileResponse getProfile_returnValue = new KakaoProfileResponse(null, new KakaoAccount(null));
 
     @Override
     public KakaoTokenResponse getToken(KakaoTokenRequest request) {
