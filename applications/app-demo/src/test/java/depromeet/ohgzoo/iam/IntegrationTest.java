@@ -58,30 +58,30 @@ public class IntegrationTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(documentationConfiguration(restDocumentation))
                 .alwaysDo(document)
-                .addFilter(new TestSupportFilter(jwtService))
+                .addFilter(new TestSupportFilter(jwtService.issuedToken("1", "USER", 3600)))
                 .build();
     }
 
     static class TestSupportFilter implements Filter {
-        private JwtService jwtService;
 
-        public TestSupportFilter(JwtService jwtService) {
-            this.jwtService = jwtService;
+        private String token;
+        public TestSupportFilter(String token) {
+            this.token = token;
         }
 
         @Override
         public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
             HttpServletRequest httpServletRequest = (HttpServletRequest)request;
-            chain.doFilter(new TestRequestWrapper(httpServletRequest, jwtService), response);
+            chain.doFilter(new TestRequestWrapper(httpServletRequest, token), response);
         }
     }
 
     static class TestRequestWrapper extends HttpServletRequestWrapper {
         private String token;
 
-        public TestRequestWrapper(HttpServletRequest request, JwtService jwtService) {
+        public TestRequestWrapper(HttpServletRequest request, String token) {
             super(request);
-            this.token = jwtService.issuedToken("1", "USER", 3600);
+            this.token = token;
         }
 
         public Enumeration<String> getHeaders(String name) {
