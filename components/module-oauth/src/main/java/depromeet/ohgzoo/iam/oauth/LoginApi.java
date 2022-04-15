@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RequiredArgsConstructor
 @RestController
 public class LoginApi {
@@ -18,5 +20,12 @@ public class LoginApi {
     @GetMapping("/login/oauth2/code/kakao")
     public AuthToken redirectCallback(@RequestParam String code) {
         return oauthService.getToken(code);
+    }
+
+    @GetMapping("/refresh")
+    public AuthToken refreshToken(HttpServletRequest request) {
+        String refreshHeader = request.getHeader("REFRESH");
+
+        return oauthService.getRefreshToken(refreshHeader);
     }
 }

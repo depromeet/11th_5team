@@ -1,16 +1,17 @@
-package depromeet.ohgzoo.iam.oauth.kakao;
+package depromeet.ohgzoo.iam.oauth;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
-import depromeet.ohgzoo.iam.oauth.AuthToken;
-import depromeet.ohgzoo.iam.oauth.Oauth2LoginUrl;
-import depromeet.ohgzoo.iam.oauth.OauthService;
+import depromeet.ohgzoo.iam.oauth.kakao.KakaoClient;
+import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse;
+import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenRequest;
+import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class KakaoServiceImpl implements OauthService {
+public class OauthServiceImpl implements OauthService {
     @Value("${kakaoClientId}")
     private String clientId;
 
@@ -40,6 +41,18 @@ public class KakaoServiceImpl implements OauthService {
             jwtService.issuedToken(profile.getAccount().getEmail(), "USER", 3600),
             jwtService.issuedToken(profile.getAccount().getEmail(), "USER", 36000)
         );
+    }
+
+    @Override
+    public AuthToken getRefreshToken(String refreshToken) {
+        if (!jwtService.verifyToken(refreshToken)) {
+            throw new UnAuthenticationException("토큰이 만료되었습니다.");
+        }
+
+        String email = jwtService.getSubject(refreshToken);
+        return new AuthToken(
+                jwtService.issuedToken(email, "USER", 3600),
+                jwtService.issuedToken(email, "USER", 36000));
     }
 
     private KakaoProfileResponse getKakaoProfile(KakaoTokenResponse kakaoToken) {
