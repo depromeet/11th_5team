@@ -2,15 +2,15 @@ package depromeet.ohgzoo.iam.security;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
 import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static depromeet.ohgzoo.iam.jwt.TokenName.AUTH_TOKEN;
+
 public class SecurityInterceptor implements HandlerInterceptor {
 
-    private static final String AUTH_TOKEN = "AUTH_TOKEN";
     private final JwtService jwtService;
 
     public SecurityInterceptor(JwtService jwtService) {

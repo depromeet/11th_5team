@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static depromeet.ohgzoo.iam.jwt.TokenName.REFRESH_TOKEN;
+
 @RequiredArgsConstructor
 @RestController
 public class LoginApi {
@@ -24,7 +26,7 @@ public class LoginApi {
 
     @GetMapping("/refresh")
     public AuthToken refreshToken(HttpServletRequest request) {
-        String refreshHeader = request.getHeader("REFRESH");
+        String refreshHeader = request.getHeader(REFRESH_TOKEN);
 
         return oauthService.getRefreshToken(refreshHeader);
     }

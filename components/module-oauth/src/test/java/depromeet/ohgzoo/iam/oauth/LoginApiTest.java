@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static depromeet.ohgzoo.iam.jwt.TokenName.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -69,7 +70,7 @@ class LoginApiTest {
     @Test
     void refreshToken_passesRefreshHeaderToService() throws Exception {
         mockMvc.perform(get("/refresh")
-                .header("REFRESH", "givenRefresh"));
+                .header(REFRESH_TOKEN, "givenRefresh"));
 
         assertThat(spyOauthService.getRefreshToken_argumentRefreshToken).isEqualTo("givenRefresh");
     }
