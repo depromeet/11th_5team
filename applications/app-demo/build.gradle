@@ -6,6 +6,7 @@ dependencies {
     implementation project(':components:module-demo')
     implementation project(':components:module-oauth')
     implementation project(':components:module-member')
+    implementation project(':components:module-folder')
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     runtimeOnly 'com.h2database:h2'
