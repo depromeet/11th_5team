@@ -2,27 +2,40 @@ package depromeet.ohgzoo.iam.oauth;
 
 import depromeet.ohgzoo.iam.jwt.SpyJwtService;
 import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
+import depromeet.ohgzoo.iam.member.MemberJoinRequest;
+import depromeet.ohgzoo.iam.member.MemberService;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse.KakaoAccount;
+import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse.KakaoProfile;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenResponse;
 import depromeet.ohgzoo.iam.oauth.kakao.SpyKakaoClient;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class OauthServiceImplTest {
 
     private OauthService oauthService;
     private SpyKakaoClient spyKakaoClient;
     private SpyJwtService spyJwtService;
+    private MemberService spyMemberService;
 
     @BeforeEach
     void setUp() {
+        spyMemberService = mock(MemberService.class);
         spyKakaoClient = new SpyKakaoClient();
         spyJwtService = new SpyJwtService();
-        oauthService = new OauthServiceImpl(spyKakaoClient, spyJwtService);
+        oauthService = new OauthServiceImpl(spyKakaoClient, spyJwtService, spyMemberService);
+
+        given(spyMemberService.alreadyJoin(any())).willReturn(true);
     }
 
     @Test
@@ -54,24 +67,6 @@ class OauthServiceImplTest {
 
         assertThat(spyKakaoClient.getProfile_argumentAuthorization).isEqualTo("Bearer " + givenAccessToken);
     }
-
-    @Test
-    void getToken_passesProfileEmailToJwtService_forAuthAndRefresh() {
-        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(null, new KakaoAccount("givenEmail", null));
-
-        oauthService.getToken(null);
-
-        assertThat(spyJwtService.issuedToken_callCount).isEqualTo(2);
-
-        assertThat(spyJwtService.getIssuedToken_argumentSubject()).isEqualTo("givenEmail");
-        assertThat(spyJwtService.getIssuedToken_argumentRole()).isEqualTo("USER");
-        assertThat(spyJwtService.getIssuedToken_argumentPeriod()).isEqualTo(3600);
-
-        assertThat(spyJwtService.getIssuedToken_argumentSubject()).isEqualTo("givenEmail");
-        assertThat(spyJwtService.getIssuedToken_argumentRole()).isEqualTo("USER");
-        assertThat(spyJwtService.getIssuedToken_argumentPeriod()).isEqualTo(36000);
-    }
-
 
     @Test
     void getRefreshToken_callsVerifyTokenInJwtService() {
@@ -125,5 +120,60 @@ class OauthServiceImplTest {
 
         assertThat(result.getAuth()).isEqualTo("newToken");
         assertThat(result.getRefresh()).isEqualTo("newToken");
+    }
+    /* mockito example */
+
+    @Test
+    void passesKakaoIdToMemberService() {
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(1L, new KakaoAccount(new KakaoProfile("givenNickname","givenProfileImg")));
+
+        oauthService.getToken(null);
+
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(spyMemberService, times(1)).alreadyJoin(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue()).isEqualTo("1");
+    }
+
+    @Test
+    void getToken_passesProfileToMemberService_whenMemberIsNotJoined() {
+        given(spyMemberService.alreadyJoin(any())).willReturn(false);
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(null,
+                new KakaoAccount(new KakaoProfile("givenNickName","givenProfileImage")));
+
+        oauthService.getToken(null);
+
+        ArgumentCaptor<MemberJoinRequest> joinRequestArgumentCaptor = ArgumentCaptor.forClass(MemberJoinRequest.class);
+        verify(spyMemberService, times(1)).join(joinRequestArgumentCaptor.capture());
+
+        assertThat(joinRequestArgumentCaptor.getValue().getProfileImg()).isEqualTo("givenProfileImage");
+        assertThat(joinRequestArgumentCaptor.getValue().getNickname()).isEqualTo("givenNickName");
+    }
+
+    @Test
+    void getToken_inquiryMemberIdFromMemberService() {
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(1L, new KakaoAccount(new KakaoProfile()));
+
+        oauthService.getToken(null);
+
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(spyMemberService).getMemberId(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue()).isEqualTo("1");
+    }
+
+    @Test
+    void getToken_passesMemberIdToJwtService_forAuthAndRefresh() {
+        given(spyMemberService.getMemberId(any())).willReturn(1L);
+        spyKakaoClient.getProfile_returnValue = new KakaoProfileResponse(1L, new KakaoAccount(new KakaoProfile()));
+
+        oauthService.getToken(null);
+
+        assertThat(spyJwtService.issuedToken_callCount).isEqualTo(2);
+        assertThat(spyJwtService.getIssuedToken_argumentSubject()).isEqualTo("1");
+        assertThat(spyJwtService.getIssuedToken_argumentRole()).isEqualTo("USER");
+        assertThat(spyJwtService.getIssuedToken_argumentPeriod()).isEqualTo(3600);
+
+        assertThat(spyJwtService.getIssuedToken_argumentSubject()).isEqualTo("1");
+        assertThat(spyJwtService.getIssuedToken_argumentRole()).isEqualTo("USER");
+        assertThat(spyJwtService.getIssuedToken_argumentPeriod()).isEqualTo(36000);
     }
 }

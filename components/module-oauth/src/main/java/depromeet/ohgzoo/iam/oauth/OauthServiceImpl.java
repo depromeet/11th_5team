@@ -2,6 +2,8 @@ package depromeet.ohgzoo.iam.oauth;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
 import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
+import depromeet.ohgzoo.iam.member.MemberJoinRequest;
+import depromeet.ohgzoo.iam.member.MemberService;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoClient;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenRequest;
@@ -21,6 +23,7 @@ public class OauthServiceImpl implements OauthService {
 
     private final KakaoClient kakaoClient;
     private final JwtService jwtService;
+    private final MemberService memberService;
 
     @Override
     public Oauth2LoginUrl getLoginUrl() {
@@ -38,10 +41,22 @@ public class OauthServiceImpl implements OauthService {
         KakaoTokenResponse kakaoToken = getKakaoToken(code);
         KakaoProfileResponse profile = getKakaoProfile(kakaoToken);
 
+        String identifyToken = String.valueOf(profile.getId());
+        if (!memberService.alreadyJoin(identifyToken)) {
+            memberService.join(mapToMemberJoinRequest(profile));
+        }
+
+        Long memberId = memberService.getMemberId(identifyToken);
+
         return new AuthToken(
-            jwtService.issuedToken(profile.getAccount().getEmail(), "USER", 3600),
-            jwtService.issuedToken(profile.getAccount().getEmail(), "USER", 36000)
+                jwtService.issuedToken(memberId.toString(), "USER", 3600),
+                jwtService.issuedToken(memberId.toString(), "USER", 36000)
         );
+    }
+
+    private MemberJoinRequest mapToMemberJoinRequest(KakaoProfileResponse profile) {
+        KakaoProfileResponse.KakaoAccount account = profile.getAccount();
+        return new MemberJoinRequest(account.getProfile().getProfileImg(), account.getProfile().getNickname(), String.valueOf(profile.getId()));
     }
 
     @Override
@@ -50,10 +65,10 @@ public class OauthServiceImpl implements OauthService {
             throw new UnAuthenticationException("토큰이 만료되었습니다.");
         }
 
-        String email = jwtService.getSubject(refreshToken);
+        String memberId = jwtService.getSubject(refreshToken);
         return new AuthToken(
-                jwtService.issuedToken(email, "USER", 3600),
-                jwtService.issuedToken(email, "USER", 36000));
+                jwtService.issuedToken(memberId, "USER", 3600),
+                jwtService.issuedToken(memberId, "USER", 36000));
     }
 
     private KakaoProfileResponse getKakaoProfile(KakaoTokenResponse kakaoToken) {
