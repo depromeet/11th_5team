@@ -1,6 +1,9 @@
 rootProject.name = 'iam'
 
 include ':applications:app-demo', ':components:module-demo'
+include ':components:module-member'
 include ':components:module-oauth'
 include ':components:support-feign'
 include ':components:support-jwt'
+include ':components:support-security'
+include ':components:support-jpa'
