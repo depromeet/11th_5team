@@ -21,10 +21,18 @@ public class FolderServiceImpl implements FolderService {
         return new FolderResponse(folder.getId(), folder.getName());
     }
 
-    public void deleteFolder(String authToken,String id) {
+    public void deleteFolder(String authToken, Long folderId) {
         Long userId = Long.valueOf(jwtService.getSubject(authToken));
-        Long folderId = Long.valueOf(id);
 
         folderRepository.deleteById(folderId);
+    }
+
+    public FolderResponse updateFolder(String authToken, Long folderId, UpdateFolderRequest request) {
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(NotExistsFolderException::new);
+
+        folder.updateName(request.getName());
+
+        return new FolderResponse(folder.getId(), folder.getName());
     }
 }

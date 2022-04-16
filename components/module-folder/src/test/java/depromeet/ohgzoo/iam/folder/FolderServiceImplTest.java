@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.member.Member;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,7 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolder_extractMemberIdFromJwtService() {
+        folderService.createFolder("givenToken", "");
 
         assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
     }
@@ -58,7 +60,7 @@ public class FolderServiceImplTest {
 
     @Test
     void deleteFolder_extractMemberIdFromJwtService() {
-        folderService.deleteFolder("givenToken", "1");
+        folderService.deleteFolder("givenToken", 1L);
 
         assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
     }
@@ -66,8 +68,48 @@ public class FolderServiceImplTest {
     @Test
     void deleteFolder_callsDeleteFromRepository() {
         spyJwtService.getSubject_returnValue = "1";
-        folderService.deleteFolder("givenToken", "1");
+        folderService.deleteFolder("givenToken", 1L);
 
         assertThat(spyFolderRepository.delete_argumentFolderId).isNotNull();
+    }
+
+    @Test
+    void updateFolder_passesFolderIdToRepository() {
+        folderService.updateFolder("", 1L, new UpdateFolderRequest(""));
+
+        assertThat(spyFolderRepository.findById_argumentId).isEqualTo(1L);
+    }
+
+    @Test
+    void updateFolder_throwsNotExistsFolderException_whenFolderIsNotPresent() {
+        spyFolderRepository.findById_returnValue = null;
+
+        Assertions.assertThatThrownBy(() -> folderService.updateFolder("", 1L, null))
+                .isInstanceOf(NotExistsFolderException.class);
+    }
+
+    @Test
+    void updateFolder_updateFolderName() {
+        Folder givenFolder = Folder.builder()
+                .name("oldName")
+                .build();
+        spyFolderRepository.findById_returnValue = givenFolder;
+
+        folderService.updateFolder("", 1L, new UpdateFolderRequest("givenNewName"));
+
+        assertThat(givenFolder.getName()).isEqualTo("givenNewName");
+    }
+
+    @Test
+    void updateFolder_returnsFolderResponse() {
+        Folder givenFolder = Folder.builder()
+                .id(1L)
+                .name("oldName")
+                .build();
+        spyFolderRepository.findById_returnValue = givenFolder;
+        FolderResponse result = folderService.updateFolder("", 1L, new UpdateFolderRequest("givenNewName"));
+
+        assertThat(result.getFolderId()).isEqualTo(1L);
+        assertThat(result.getFolderName()).isEqualTo("givenNewName");
     }
 }

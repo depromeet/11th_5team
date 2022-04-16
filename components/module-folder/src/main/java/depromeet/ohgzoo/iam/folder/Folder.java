@@ -28,9 +28,18 @@ public class Folder {
     private Long memberId;
 
     @Builder
-    Folder(String name, String coverImg, Long memberId) {
+    public Folder(Long id, String name, String coverImg, Long memberId) {
+        this.id = id;
         this.name = name;
         this.coverImg = coverImg;
         this.memberId = memberId;
+    }
+
+    Folder(String name, String coverImg, Long memberId) {
+        this(null, name, coverImg, memberId);
+    }
+
+    public void updateName(String name) {
+        this.name = name;
     }
 }

@@ -15,6 +15,8 @@ public class SpyFolderRepository implements FolderRepository {
     public Long delete_argumentFolderId;
 
     public Folder save_returnValue = Folder.builder().build();
+    public Long findById_argumentId;
+    public Folder findById_returnValue = Folder.builder().build();
 
     @Override
     public List<Folder> findAll() {
@@ -79,7 +81,8 @@ public class SpyFolderRepository implements FolderRepository {
 
     @Override
     public Optional<Folder> findById(Long aLong) {
-        return Optional.empty();
+        findById_argumentId = aLong;
+        return Optional.ofNullable(findById_returnValue);
     }
 
     @Override

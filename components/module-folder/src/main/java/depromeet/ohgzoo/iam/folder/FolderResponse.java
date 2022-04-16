@@ -7,9 +7,9 @@ public class FolderResponse {
     private Long folderId;
     private String folderName;
 
-    public FolderResponse(Long folderId,String folderName){
-        this.folderId=folderId;
-        this.folderName=folderName;
+    public FolderResponse(Long folderId, String folderName) {
+        this.folderId = folderId;
+        this.folderName = folderName;
     }
 
 
