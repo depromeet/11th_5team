@@ -7,6 +7,8 @@ dependencies {
     implementation project(':components:module-oauth')
     implementation project(':components:support-security')
     implementation project(':components:module-member')
+    implementation project(':components:support-jwt')
+    implementation project(':components:support-jpa')
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     implementation 'com.github.zkdlu:api-response-spring-boot-starter:1.0.3'
