@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':components:support-jwt')
+    implementation project(':components:module-member')
+
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+}

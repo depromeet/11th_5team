@@ -1,0 +1,4 @@
+dependencies {
+    api project(':components:support-jpa')
+    implementation project(':components:support-jwt')
+}
