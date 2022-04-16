@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test-db;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  response:
+    success:
+      code: 200
+      msg: SUCCESS
+    exceptions:
+      custom1:
+        code: 401
+        msg: '토큰 정보가 유효하지 않습니다.'
+        type: depromeet.ohgzoo.iam.jwt.UnAuthenticationException
+      userNotExists:
+        code: 401
+        msg: '유저가 존재하지 않습니다. '
+        type: depromeet.ohgzoo.iam.member.NoExistsMemberException

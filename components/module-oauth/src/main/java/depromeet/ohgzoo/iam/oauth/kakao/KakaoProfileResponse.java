@@ -17,17 +17,18 @@ public class KakaoProfileResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    static class KakaoAccount {
-        @JsonProperty("email")
-        private String email;
+    public static class KakaoAccount {
         @JsonProperty("profile")
         private KakaoProfile profile;
     }
 
     @Getter
     @NoArgsConstructor
-    static class KakaoProfile {
+    @AllArgsConstructor
+    public static class KakaoProfile {
         @JsonProperty("nickname")
         private String nickname;
+        @JsonProperty("profile_image_url")
+        private String profileImg;
     }
 }
