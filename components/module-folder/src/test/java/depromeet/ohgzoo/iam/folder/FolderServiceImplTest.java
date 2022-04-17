@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 public class FolderServiceImplTest {
 
@@ -28,7 +29,7 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolder_extractMemberIdFromJwtService() {
-        folderService.createFolder("givenToken", "");
+        folderService.createFolder("givenToken", new FolderCreateRequest(""));
 
         assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
     }
@@ -36,7 +37,7 @@ public class FolderServiceImplTest {
     @Test
     void createFolder_callsSaveInFolderRepository() {
         spyJwtService.getSubject_returnValue = "1";
-        folderService.createFolder("givenToken", "folderName");
+        folderService.createFolder("givenToken", new FolderCreateRequest("folderName"));
 
         Folder savedFolder = spyFolderRepository.save_argumentFolder;
         assertThat(savedFolder.getId()).isNull();
@@ -52,7 +53,7 @@ public class FolderServiceImplTest {
                 .memberId(1L)
                 .build();
 
-        FolderResponse result = folderService.createFolder("AUTH_TOKEN", "givenFolderName");
+        FolderResponse result = folderService.createFolder("AUTH_TOKEN", new FolderCreateRequest("givenFolderName"));
 
         assertThat(result.getFolderId()).isEqualTo(null);
         assertThat(result.getFolderName()).isEqualTo("givenFolderName");
@@ -72,6 +73,17 @@ public class FolderServiceImplTest {
 
         assertThat(spyFolderRepository.delete_argumentFolderId).isNotNull();
     }
+
+    @Test
+    void deleteFolder_throwsExcetion_whenMemberIdIsNotEqualsFolder(){
+        spyJwtService.getSubject_returnValue="2";
+
+//folde.getMemberId == 1;
+        Assertions.assertThatThrownBy(()-> folderService.deleteFolder("givenToken",1L))
+                .isInstanceOf(InvalidUserException.class);
+
+    }
+
 
     @Test
     void updateFolder_passesFolderIdToRepository() {

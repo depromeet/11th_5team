@@ -12,10 +12,10 @@ public class FolderServiceImpl implements FolderService {
     private final FolderRepository folderRepository;
     private final MemberRepository memberRepository;
 
-    public FolderResponse createFolder(String authToken, String name) {
+    public FolderResponse createFolder(String authToken, FolderCreateRequest request) {
         Long userId = Long.valueOf(jwtService.getSubject(authToken));
 
-        Folder folder = new Folder(name, "", userId);
+        Folder folder = new Folder(request.getFolderName(), "", userId);
         folderRepository.save(folder);
 
         return new FolderResponse(folder.getId(), folder.getName());
@@ -23,6 +23,9 @@ public class FolderServiceImpl implements FolderService {
 
     public void deleteFolder(String authToken, Long folderId) {
         Long userId = Long.valueOf(jwtService.getSubject(authToken));
+
+        Folder folder = folderRepository.findById(folderId).get();
+//        if (folder.getMemberId() != userId) throw new InvalidUserException();
 
         folderRepository.deleteById(folderId);
     }

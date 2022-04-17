@@ -17,10 +17,10 @@ public class FolderApi {
     private final FolderService folderService;
 
     @PostMapping("/api/v1/folders")
-    public FolderResponse addFolder(@RequestHeader("AUTH_TOKEN") String authToken, @RequestParam String name) {
-        if (name == null) throw new NullValueException();
+    public FolderResponse addFolder(@RequestHeader("AUTH_TOKEN") String authToken, @RequestBody FolderCreateRequest request) {
+        if (request.getFolderName() == null) throw new NullValueException();
 
-        FolderResponse response = folderService.createFolder(authToken, name);
+        FolderResponse response = folderService.createFolder(authToken, request);
         return response;
     }
 
