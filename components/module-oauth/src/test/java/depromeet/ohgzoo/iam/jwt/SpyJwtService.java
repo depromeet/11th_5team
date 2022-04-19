@@ -4,6 +4,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class SpyJwtService implements JwtService {
+    public String verifyToken_argumentToken;
+    public boolean verifyToken_returnValue = true;
+    public String getSubject_argumentToken;
+    public String getSubject_returnValue;
+    public String getIssuedToken_returnValue = "";
     private Queue<String> issuedToken_argumentSubject = new LinkedList<>();
     private Queue<String> issuedToken_argumentRole = new LinkedList<>();
     private Queue<Long> issuedToken_argumentPeriod = new LinkedList<>();
@@ -15,18 +20,21 @@ public class SpyJwtService implements JwtService {
         issuedToken_argumentSubject.add(subject);
         issuedToken_argumentRole.add(role);
         issuedToken_argumentPeriod.add(periodSecond);
-        return null;
+        return getIssuedToken_returnValue;
     }
 
     @Override
     public boolean verifyToken(String token) {
-        return false;
+        verifyToken_argumentToken = token;
+        return verifyToken_returnValue;
     }
 
     @Override
     public String getSubject(String token) {
-        return null;
+        getSubject_argumentToken = token;
+        return getSubject_returnValue;
     }
+
 
     public String getIssuedToken_argumentSubject() {
         return issuedToken_argumentSubject.poll();
