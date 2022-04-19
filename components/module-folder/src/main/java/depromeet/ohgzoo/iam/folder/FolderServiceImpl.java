@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class FolderServiceImpl implements FolderService {
     private final JwtService jwtService;
     private final FolderRepository folderRepository;
-    private final MemberRepository memberRepository;
 
     public FolderResponse createFolder(String authToken, FolderCreateRequest request) {
         Long userId = Long.valueOf(jwtService.getSubject(authToken));
@@ -25,14 +24,18 @@ public class FolderServiceImpl implements FolderService {
         Long userId = Long.valueOf(jwtService.getSubject(authToken));
 
         Folder folder = folderRepository.findById(folderId).get();
-//        if (folder.getMemberId() != userId) throw new InvalidUserException();
+        if (folder.getMemberId() != userId) throw new InvalidUserException();
 
         folderRepository.deleteById(folderId);
     }
 
     public FolderResponse updateFolder(String authToken, Long folderId, UpdateFolderRequest request) {
+        Long userId = Long.valueOf(jwtService.getSubject(authToken));
+
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(NotExistsFolderException::new);
+
+        if (folder.getMemberId() != userId) throw new InvalidUserException();
 
         folder.updateName(request.getName());
 

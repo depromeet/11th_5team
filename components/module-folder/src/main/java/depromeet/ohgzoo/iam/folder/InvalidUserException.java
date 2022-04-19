@@ -1,2 +1,4 @@
-package depromeet.ohgzoo.iam.folder;public class InvalidUserException {
+package depromeet.ohgzoo.iam.folder;
+
+public class InvalidUserException extends RuntimeException {
 }
