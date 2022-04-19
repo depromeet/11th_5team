@@ -7,4 +7,6 @@ public interface FolderService {
     void deleteFolder(String authToken, Long folderId);
 
     FolderResponse updateFolder(String authToken, Long folderId, UpdateFolderRequest request);
+
+    void updateBulkFolder(String authToken, FolderUpdateBulkRequest request);
 }

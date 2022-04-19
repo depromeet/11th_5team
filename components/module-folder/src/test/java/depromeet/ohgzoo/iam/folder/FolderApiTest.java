@@ -30,46 +30,30 @@ class FolderApiTest {
     private SpyFolderService spyFolderService;
 
     FolderRepository folderRepository;
+
     @BeforeEach
     void setUp() {
         spyFolderService = new SpyFolderService();
         folderRepository = mock(FolderRepository.class);
-        FolderService folderService = new FolderServiceImpl(new JwtServiceImpl(), folderRepository, mock(MemberRepository.class));
+        FolderService folderService = new FolderServiceImpl(new JwtServiceImpl(), folderRepository);
 
         mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
                 .build();
     }
 
     @Test
-    void 폴더를_추가할() throws Exception {
-        mockMvc.perform(post("/api/v1/folders")
-                .header("AUTH_TOKEN", "givenAuth")
-                .param("name", "folderName"));
-
-        ArgumentCaptor<Folder> folderArgumentCaptor = ArgumentCaptor.forClass(Folder.class);
-        verify(folderRepository).save(folderArgumentCaptor.capture());
-
-        assertThat(folderArgumentCaptor.getValue().getName()).isEqualTo("folderName");
-    }
-
-    @Test
     void addFolder_returnsOkHttpStatus() throws Exception {
         mockMvc.perform(post("/api/v1/folders")
-                        .header("AUTH_TOKEN", "givenAuth")
-                        .param("name", "folderName"))
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"folderName\":\"givenName\"}"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void addFolder_throwsExceptionWhenNameIsNull() throws Exception {
-        mockMvc.perform(post("/api/v1/folders")
-                .header("AUTH_TOKEN", "givenToken")
-        ).andExpect(status().isBadRequest());
-    }
-
-    @Test
     void addFolder_returnsBadRequest() throws Exception {
-        mockMvc.perform(post("/api/v1/folders").header("AUTH_TOKEN", "givenAuth"))
+        mockMvc.perform(post("/api/v1/folders")
+                        .header("AUTH_TOKEN", "givenAuth"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -142,4 +126,49 @@ class FolderApiTest {
                 .andExpect(jsonPath("$.folderId", equalTo(1)))
                 .andExpect(jsonPath("$.folderName", equalTo("givenFolderName")));
     }
+
+//    @Test
+//    void updateFolder_throwsException_whenRequestNameIsDuplicated(){
+//        //들어오는 값에서도 중복이 있으면 안됨
+//        new UpdateFolderRequest("")
+//    }
+
+    @Test
+    void updateBulkFolder_returnsOKHttpStatus() throws Exception {
+        mockMvc.perform(patch("/api/v2/folders")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateBulkFolder_passesRequestToService() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        FolderUpdateBulkRequest givenRequest = new FolderUpdateBulkRequest(
+                List.of(new FolderUpdateUnitRequest(1L, "folderOne"),
+                        new FolderUpdateUnitRequest(2L, "folderTwo")),
+                List.of(4L, 5L, 6L)
+        );
+
+        mockMvc.perform(patch("/api/v2/folders")
+                .header("AUTH_TOKEN", "givenToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest)))
+        ;
+
+        assertThat(spyFolderService.updateFolder_argumentAuthToken).isEqualTo("givenToken");
+
+        List<FolderUpdateUnitRequest> updateResult = spyFolderService.updateBulkFolder_argumentRequest.getUpdated();
+        assertThat(updateResult).hasSize(2);
+        assertThat(updateResult.get(0).getFolderId()).isEqualTo(1L);
+        assertThat(updateResult.get(0).getFolderName()).isEqualTo("folderOne");
+        assertThat(updateResult.get(1).getFolderId()).isEqualTo(2L);
+        assertThat(updateResult.get(1).getFolderName()).isEqualTo("folderTwo");
+
+        assertThat(spyFolderService.updateBulkFolder_argumentRequest.getDeleted()).hasSize(3);
+        assertThat(spyFolderService.updateBulkFolder_argumentRequest.getDeleted()).containsExactly(4L, 5L, 6L);
+    }
+
+
 }

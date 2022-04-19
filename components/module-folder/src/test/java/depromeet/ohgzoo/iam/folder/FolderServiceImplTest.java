@@ -114,14 +114,31 @@ public class FolderServiceImplTest {
 
     @Test
     void updateFolder_returnsFolderResponse() {
-        Folder givenFolder = Folder.builder()
-                .id(1L)
+        Folder givenFolder = aFolder()
                 .name("oldName")
                 .build();
+
         spyFolderRepository.findById_returnValue = givenFolder;
         FolderResponse result = folderService.updateFolder("", 1L, new UpdateFolderRequest("givenNewName"));
 
         assertThat(result.getFolderId()).isEqualTo(1L);
         assertThat(result.getFolderName()).isEqualTo("givenNewName");
     }
+
+    @Test
+    void updateBulkFolder_callsRepository() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        FolderUpdateBulkRequest givenRequest = new FolderUpdateBulkRequest(
+                List.of(new FolderUpdateUnitRequest(1L, "folderOne"),
+                        new FolderUpdateUnitRequest(2L, "folderTwo")),
+                List.of(4L)
+        );
+
+        folderService.updateBulkFolder("", givenRequest);
+
+        assertThat(spyFolderRepository.delete_argumentFolderId).isEqualTo(4L);
+        assertThat(spyFolderRepository.delete_argumentFolderId).isEqualTo(4L);
+    }
+
+
 }
