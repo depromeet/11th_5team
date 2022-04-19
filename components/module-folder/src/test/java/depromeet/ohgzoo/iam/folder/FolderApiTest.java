@@ -102,7 +102,7 @@ class FolderApiTest {
         mockMvc.perform(patch("/api/v1/folders/1")
                 .header("AUTH_TOKEN", "givenToken")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"givenName\"}"));
+                .content("{\"folderName\":\"givenName\"}"));
 
         assertThat(spyFolderService.updateFolder_argumentAuthToken).isEqualTo("givenToken");
         assertThat(spyFolderService.updateFolder_argumentFolderId).isEqualTo(1L);
