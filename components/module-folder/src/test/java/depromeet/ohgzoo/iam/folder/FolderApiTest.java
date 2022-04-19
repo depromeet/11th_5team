@@ -28,8 +28,6 @@ class FolderApiTest {
     void setUp() {
         spyFolderService = new SpyFolderService();
         folderRepository = mock(FolderRepository.class);
-        FolderService folderService = new FolderServiceImpl(new JwtServiceImpl(), folderRepository);
-
         mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
                 .build();
     }
@@ -44,7 +42,7 @@ class FolderApiTest {
     }
 
     @Test
-    void addFolder_returnsBadRequest() throws Exception {
+    void addFolder_returnsBadRequestWhenNameIsNull() throws Exception {
         mockMvc.perform(post("/api/v1/folders")
                         .header("AUTH_TOKEN", "givenAuth"))
                 .andExpect(status().isBadRequest());
