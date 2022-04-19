@@ -18,10 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FolderApiTest {
-//- 폴더는 (이름, 게시글 목록, 폴더주인, 폴더 커버 이미지) 을 가지고 있다.
-//- 유저는 폴더를 추가할 수 있다.
-//- 유저는 폴더를 삭제할 수 있다.
-//- 유저는 폴더의 이름을 수정할 수 있다.
 
     private MockMvc mockMvc;
     private SpyFolderService spyFolderService;
