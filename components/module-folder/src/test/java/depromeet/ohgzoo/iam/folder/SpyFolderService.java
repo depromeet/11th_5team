@@ -6,7 +6,6 @@ public class SpyFolderService implements FolderService {
     public Long deleteFolder_argumentId;
     public UpdateFolderRequest updateFolder_argumentRequest;
     public FolderCreateRequest createFolder_argumentRequest;
-    public FolderUpdateBulkRequest updateBulkFolder_argumentRequest;
     public String updateFolder_argumentAuthToken;
     public Long updateFolder_argumentFolderId;
     public FolderResponse updateFolder_returnValue;
@@ -30,11 +29,5 @@ public class SpyFolderService implements FolderService {
         updateFolder_argumentFolderId = id;
         updateFolder_argumentRequest = request;
         return updateFolder_returnValue;
-    }
-
-    @Override
-    public void updateBulkFolder(String authToken, FolderUpdateBulkRequest request) {
-        updateFolder_argumentAuthToken = authToken;
-        updateBulkFolder_argumentRequest = request;
     }
 }

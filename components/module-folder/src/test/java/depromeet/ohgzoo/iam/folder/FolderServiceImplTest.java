@@ -125,20 +125,5 @@ public class FolderServiceImplTest {
         assertThat(result.getFolderName()).isEqualTo("givenNewName");
     }
 
-    @Test
-    void updateBulkFolder_callsRepository() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        FolderUpdateBulkRequest givenRequest = new FolderUpdateBulkRequest(
-                List.of(new FolderUpdateUnitRequest(1L, "folderOne"),
-                        new FolderUpdateUnitRequest(2L, "folderTwo")),
-                List.of(4L)
-        );
-
-        folderService.updateBulkFolder("", givenRequest);
-
-        assertThat(spyFolderRepository.delete_argumentFolderId).isEqualTo(4L);
-        assertThat(spyFolderRepository.delete_argumentFolderId).isEqualTo(4L);
-    }
-
 
 }
