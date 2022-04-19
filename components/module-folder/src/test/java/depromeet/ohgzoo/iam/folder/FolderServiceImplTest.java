@@ -6,8 +6,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 public class FolderServiceImplTest {
 
@@ -16,13 +16,12 @@ public class FolderServiceImplTest {
     private SpyJwtService spyJwtService;
     private SpyMemberRepository spyMemberRepository;
 
-
     @BeforeEach
     void setUp() {
         spyJwtService = new SpyJwtService();
         spyFolderRepository = new SpyFolderRepository();
         spyMemberRepository = new SpyMemberRepository();
-        folderService = new FolderServiceImpl(spyJwtService, spyFolderRepository, spyMemberRepository);
+        folderService = new FolderServiceImpl(spyJwtService, spyFolderRepository);
 
         spyMemberRepository.findById_returnValue = Member.builder().build();
     }
@@ -36,7 +35,6 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolder_callsSaveInFolderRepository() {
-        spyJwtService.getSubject_returnValue = "1";
         folderService.createFolder("givenToken", new FolderCreateRequest("folderName"));
 
         Folder savedFolder = spyFolderRepository.save_argumentFolder;
@@ -48,9 +46,8 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolder_returnsFolderResponse() {
-        spyFolderRepository.save_returnValue = Folder.builder()
+        spyFolderRepository.save_returnValue = aFolder()
                 .name("givenFolderName")
-                .memberId(1L)
                 .build();
 
         FolderResponse result = folderService.createFolder("AUTH_TOKEN", new FolderCreateRequest("givenFolderName"));
@@ -62,32 +59,32 @@ public class FolderServiceImplTest {
     @Test
     void deleteFolder_extractMemberIdFromJwtService() {
         folderService.deleteFolder("givenToken", 1L);
-
         assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
     }
 
     @Test
     void deleteFolder_callsDeleteFromRepository() {
-        spyJwtService.getSubject_returnValue = "1";
         folderService.deleteFolder("givenToken", 1L);
 
         assertThat(spyFolderRepository.delete_argumentFolderId).isNotNull();
     }
 
     @Test
-    void deleteFolder_throwsExcetion_whenMemberIdIsNotEqualsFolder(){
-        spyJwtService.getSubject_returnValue="2";
+    void deleteFolder_throwsException_whenMemberIdIsNotEqualsFolder() {
+        spyJwtService.getSubject_returnValue = "2";
+        spyFolderRepository.save_returnValue = aFolder()
+                .memberId(1L)
+                .build();
 
-//folde.getMemberId == 1;
-        Assertions.assertThatThrownBy(()-> folderService.deleteFolder("givenToken",1L))
+        Assertions.assertThatThrownBy(() -> folderService.deleteFolder("givenToken", 1L))
                 .isInstanceOf(InvalidUserException.class);
-
     }
 
 
     @Test
     void updateFolder_passesFolderIdToRepository() {
-        folderService.updateFolder("", 1L, new UpdateFolderRequest(""));
+
+        folderService.updateFolder("", 1L, new UpdateFolderRequest("1234"));
 
         assertThat(spyFolderRepository.findById_argumentId).isEqualTo(1L);
     }
@@ -101,8 +98,20 @@ public class FolderServiceImplTest {
     }
 
     @Test
+    void updateFolder_throwsException_whenMemberIdIsNotEqualsFolder() {
+        spyJwtService.getSubject_returnValue = "2";
+        spyFolderRepository.save_returnValue = aFolder()
+                .memberId(1L)
+                .build();
+
+        Assertions.assertThatThrownBy(() -> folderService.updateFolder("givenToken", 1L, new UpdateFolderRequest("newFolderName")))
+                .isInstanceOf(InvalidUserException.class);
+    }
+
+    @Test
     void updateFolder_updateFolderName() {
-        Folder givenFolder = Folder.builder()
+        Folder givenFolder = aFolder()
+                .id(1L)
                 .name("oldName")
                 .build();
         spyFolderRepository.findById_returnValue = givenFolder;
@@ -125,5 +134,15 @@ public class FolderServiceImplTest {
         assertThat(result.getFolderName()).isEqualTo("givenNewName");
     }
 
+    @Test
+    void updateFolder_throwsException_whenRequestNameIsDuplicated() {
+        Folder existedFolder = aFolder()
+                .name("folder")
+                .build();
 
+        spyFolderRepository.findByName_returnValue = existedFolder;
+
+        Assertions.assertThatThrownBy(() -> folderService.updateFolder("givenToken", 1L, new UpdateFolderRequest("existedFolder")))
+                .isInstanceOf(ExistedNameException.class);
+    }
 }

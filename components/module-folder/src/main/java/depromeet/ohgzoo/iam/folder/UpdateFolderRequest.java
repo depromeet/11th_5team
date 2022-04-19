@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateFolderRequest {
-    private String name;
+    private String folderName;
 
-    public UpdateFolderRequest(String name) {
-        this.name = name;
+    public UpdateFolderRequest(String folderName) {
+        this.folderName = folderName;
     }
 }
 

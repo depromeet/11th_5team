@@ -1,19 +1,16 @@
 package depromeet.ohgzoo.iam.folder;
 
-
 import depromeet.ohgzoo.iam.jwt.JwtServiceImpl;
-import depromeet.ohgzoo.iam.member.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -62,9 +59,10 @@ class FolderApiTest {
     void addFolder_passesFolderNameToService() throws Exception {
         mockMvc.perform(post("/api/v1/folders")
                 .header("AUTH_TOKEN", "givenAuth")
-                .param("name", "folderName"));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"folderName\":\"folderName\"}"));
 
-        assertThat(spyFolderService.createFolder_argumentName).isEqualTo("folderName");
+        assertThat(spyFolderService.createFolder_argumentRequest.getFolderName()).isEqualTo("folderName");
     }
 
     @Test
@@ -73,7 +71,8 @@ class FolderApiTest {
 
         mockMvc.perform(post("/api/v1/folders")
                         .header("AUTH_TOKEN", "givenAuth")
-                        .param("name", "givenFolderName"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"folderName\":\"givenFolderName\"}"))
                 .andExpect(jsonPath("$.folderId", equalTo(1)))
                 .andExpect(jsonPath("$.folderName", equalTo("givenFolderName")));
     }
@@ -93,7 +92,6 @@ class FolderApiTest {
         assertThat(spyFolderService.deleteFolder_argumentId).isEqualTo(1L);
     }
 
-
     @Test
     void updateFolder_returnsOKHttpStatus() throws Exception {
         mockMvc.perform(patch("/api/v1/folders/1")
@@ -112,7 +110,7 @@ class FolderApiTest {
 
         assertThat(spyFolderService.updateFolder_argumentAuthToken).isEqualTo("givenToken");
         assertThat(spyFolderService.updateFolder_argumentFolderId).isEqualTo(1L);
-        assertThat(spyFolderService.updateFolder_argumentRequest.getName()).isEqualTo("givenName");
+        assertThat(spyFolderService.updateFolder_argumentRequest.getFolderName()).isEqualTo("givenName");
     }
 
     @Test
@@ -126,11 +124,4 @@ class FolderApiTest {
                 .andExpect(jsonPath("$.folderId", equalTo(1)))
                 .andExpect(jsonPath("$.folderName", equalTo("givenFolderName")));
     }
-
-//    @Test
-//    void updateFolder_throwsException_whenRequestNameIsDuplicated(){
-//        //들어오는 값에서도 중복이 있으면 안됨
-//        new UpdateFolderRequest("")
-//    }
-
 }

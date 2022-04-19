@@ -10,13 +10,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
+
 public class SpyFolderRepository implements FolderRepository {
     public Folder save_argumentFolder;
     public Long delete_argumentFolderId;
 
-    public Folder save_returnValue = Folder.builder().build();
+    public Folder save_returnValue = aFolder().build();
     public Long findById_argumentId;
-    public Folder findById_returnValue = Folder.builder().build();
+    public Folder findById_returnValue = aFolder().build();
+    public Folder findByName_returnValue;
+
+    @Override
+    public Optional<Folder> findByName(String name) {
+        return Optional.ofNullable(findByName_returnValue);
+    }
 
     @Override
     public List<Folder> findAll() {

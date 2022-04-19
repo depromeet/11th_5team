@@ -4,7 +4,7 @@ import depromeet.ohgzoo.iam.jwt.JwtService;
 
 public class SpyJwtService implements JwtService {
     public String getSubject_argumentToken;
-    public String getSubject_returnValue = "0";
+    public String getSubject_returnValue = "1";
 
     @Override
     public String issuedToken(String subject, String role, long periodSecond) {
