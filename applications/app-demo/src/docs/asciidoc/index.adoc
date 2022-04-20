@@ -1,30 +1,11 @@
-= Spring REST Docs
+= API Document
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
-:toclevels: 2
+:toclevels: 4
 :sectlinks:
 
-ifndef::snippets[]
-:snippets: ./build/generated-snippets
-endif::[]
-
-[[Login_API]]
-== Login API
-
-[[url_조회]]
-=== kakao Login Url 조회
-
-include::{snippets}/login-api-integration-test/login/http-request.adoc[]
-include::{snippets}/login-api-integration-test/login/http-response.adoc[]
-
-
-[[Member_API]]
-== Member API
-
-[[내_정보_조회]]
-=== 내 정보 조회
-
-include::{snippets}/member-integration-test/get-my-self/http-request.adoc[]
-include::{snippets}/member-integration-test/get-my-self/http-response.adoc[]
+- xref:auth.adoc[Auth APIs]
+- xref:member.adoc[Member APIs]
+- xref:posts.adoc[Posts APIs]

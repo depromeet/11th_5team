@@ -1,0 +1,11 @@
+= Posts APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== Post 작성
+
+operation::posts-api-integration-test/create-posts[snippets='curl-request,http-request,http-response']

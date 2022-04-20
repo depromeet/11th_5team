@@ -1,0 +1,11 @@
+= Auth APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 로그인
+
+operation::login-api-integration-test/login[snippets='curl-request,http-request,http-response']
