@@ -34,4 +34,16 @@ class PostsServiceImplTest {
         assertThat(spyPostsRepository.save_entity.getDisclosure()).isFalse();
         assertThat(spyPostsRepository.save_entity.getViews()).isZero();
     }
+
+    @Test
+    void createPosts_returnCreeatePostsResponse() {
+        CreatePostsRequest request =
+                CreatePostsRequest.builder().firstCategory(PostsFirstCategory.NO1)
+                        .secondCategory(PostsSecondCategory.NO2).content("blah blah")
+                        .tags(Arrays.asList("tag1", "tag2")).disclosure(false).build();
+
+        CreatePostsResult result = postsService.createPosts(request);
+
+        assertThat(spyPostsRepository.save_entity.getId()).isEqualTo(result.getPostId());
+    }
 }
