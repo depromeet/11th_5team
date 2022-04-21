@@ -39,29 +39,6 @@ class LoginApiTest {
     }
 
     @Test
-    void redirectCallback_returnsOkHttpStatus() throws Exception {
-        mockMvc.perform(get("/login/oauth2/code/kakao").param("code", ""))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void redirectCallback_passesCodeToService() throws Exception {
-        mockMvc.perform(get("/login/oauth2/code/kakao").param("code", "givenCode"));
-
-        assertThat(spyOauthService.getToken_argumentCode).isEqualTo("givenCode");
-    }
-
-    @Test
-    void redirectCallback_returnsAuthToken() throws Exception {
-        spyOauthService.getToken_returnValue = new AuthToken("givenAuthToken", "givenRefreshToken");
-
-        mockMvc.perform(get("/login/oauth2/code/kakao").param("code", ""))
-                .andExpect(jsonPath("$.auth", equalTo("givenAuthToken")))
-                .andExpect(jsonPath("$.refresh", equalTo("givenRefreshToken")))
-        ;
-    }
-
-    @Test
     void refreshToken_returnsOkHttpStatus() throws Exception {
         mockMvc.perform(get("/refresh"))
                 .andExpect(status().isOk());
