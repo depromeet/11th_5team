@@ -1,12 +1,11 @@
 package depromeet.ohgzoo.iam.folder;
 
-import depromeet.ohgzoo.iam.jwt.JwtServiceImpl;
+import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,14 +20,17 @@ class FolderApiTest {
 
     private MockMvc mockMvc;
     private SpyFolderService spyFolderService;
+    private SpyJwtService spyJwtService;
 
     FolderRepository folderRepository;
 
     @BeforeEach
     void setUp() {
         spyFolderService = new SpyFolderService();
+        spyJwtService = new SpyJwtService();
         folderRepository = mock(FolderRepository.class);
         mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
+                .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
                 .build();
     }
 
@@ -97,12 +99,14 @@ class FolderApiTest {
 
     @Test
     void updateFolder_passesRequestToService() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+
         mockMvc.perform(patch("/api/v1/folders/1")
-                .header("AUTH_TOKEN", "givenToken")
+                .header("AUTH_TOKEN", "")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"folderName\":\"givenName\"}"));
 
-        assertThat(spyFolderService.updateFolder_argumentAuthToken).isEqualTo("givenToken");
+        assertThat(spyFolderService.updateFolder_argumentMemberId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentFolderId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentRequest.getFolderName()).isEqualTo("givenName");
     }
