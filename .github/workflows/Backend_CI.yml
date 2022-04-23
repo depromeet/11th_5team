@@ -8,6 +8,19 @@ jobs:
   backend:
     name: CI with Gradle
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_USER: root
+          MYSQL_PASSWORD: 1234
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: iam
+          --character-set-server: utf8mb4
+          --collation-server: utf8mb4_general_ci
+        ports:
+        - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
     - name: Checkout
       uses: actions/checkout@v2
