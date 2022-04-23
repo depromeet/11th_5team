@@ -1,6 +1,5 @@
 package depromeet.ohgzoo.iam.folder;
 
-import depromeet.ohgzoo.iam.folder.exception.ValidationException;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -96,7 +94,7 @@ class FolderApiTest {
         mockMvc.perform(patch("/api/v1/folders/1")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
+                        .content("{\"folderName\":\"givenName\"}"))
                 .andExpect(status().isOk());
     }
 
@@ -121,7 +119,7 @@ class FolderApiTest {
         mockMvc.perform(patch("/api/v1/folders/1")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
+                        .content("\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
                 .andExpect(jsonPath("$.folderId", equalTo(1)))
                 .andExpect(jsonPath("$.folderName", equalTo("givenFolderName")));
     }
@@ -131,7 +129,7 @@ class FolderApiTest {
         mockMvc.perform(post("/api/v1/folders/posts/1")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
+                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
                 .andExpect(status().isOk());
     }
 

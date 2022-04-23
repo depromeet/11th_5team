@@ -65,6 +65,7 @@ public class SpyFolderItemRepository  implements FolderItemRepository{
 
     @Override
     public <S extends FolderItem> S save(S entity) {
+        save_argumentFolderItem = entity;
         return null;
     }
 
