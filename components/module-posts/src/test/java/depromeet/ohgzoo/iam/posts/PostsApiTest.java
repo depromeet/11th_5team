@@ -48,18 +48,33 @@ class PostsApiTest {
     }
 
     @Test
-    void updatePosts_status() throws Exception {
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(PostsSecondCategory.NO1)
-                .content("test").tags(List.of("tag")).disclosure(false).build();
-        String json = objectMapper.writeValueAsString(request);
-
-        mockMvc.perform(patch("/api/v1/posts/1").contentType(MediaType.APPLICATION_JSON).content(json))
+    void updatePosts_isOk() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void deletePosts_status() throws Exception {
-        mockMvc.perform(delete("/api/v1/posts").param("postIds", "1, 2, 3"))
+    void updatePosts_passesRequestToService() throws Exception {
+        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(PostsSecondCategory.NO1)
+                .content("content").tags(List.of("tag")).disclosure(true).build();
+        String json = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(patch("/api/v1/posts/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json));
+
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(PostsSecondCategory.NO1);
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getContent()).isEqualTo("content");
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getTags()).isEqualTo(List.of("tag"));
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getDisclosure()).isEqualTo(true);
+    }
+
+    @Test
+    void deletePosts_isOk() throws Exception {
+        mockMvc.perform(delete("/api/v1/posts")
+                        .param("postIds", "1, 2, 3"))
                 .andExpect(status().isOk());
     }
 

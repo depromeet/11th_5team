@@ -20,7 +20,6 @@ public class PostsApi {
         return postsService.createPosts(request);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{postid}")
     public void updatePosts(
             @PathVariable("postid") Long postId,
@@ -29,7 +28,6 @@ public class PostsApi {
         postsService.updatePosts(postId, request, memberId);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
     public void deletePosts(
             @RequestParam List<Long> postIds,

@@ -53,9 +53,9 @@ public class Posts {
     }
 
     public void update(UpdatePostsRequest request) {
-        this.secondCategory = request.getSecondCategory() != null ? request.getSecondCategory() : this.secondCategory;
-        this.content = request.getContent() != null ? request.getContent() : this.content;
-        this.tags = !request.getTags().isEmpty() ? request.getTags() : this.tags;
-        this.disclosure = request.getDisclosure() != null ? request.getDisclosure() : this.disclosure;
+        this.secondCategory = request.getSecondCategory();
+        this.content = request.getContent();
+        this.tags = request.getTags();
+        this.disclosure = request.getDisclosure();
     }
 }

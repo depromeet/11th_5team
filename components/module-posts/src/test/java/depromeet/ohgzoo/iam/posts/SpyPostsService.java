@@ -5,6 +5,7 @@ import java.util.List;
 public class SpyPostsService implements PostsService {
     public CreatePostsRequest createPosts_argumentRequest;
     public CreatePostsResult createPosts_returnValue;
+    public UpdatePostsRequest updatePostsRequest_argumentRequest;
 
     @Override
     public CreatePostsResult createPosts(CreatePostsRequest request) {
@@ -14,7 +15,7 @@ public class SpyPostsService implements PostsService {
 
     @Override
     public void updatePosts(Long postId, UpdatePostsRequest request, Long memberId) {
-
+        updatePostsRequest_argumentRequest = request;
     }
 
     @Override

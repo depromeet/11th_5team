@@ -38,12 +38,14 @@ public class PostsRepositoryTest {
 
     @Test
     public void bulkDeletePosts() throws Exception {
-        postsRepository.bulkDeletePosts(List.of(1L, 2L, 3L));
         List<Posts> posts = postsRepository.findAll();
+        em.clear();
+        postsRepository.bulkDeletePosts(List.of(posts.get(0).getId(), posts.get(1).getId(), posts.get(2).getId()));
+        List<Posts> result = postsRepository.findAll();
 
-        assertThat(posts.size()).isEqualTo(7);
-        assertThat(posts.get(0).getContent()).isEqualTo("4");
-        assertThat(posts.get(posts.size() - 1).getContent()).isEqualTo("10");
+        assertThat(result.size()).isEqualTo(7);
+        assertThat(result.get(0).getContent()).isEqualTo("4");
+        assertThat(result.get(result.size() - 1).getContent()).isEqualTo("10");
     }
 
 }
