@@ -1,6 +1,6 @@
 spring:
   jwt:
-    secret: jwt
+    secret: jwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwt
   datasource:
     url: jdbc:mysql://localhost:3306/iam?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
     username:

@@ -14,8 +14,8 @@ import java.util.Date;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-    @Value("${spring.jwt.secret}")
-    private String secret;
+//    @Value("${spring.jwt.secret}")
+    private String secret = "아무말이나 적어본다고 생각한다는 생각을 해보았습니다람쥐썬더";
 
     @PostConstruct
     protected void init() {
