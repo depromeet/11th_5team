@@ -53,4 +53,7 @@ public class Folder {
     public void addFolderItem(FolderItem folderItem){
         folderItems.add(folderItem);
     }
+    public void changeCoverImg(FirstCategory firstCategory){
+      this.coverImg = CoverImageUrl.returnCoverImage(firstCategory);
+    }
 }

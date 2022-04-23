@@ -52,5 +52,6 @@ public class FolderServiceImpl implements FolderService {
         FolderItem folderItem = new FolderItem(request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.getDisclosure());
         folderItemRepository.save(folderItem);
         folder.addFolderItem(folderItem);
+        folder.changeCoverImg(folderItem.getFirstCategory());
     }
 }

@@ -47,6 +47,4 @@ public class FolderApi {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.createFolderItem(memberId, folderId, request);
     }
-
-
 }

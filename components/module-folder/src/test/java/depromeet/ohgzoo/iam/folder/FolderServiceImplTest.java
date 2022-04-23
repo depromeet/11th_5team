@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static depromeet.ohgzoo.iam.folder.CoverImageUrl.angryImage;
 import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -149,8 +150,6 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolderItem_callsAddInFolderRepository(){
-        //folderRepository에 folderItem 넣기
-        //test : 해당 folder에 folderItem 있는지
         Folder existedFolder = aFolder()
                 .id(1L)
                 .build();
@@ -159,5 +158,14 @@ public class FolderServiceImplTest {
 
         assertThat(existedFolder.getFolderItems().get(0).getContent()).isEqualTo("post content");
     }
+    @Test
+    void createFolderItem_changersFolderCoverImg(){
+        Folder existedFolder = aFolder()
+                .id(1L)
+                .build();
+        spyFolderRepository.findById_returnValue = existedFolder;
+        folderService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
 
+        assertThat(existedFolder.getCoverImg()).isEqualTo(angryImage);
+    }
 }

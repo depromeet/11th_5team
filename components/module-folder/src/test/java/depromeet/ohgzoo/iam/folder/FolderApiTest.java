@@ -154,4 +154,5 @@ class FolderApiTest {
 
         assertThat(spyFolderService.createFolderItem_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
     }
+
 }
