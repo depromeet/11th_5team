@@ -18,6 +18,8 @@ public class Posts {
     @Column
     private Long id;
 
+    private Long memberId;
+
     @Enumerated(EnumType.STRING) // 리팩토링 필요
     private PostsFirstCategory firstCategory;
 
@@ -36,8 +38,9 @@ public class Posts {
     private LocalDateTime createdAt;
 
     @Builder
-    public Posts(PostsFirstCategory firstCategory, PostsSecondCategory secondCategory, String content,
+    public Posts(Long memberId, PostsFirstCategory firstCategory, PostsSecondCategory secondCategory, String content,
                  List<String> tags, Boolean disclosure) {
+        this.memberId = memberId;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;

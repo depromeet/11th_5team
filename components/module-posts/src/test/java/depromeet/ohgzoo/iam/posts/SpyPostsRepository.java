@@ -6,12 +6,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 public class SpyPostsRepository implements PostsRepository {
     public Posts save_entity;
+    public Long findByMemberId_argumentId;
+    public Posts findByMemberId_returnValue = Posts.builder().build();
+    public String findByTag_argumentTag;
 
     @Override
     public List<Posts> findAll() {
@@ -156,6 +160,29 @@ public class SpyPostsRepository implements PostsRepository {
 
     @Override
     public <S extends Posts, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        return null;
+    }
+
+    @Override
+    public Page<Posts> findByMemberIdOrderByIdDesc(Long memberId, Pageable pageable) {
+        findByMemberId_argumentId = memberId;
+        return null;
+    }
+
+    @Override
+    public Page<Posts> findByTagsOrderByIdDesc(String tag, Pageable pageable) {
+        findByTag_argumentTag = tag;
+        return null;
+    }
+
+    @Override
+    public Page<Posts> findAllOrderByViewDesc(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public Optional<Posts> findTop1ByMemberIdAndSecondCategoryAndCreatedAtGreaterThanEqualOrderByIdDesc(Long memberId, PostsSecondCategory secondCategory, LocalDateTime weekAgo) {
+        findByMemberId_argumentId = memberId;
         return null;
     }
 }

@@ -1,12 +1,14 @@
 spring:
+  jwt:
+    secret: 어느거를 키로 할까요. 알아 맞춰 봅시다. 딩동댕동
   datasource:
-    url: jdbc:h2:mem:test-db;
-    driver-class-name: org.h2.Driver
-    username: sa
+    url: jdbc:mysql://localhost:3306/iam?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+    username:
     password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    database: h2
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect #org.hibernate.dialect.H2Dialect
+#    database: h2
     show-sql: true
     hibernate:
       ddl-auto: create
@@ -23,3 +25,7 @@ spring:
         code: 401
         msg: '유저가 존재하지 않습니다. '
         type: depromeet.ohgzoo.iam.member.NoExistsMemberException
+      postNotExists:
+        code: 401
+        msg: '글이 존재하지 않습니다. '
+        type: depromeet.ohgzoo.iam.posts.PostsNotFoundException
