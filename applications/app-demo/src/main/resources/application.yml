@@ -1,6 +1,6 @@
 spring:
   jwt:
-    secret: 어느거를 키로 할까요. 알아 맞춰 봅시다. 딩동댕동
+    secret: jwt
   datasource:
     url: jdbc:mysql://localhost:3306/iam?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
     username:
