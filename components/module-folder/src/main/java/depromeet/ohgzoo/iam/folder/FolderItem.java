@@ -29,10 +29,6 @@ public class FolderItem {
     @Column(name = "folder_item_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "folder_id")
-    private Folder folder;
-
     @Enumerated(EnumType.STRING)
     private FirstCategory firstCategory;
 
@@ -50,10 +46,6 @@ public class FolderItem {
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
-    public void setFolder(Folder folder) {
-        this.folder = folder;
-    }
 
     @Builder
     public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {

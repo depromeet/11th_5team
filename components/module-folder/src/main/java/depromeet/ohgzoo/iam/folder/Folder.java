@@ -31,7 +31,7 @@ public class Folder {
 
     private Long memberId;
 
-    @OneToMany(mappedBy = "folder")
+    @OneToMany
     @JoinColumn(name = "folder_item_id")
     private List<FolderItem> folderItems = new ArrayList<>();
 
@@ -52,7 +52,6 @@ public class Folder {
     }
     public void addFolderItem(FolderItem folderItem){
         folderItems.add(folderItem);
-        folderItem.setFolder(this);// 연관관계 매핑
     }
     public void changeCoverImg(FirstCategory firstCategory){
       this.coverImg = CoverImageUrl.returnCoverImage(firstCategory);
