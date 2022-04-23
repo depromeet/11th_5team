@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PostsServiceImplTest {
     private SpyPostsRepository spyPostsRepository;
@@ -36,7 +37,13 @@ class PostsServiceImplTest {
     }
 
     @Test
-    void createPosts_returnCreeatePostsResponse() {
+    void updatePosts_throwException() {
+        assertThatThrownBy(() -> postsService.updatePosts(1L, null, null))
+                .isInstanceOf(PostNotFoundException.class);
+    }
+
+    @Test
+    void createPosts_returnCreatePostsResponse() {
         CreatePostsRequest request =
                 CreatePostsRequest.builder().firstCategory(PostsFirstCategory.NO1)
                         .secondCategory(PostsSecondCategory.NO2).content("blah blah")

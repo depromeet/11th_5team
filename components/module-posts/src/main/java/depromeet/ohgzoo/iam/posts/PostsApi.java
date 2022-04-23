@@ -1,12 +1,11 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.jwt.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,4 +19,22 @@ public class PostsApi {
     public CreatePostsResult createPosts(@RequestBody CreatePostsRequest request) {
         return postsService.createPosts(request);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{postid}")
+    public void updatePosts(
+            @PathVariable("postid") Long postId,
+            @RequestBody UpdatePostsRequest request,
+            @Login Long memberId) {
+        postsService.updatePosts(postId, request, memberId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping
+    public void deletePosts(
+            @RequestParam List<Long> postIds,
+            @Login Long memberId) {
+        postsService.deletePosts(postIds, memberId);
+    }
+
 }
