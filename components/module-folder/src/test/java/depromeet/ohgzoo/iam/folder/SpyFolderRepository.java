@@ -15,7 +15,7 @@ import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
 public class SpyFolderRepository implements FolderRepository {
     public Folder save_argumentFolder;
     public Long delete_argumentFolderId;
-
+    public Long add_argumentFolderFolderItemId;
     public Folder save_returnValue = aFolder().build();
     public Long findById_argumentId;
     public Folder findById_returnValue = aFolder().build();

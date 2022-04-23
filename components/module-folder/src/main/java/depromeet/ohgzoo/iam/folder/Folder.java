@@ -10,6 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +31,10 @@ public class Folder {
 
     private Long memberId;
 
+    @OneToMany
+    @JoinColumn(name = "folder_item_id")
+    private List<FolderItem> folderItems = new ArrayList<>();
+
     @Builder
     public Folder(Long id, String name, String coverImg, Long memberId) {
         this.id = id;
@@ -41,5 +49,8 @@ public class Folder {
 
     public void updateName(String name) {
         this.name = name;
+    }
+    public void addFolderItem(FolderItem folderItem){
+        folderItems.add(folderItem);
     }
 }

@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,12 +8,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -122,4 +128,33 @@ class FolderApiTest {
                 .andExpect(jsonPath("$.folderId", equalTo(1)))
                 .andExpect(jsonPath("$.folderName", equalTo("givenFolderName")));
     }
+
+    @Test
+    void addFolderItem_OKHttpStatus() throws Exception {
+        mockMvc.perform(post("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+//    @Test
+//    void addFolder_returnsBadRequestWhenNameIsNull() throws Exception {
+//        mockMvc.perform(post("/api/v1/folders")
+//                        .header("AUTH_TOKEN", "givenAuth"))
+//                .andExpect(status().isBadRequest());
+//    }
+
+
+    @Test
+    void addFolderItem_passesFolderNameToService() throws Exception {
+        mockMvc.perform(post("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
+                .andExpect(status().isOk());
+
+        assertThat(spyFolderService.createFolderItem_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
+    }
+
 }
