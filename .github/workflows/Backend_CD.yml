@@ -51,12 +51,11 @@ jobs:
         context: .
         builder: ${{ steps.buildx.outputs.name }}
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ghcr.io/depromeet/11th_5team:latest
+        tags: ghcr.io/grand7070/11th_5team:latest
         
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        context: .
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-2
