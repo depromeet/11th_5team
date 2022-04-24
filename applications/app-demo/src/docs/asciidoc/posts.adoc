@@ -17,3 +17,7 @@ operation::posts-api-integration-test/get-my-posts[snippets='http-request,http-r
 == 태그 별 글 조회
 
 operation::posts-api-integration-test/get-posts-by-tag[snippets='http-request,http-response']
+
+== 인기 순 글 조회
+
+operation::posts-api-integration-test/get-posts-order-by-popular[snippets='http-request,http-response']

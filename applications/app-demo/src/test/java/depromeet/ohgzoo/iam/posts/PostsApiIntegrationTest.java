@@ -19,6 +19,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
+        postsRepository.deleteAll();
         postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.NO2,
                 "content", List.of("tag1", "tag2"), false));
     }
@@ -41,6 +42,12 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     void getPostsByTag() throws Exception {
         mockMvc.perform(get("/api/v1/posts/search")
                         .param("tag", "tag1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsOrderByPopular() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/popular"))
                 .andExpect(status().isOk());
     }
 }
