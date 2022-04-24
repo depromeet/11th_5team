@@ -46,8 +46,8 @@ public class PostsApi {
         return postsService.getPostsOrderByPopular(page, size);
     }
 
-    @GetMapping("/second")
-    public PostsDto findRecentPostWhereSecondCategoryIsNull(@Login Long memberId) {
-        return postsService.findRecentPostWhereSecondCategoryIsNull(memberId);
+    @GetMapping("/temp")
+    public PostsDto getRecentlyUnwrittenPosts(@Login Long memberId) {
+        return postsService.getRecentlyUnwrittenPosts(memberId);
     }
 }

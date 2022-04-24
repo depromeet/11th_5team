@@ -20,7 +20,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @BeforeEach
     void setUp() {
         postsRepository.deleteAll();
-        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.NO2,
+        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Idk,
                 "content", List.of("tag1", "tag2"), false));
     }
 

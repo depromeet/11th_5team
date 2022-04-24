@@ -7,5 +7,5 @@ public interface PostsService {
     List<PostsDto> getPostsByMemberId(Long memberId, int page, int size);
     List<PostsDto> getPostsByTag(String tag, int page, int size);
     List<PostsDto> getPostsOrderByPopular(int page, int size);
-    PostsDto findRecentPostWhereSecondCategoryIsNull(Long memberId);
+    PostsDto getRecentlyUnwrittenPosts(Long memberId);
 }

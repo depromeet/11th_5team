@@ -56,10 +56,15 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public PostsDto findRecentPostWhereSecondCategoryIsNull(Long memberId) {
-        Posts posts = postsRepository
-                .findTop1ByMemberIdAndSecondCategoryAndCreatedAtGreaterThanEqualOrderByIdDesc(memberId, PostsSecondCategory.NO3, LocalDateTime.now().minusDays(7))
+    public PostsDto getRecentlyUnwrittenPosts(Long memberId) {
+        Posts first = postsRepository.findByMemberId(memberId)
+                .stream()
+                .filter(posts -> PostsSecondCategory.Unwritten.equals(posts.getSecondCategory()))
+                .filter(posts -> LocalDateTime.now().minusDays(7).isBefore(posts.getCreatedAt()))
+                .sorted(Comparator.comparingLong(Posts::getId).reversed())
+                .findFirst()
                 .orElseThrow(PostsNotFoundException::new);
-        return new PostsDto(posts);
+
+        return new PostsDto(first);
     }
 }

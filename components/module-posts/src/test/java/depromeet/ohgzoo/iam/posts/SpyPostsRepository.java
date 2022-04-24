@@ -16,7 +16,6 @@ public class SpyPostsRepository implements PostsRepository {
     public Posts save_entity;
     public Long findByMemberId_argumentId;
     public List<Posts> findByMemberId_returnValue = Collections.emptyList();
-    public String findByTag_argumentTag;
     public boolean findAll_wasCalled;
     public List<Posts> findAll_returnValue = Collections.emptyList();
 
@@ -164,23 +163,6 @@ public class SpyPostsRepository implements PostsRepository {
 
     @Override
     public <S extends Posts, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-        return null;
-    }
-
-    @Override
-    public Page<Posts> findByMemberIdOrderByIdDesc(Long memberId, Pageable pageable) {
-        findByMemberId_argumentId = memberId;
-        return null;
-    }
-
-    @Override
-    public Page<Posts> findByTagsOrderByIdDesc(String tag, Pageable pageable) {
-        findByTag_argumentTag = tag;
-        return null;
-    }
-
-    @Override
-    public Page<Posts> findAllOrderByViewDesc(Pageable pageable) {
         return null;
     }
 

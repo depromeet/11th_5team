@@ -16,6 +16,8 @@ public class SpyPostsService implements PostsService {
     public int getPostsOrderByPopular_argumentPage;
     public int getPostsOrderByPopular_argumentSize;
     public List<PostsDto> getPostsOrderByPopular_returnValue;
+    public Long getRecentlyUnwrittenPosts_argumentMemberId;
+    public PostsDto getRecentlyUnwrittenPosts_returnValue;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -48,7 +50,8 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public PostsDto findRecentPostWhereSecondCategoryIsNull(Long memberId) {
-        return null;
+    public PostsDto getRecentlyUnwrittenPosts(Long memberId) {
+        getRecentlyUnwrittenPosts_argumentMemberId = memberId;
+        return getRecentlyUnwrittenPosts_returnValue;
     }
 }

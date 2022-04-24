@@ -61,7 +61,7 @@ class PostsApiTest {
     void createPosts_passesCreateRequestToService() throws Exception {
         CreatePostsRequest givenRequest = new CreatePostsRequest(
                 PostsFirstCategory.NO1,
-                PostsSecondCategory.NO2,
+                PostsSecondCategory.Idk,
                 "givenContent",
                 List.of("tag1", "tag2", "tag3"),
                 true
@@ -73,7 +73,7 @@ class PostsApiTest {
                 .andDo(print());
 
         assertThat(spyPostsService.createPosts_argumentRequest.getFirstCategory()).isEqualTo(PostsFirstCategory.NO1);
-        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(PostsSecondCategory.NO2);
+        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(PostsSecondCategory.Idk);
         assertThat(spyPostsService.createPosts_argumentRequest.getContent()).isEqualTo("givenContent");
         assertThat(spyPostsService.createPosts_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
         assertThat(spyPostsService.createPosts_argumentRequest.isDisclosure()).isTrue();
@@ -220,4 +220,40 @@ class PostsApiTest {
         assertThat(spyPostsService.getPostsOrderByPopular_argumentSize).isEqualTo(1);
     }
 
+    @Test
+    void getRecentlyUnwrittenPosts_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/temp"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getRecentlyUnwrittenPosts_passesMemberIdToService() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+
+        mockMvc.perform(get("/api/v1/posts/temp"));
+
+        assertThat(spyPostsService.getRecentlyUnwrittenPosts_argumentMemberId).isEqualTo(1L);
+    }
+
+    @Test
+    void getRecentlyUnwrittenPosts_returnsPostsDto() throws Exception {
+        spyPostsService.getRecentlyUnwrittenPosts_returnValue = new PostsDto(
+                1L,
+                PostsFirstCategory.NO1,
+                PostsSecondCategory.NO1,
+                "content",
+                List.of("1", "2"), true, 1,
+                LocalDateTime.of(2022, 4, 24, 12, 30, 30));
+
+        mockMvc.perform(get("/api/v1/posts/temp"))
+                .andExpect(jsonPath("$.id", equalTo(1)))
+                .andExpect(jsonPath("$.firstCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$.secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$.content", equalTo("content")))
+                .andExpect(jsonPath("$.tags", contains("1", "2")))
+                .andExpect(jsonPath("$.disclosure", equalTo(true)))
+                .andExpect(jsonPath("$.views", equalTo(1)))
+                .andExpect(jsonPath("$.createdAt", equalTo("2022-04-24 12:30:30")))
+        ;
+    }
 }
