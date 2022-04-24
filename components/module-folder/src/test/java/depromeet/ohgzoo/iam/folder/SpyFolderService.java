@@ -10,8 +10,8 @@ public class SpyFolderService implements FolderService {
     public FolderCreateRequest createFolder_argumentRequest;
     public Long updateFolder_argumentMemberId;
     public Long updateFolder_argumentFolderId;
-
     public FolderResponse updateFolder_returnValue;
+
 
 
     @Override

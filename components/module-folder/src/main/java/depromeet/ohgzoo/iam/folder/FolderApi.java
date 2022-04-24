@@ -49,4 +49,10 @@ public class FolderApi {
         if (errors.hasErrors()) throw new ValidationException();
         folderItemService.createFolderItem(memberId, folderId, request);
     }
+    @PatchMapping("/api/v1/folders/posts/{folderId}")
+    public void moveFolderItem(@Login Long memberId,@PathVariable Long folderId, @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors){
+        if (errors.hasErrors()) throw new ValidationException();
+        folderItemService.moveFolderItem(memberId, folderId, request);
+
+    }
 }

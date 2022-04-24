@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemService;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -155,4 +156,23 @@ class FolderApiTest {
         assertThat(spyFolderItemService.createFolderItem_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
     }
 
+    @Test
+    void moveFolderItem_OkHttpStatus() throws Exception {
+        mockMvc.perform(patch("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"postId\":1}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void moveFolderItem_passesFolderNameToService() throws Exception {
+        mockMvc.perform(patch("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"postId\":1}"))
+                .andExpect(status().isOk());
+
+        assertThat(spyFolderItemService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo(1L);
+    }
 }

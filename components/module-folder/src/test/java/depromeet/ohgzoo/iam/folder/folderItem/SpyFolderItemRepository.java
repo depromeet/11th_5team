@@ -1,7 +1,6 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
-import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
-import depromeet.ohgzoo.iam.folder.folderItem.FolderItemRepository;
+import depromeet.ohgzoo.iam.folder.FolderItemRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +13,7 @@ import java.util.function.Function;
 
 public class SpyFolderItemRepository  implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
+    public FolderItem findById_returnValue;
 
     @Override
     public List<FolderItem> findAll() {
@@ -78,7 +78,7 @@ public class SpyFolderItemRepository  implements FolderItemRepository {
 
     @Override
     public Optional<FolderItem> findById(Long aLong) {
-        return Optional.empty();
+        return Optional.ofNullable(findById_returnValue);
     }
 
     @Override

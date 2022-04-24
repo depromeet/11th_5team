@@ -4,6 +4,7 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
+import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemRepository;
 import depromeet.ohgzoo.iam.member.Member;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
 import org.assertj.core.api.Assertions;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import static depromeet.ohgzoo.iam.folder.CoverImageUrl.angryImage;
 import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
+import static depromeet.ohgzoo.iam.folder.folderItem.FolderItemFixtures.aFolderItem;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FolderServiceImplTest {
@@ -149,7 +151,7 @@ public class FolderServiceImplTest {
     }
 
     @Test
-    void createFolderItem_callsAddInFolderRepository(){
+    void createFolderItem_callsAddInFolderRepository() {
         Folder existedFolder = aFolder()
                 .id(1L)
                 .build();
@@ -158,8 +160,9 @@ public class FolderServiceImplTest {
 
         assertThat(existedFolder.getFolderItems().get(0).getContent()).isEqualTo("post content");
     }
+
     @Test
-    void createFolderItem_changersFolderCoverImg(){
+    void createFolderItem_changersFolderCoverImg() {
         Folder existedFolder = aFolder()
                 .id(1L)
                 .build();
@@ -167,5 +170,19 @@ public class FolderServiceImplTest {
         folderItemService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
 
         assertThat(existedFolder.getCoverImg()).isEqualTo(angryImage);
+    }
+
+    @Test
+    void moveFolderItem_MovesFolderItemNewFolder() {
+        FolderItem folderItem = aFolderItem()
+                .id(1L)
+                .build();
+        Folder newFolder = aFolder().id(2L).build();
+        spyFolderItemRepository.findById_returnValue = folderItem;
+        spyFolderRepository.findById_returnValue = newFolder;
+
+        folderItemService.moveFolderItem(1L, 2L, new FolderItemMoveRequest(1L));
+
+        assertThat(folderItem.getFolder().getId()).isEqualTo(2L);
     }
 }
