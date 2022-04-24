@@ -1,8 +1,5 @@
 package depromeet.ohgzoo.iam.posts;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 
 public class SpyPostsService implements PostsService {
@@ -16,6 +13,9 @@ public class SpyPostsService implements PostsService {
     public String getPostsByTag_argumentTag;
     public int getPostsByTag_argumentPage;
     public int getPostsByTag_argumentSize;
+    public int getPostsOrderByPopular_argumentPage;
+    public int getPostsOrderByPopular_argumentSize;
+    public List<PostsDto> getPostsOrderByPopular_returnValue;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -41,8 +41,10 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public Page<PostsDto> findPostsOrderByPopular(Pageable pageable) {
-        return null;
+    public List<PostsDto> getPostsOrderByPopular(int page, int size) {
+        getPostsOrderByPopular_argumentPage = page;
+        getPostsOrderByPopular_argumentSize = size;
+        return getPostsOrderByPopular_returnValue;
     }
 
     @Override

@@ -167,7 +167,7 @@ class PostsApiTest {
     }
 
     @Test
-    void getPostsByTag_passesTagdAndPageSizeToService() throws Exception {
+    void getPostsByTag_passesTagAndPageSizeToService() throws Exception {
         mockMvc.perform(get("/api/v1/posts/search")
                 .param("tag", "tag")
                 .param("page", "1")
@@ -176,6 +176,48 @@ class PostsApiTest {
         assertThat(spyPostsService.getPostsByTag_argumentTag).isEqualTo("tag");
         assertThat(spyPostsService.getPostsByTag_argumentPage).isEqualTo(1);
         assertThat(spyPostsService.getPostsByTag_argumentSize).isEqualTo(1);
+    }
+
+    @Test
+    void getPostsOrderByPopular_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/popular"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsOrderByPopular_returnsPostsDtoList() throws Exception {
+        spyPostsService.getPostsOrderByPopular_returnValue = List.of(
+                new PostsDto(
+                        1L,
+                        PostsFirstCategory.NO1,
+                        PostsSecondCategory.NO1,
+                        "content",
+                        List.of("1", "2"), true, 1,
+                        LocalDateTime.of(2022, 4, 24, 12, 30, 30))
+        );
+
+        mockMvc.perform(get("/api/v1/posts/popular"))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$[0].content", equalTo("content")))
+                .andExpect(jsonPath("$[0].tags", contains("1", "2")))
+                .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
+                .andExpect(jsonPath("$[0].views", equalTo(1)))
+                .andExpect(jsonPath("$[0].createdAt", equalTo("2022-04-24 12:30:30")))
+        ;
+    }
+
+    @Test
+    void getPostsOrderByPopular_passesTagAndPageSizeToService() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/popular")
+                .param("page", "1")
+                .param("size", "1"));
+
+        assertThat(spyPostsService.getPostsOrderByPopular_argumentPage).isEqualTo(1);
+        assertThat(spyPostsService.getPostsOrderByPopular_argumentSize).isEqualTo(1);
     }
 
 }

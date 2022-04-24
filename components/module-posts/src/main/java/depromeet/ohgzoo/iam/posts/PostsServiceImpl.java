@@ -1,12 +1,11 @@
 package depromeet.ohgzoo.iam.posts;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +45,14 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsDto> findPostsOrderByPopular(Pageable pageable) {
-        return postsRepository.findAllOrderByViewDesc(pageable).map(PostsDto::new);
+    public List<PostsDto> getPostsOrderByPopular(int page, int size) {
+        return postsRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparingInt(Posts::getViews).reversed())
+                .skip(page)
+                .limit(size)
+                .map(PostsDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

@@ -114,4 +114,47 @@ class PostsServiceImplTest {
                 PostsDto.builder().id(4L).tags(List.of("1", "2", "3")).build()
         );
     }
+
+    @Test
+    void getPostsOrderByPopular_callsFindAllInRepository() {
+        postsService.getPostsOrderByPopular(0, 0);
+
+        assertThat(spyPostsRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void getPostsOrderByPopular_returnsOrderedPosts() {
+        spyPostsRepository.findAll_returnValue = List.of(
+                Posts.builder().id(1L).views(1).build(),
+                Posts.builder().id(2L).views(10).build(),
+                Posts.builder().id(3L).views(2).build(),
+                Posts.builder().id(4L).views(5).build()
+        );
+
+        List<PostsDto> result = postsService.getPostsOrderByPopular(0, 4);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(2L).views(10).build(),
+                PostsDto.builder().id(4L).views(5).build(),
+                PostsDto.builder().id(3L).views(2).build(),
+                PostsDto.builder().id(1L).views(1).build()
+        );
+    }
+
+    @Test
+    void getPostsOrderByPopular_returnsPagingPosts() {
+        spyPostsRepository.findAll_returnValue = List.of(
+                Posts.builder().id(1L).views(1).build(),
+                Posts.builder().id(2L).views(10).build(),
+                Posts.builder().id(3L).views(2).build(),
+                Posts.builder().id(4L).views(5).build()
+        );
+
+        List<PostsDto> result = postsService.getPostsOrderByPopular(2, 2);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(3L).views(2).build(),
+                PostsDto.builder().id(1L).views(1).build()
+        );
+    }
 }
