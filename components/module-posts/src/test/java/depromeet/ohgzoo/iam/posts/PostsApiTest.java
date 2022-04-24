@@ -12,15 +12,15 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostsApiTest {
 
-    private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private MockMvc mockMvc;
     private SpyPostsService spyPostsService;
 
     @BeforeEach
@@ -45,6 +45,37 @@ class PostsApiTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(jsonPath("$.postId", equalTo(1)));
+    }
+
+    @Test
+    void updatePosts_isOk() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePosts_passesRequestToService() throws Exception {
+        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(PostsSecondCategory.NO1)
+                .content("content").tags(List.of("tag")).disclosure(true).build();
+        String json = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(patch("/api/v1/posts/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json));
+
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(PostsSecondCategory.NO1);
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getContent()).isEqualTo("content");
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getTags()).isEqualTo(List.of("tag"));
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getDisclosure()).isEqualTo(true);
+    }
+
+    @Test
+    void deletePosts_isOk() throws Exception {
+        mockMvc.perform(delete("/api/v1/posts")
+                        .param("postIds", "1, 2, 3"))
+                .andExpect(status().isOk());
     }
 
     @Test

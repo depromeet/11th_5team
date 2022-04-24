@@ -14,7 +14,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Posts {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column
     private Long id;
 
@@ -49,5 +50,12 @@ public class Posts {
 
     public void addViewNum() {
         this.views += 1;
+    }
+
+    public void update(UpdatePostsRequest request) {
+        this.secondCategory = request.getSecondCategory();
+        this.content = request.getContent();
+        this.tags = request.getTags();
+        this.disclosure = request.getDisclosure();
     }
 }
