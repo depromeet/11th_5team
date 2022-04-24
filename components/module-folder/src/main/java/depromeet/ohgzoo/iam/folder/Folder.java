@@ -32,8 +32,7 @@ public class Folder {
 
     private Long memberId;
 
-    @OneToMany
-    @JoinColumn(name = "folder_item_id")
+    @OneToMany(mappedBy = "folder")
     private List<FolderItem> folderItems = new ArrayList<>();
 
     @Builder
@@ -51,10 +50,18 @@ public class Folder {
     public void updateName(String name) {
         this.name = name;
     }
-    public void addFolderItem(FolderItem folderItem){
+
+    public void addFolderItem(FolderItem folderItem) {
         folderItems.add(folderItem);
+        folderItem.setFolder(this);
     }
-    public void changeCoverImg(FirstCategory firstCategory){
-      this.coverImg = CoverImageUrl.returnCoverImage(firstCategory);
+
+    public void removeFolderItem(FolderItem folderItem) {
+        folderItems.remove(folderItem);
+        folderItem.setFolder(null); //미분류 폴더로 리팩토링 예정
+    }
+
+    public void changeCoverImg(FirstCategory firstCategory) {
+        this.coverImg = CoverImageUrl.returnCoverImage(firstCategory);
     }
 }
