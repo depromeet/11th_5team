@@ -20,7 +20,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @BeforeEach
     void setUp() {
         postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.NO2,
-                "content", List.of("1", "2"), false));
+                "content", List.of("tag1", "tag2"), false));
     }
 
     @Test
@@ -34,6 +34,13 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @Test
     void getMyPosts() throws Exception {
         mockMvc.perform(get("/api/v1/posts"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsByTag() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/search")
+                        .param("tag", "tag1"))
                 .andExpect(status().isOk());
     }
 }
