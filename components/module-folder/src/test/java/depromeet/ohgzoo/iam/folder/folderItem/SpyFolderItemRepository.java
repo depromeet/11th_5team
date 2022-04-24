@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
+import depromeet.ohgzoo.iam.folder.Folder;
 import depromeet.ohgzoo.iam.folder.FolderItemRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,8 @@ import java.util.function.Function;
 public class SpyFolderItemRepository  implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
     public FolderItem findById_returnValue;
+    public FolderItem latestFolderItem_returnValue;
+
 
     @Override
     public List<FolderItem> findAll() {
@@ -159,5 +162,10 @@ public class SpyFolderItemRepository  implements FolderItemRepository {
     @Override
     public <S extends FolderItem, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Override
+    public FolderItem findFirstByCreatedAtAndFolderEquals(Folder folder) {
+        return latestFolderItem_returnValue;
     }
 }

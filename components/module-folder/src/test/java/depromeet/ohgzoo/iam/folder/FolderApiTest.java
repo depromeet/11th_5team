@@ -33,7 +33,7 @@ class FolderApiTest {
         spyFolderItemService = new SpyFolderItemService();
         spyJwtService = new SpyJwtService();
         folderRepository = mock(FolderRepository.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService,spyFolderItemService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService, spyFolderItemService))
                 .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
                 .build();
     }
@@ -135,15 +135,6 @@ class FolderApiTest {
                         .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
                 .andExpect(status().isOk());
     }
-
-//    @Test
-//    void addFolderItem_returnsBadRequestWhenParameterIsNull() throws Exception {
-//        mockMvc.perform(post("/api/v1/folders/posts/1")
-//                .header("AUTH_TOKEN", "givenToken")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"firstCategory\":null,\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"));
-//        // 에러 처리를 하고싶어요..
-//    }
 
     @Test
     void addFolderItem_passesFolderNameToService() throws Exception {

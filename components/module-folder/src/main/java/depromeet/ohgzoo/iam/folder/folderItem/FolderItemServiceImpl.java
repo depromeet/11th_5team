@@ -37,6 +37,9 @@ public class FolderItemServiceImpl implements FolderItemService{
         newFolder.addFolderItem(folderItem);
 
         // coverImg 갱신
-//        folderRepository.findLastestFolderItem(folderId);
+        FolderItem folderItem1=folderItemRepository.findFirstByCreatedAtAndFolderEquals(oldFolder);
+        FolderItem folderItem2 =folderItemRepository.findFirstByCreatedAtAndFolderEquals(newFolder);
+        oldFolder.changeCoverImg(folderItem1.getFirstCategory());
+        newFolder.changeCoverImg(folderItem2.getFirstCategory());
     }
 }

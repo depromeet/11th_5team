@@ -75,6 +75,5 @@ public class FolderItem {
 
     public void setFolder(Folder folder) {
         this.folder = folder;
-
     }
 }
