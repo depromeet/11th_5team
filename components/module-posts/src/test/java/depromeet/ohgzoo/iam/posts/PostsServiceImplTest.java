@@ -74,4 +74,44 @@ class PostsServiceImplTest {
                 PostsDto.builder().id(4L).build()
         );
     }
+
+    @Test
+    void getPostsByTag_callsFindAllInRepository() {
+        postsService.getPostsByTag("", 0, 0);
+
+        assertThat(spyPostsRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void getPostsByTag_returnsFilteredPosts() {
+        spyPostsRepository.findAll_returnValue = List.of(
+                Posts.builder().id(1L).tags(List.of("1")).build(),
+                Posts.builder().id(2L).tags(List.of("1", "2")).build(),
+                Posts.builder().id(3L).tags(List.of("2", "3")).build(),
+                Posts.builder().id(4L).tags(List.of("1", "2", "3")).build()
+        );
+
+        List<PostsDto> result = postsService.getPostsByTag("3", 0, 2);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(3L).tags(List.of("2", "3")).build(),
+                PostsDto.builder().id(4L).tags(List.of("1", "2", "3")).build()
+        );
+    }
+
+    @Test
+    void getPostsByTag_returnsPagingPosts() {
+        spyPostsRepository.findAll_returnValue = List.of(
+                Posts.builder().id(1L).tags(List.of("1")).build(),
+                Posts.builder().id(2L).tags(List.of("1", "2")).build(),
+                Posts.builder().id(3L).tags(List.of("2", "3")).build(),
+                Posts.builder().id(4L).tags(List.of("1", "2", "3")).build()
+        );
+
+        List<PostsDto> result = postsService.getPostsByTag("3", 1, 1);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(4L).tags(List.of("1", "2", "3")).build()
+        );
+    }
 }

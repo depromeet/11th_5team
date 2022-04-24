@@ -87,7 +87,7 @@ class PostsApiTest {
 
     @Test
     void getMyPosts_returnsPostsDtoList() throws Exception {
-        spyPostsService.findAllPostsOfMe_returnValue = List.of(
+        spyPostsService.getPostsByMemberId_returnValue = List.of(
                 new PostsDto(
                         1L,
                         PostsFirstCategory.NO1,
@@ -131,4 +131,51 @@ class PostsApiTest {
         assertThat(spyPostsService.getPostsByMemberId_argumentPage).isEqualTo(0);
         assertThat(spyPostsService.getPostsByMemberId_argumentSize).isEqualTo(20);
     }
+
+    @Test
+    void getPostsByTag_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/search")
+                        .param("tag", ""))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsByTag_returnsPostsDtoList() throws Exception {
+        spyPostsService.getPostsByTag_returnValue = List.of(
+                new PostsDto(
+                        1L,
+                        PostsFirstCategory.NO1,
+                        PostsSecondCategory.NO1,
+                        "content",
+                        List.of("1", "2"), true, 1,
+                        LocalDateTime.of(2022, 4, 24, 12, 30, 30))
+        );
+
+        mockMvc.perform(get("/api/v1/posts/search")
+                        .param("tag", ""))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$[0].content", equalTo("content")))
+                .andExpect(jsonPath("$[0].tags", contains("1", "2")))
+                .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
+                .andExpect(jsonPath("$[0].views", equalTo(1)))
+                .andExpect(jsonPath("$[0].createdAt", equalTo("2022-04-24 12:30:30")))
+        ;
+    }
+
+    @Test
+    void getPostsByTag_passesTagdAndPageSizeToService() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/search")
+                .param("tag", "tag")
+                .param("page", "1")
+                .param("size", "1"));
+
+        assertThat(spyPostsService.getPostsByTag_argumentTag).isEqualTo("tag");
+        assertThat(spyPostsService.getPostsByTag_argumentPage).isEqualTo(1);
+        assertThat(spyPostsService.getPostsByTag_argumentSize).isEqualTo(1);
+    }
+
 }

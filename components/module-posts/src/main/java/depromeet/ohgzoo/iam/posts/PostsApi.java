@@ -37,8 +37,10 @@ public class PostsApi {
     }
 
     @GetMapping("/search")
-    public Page<PostsDto> findPostsByTag(@RequestParam String tag, @PageableDefault(size = 20) Pageable pageable) {
-        return postsService.findPostsByTag(tag, pageable);
+    public List<PostsDto> getPostsByTag(@RequestParam String tag,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "20") int size) {
+        return postsService.getPostsByTag(tag, page, size);
     }
 
     @GetMapping("/popular")

@@ -9,9 +9,13 @@ public class SpyPostsService implements PostsService {
     public CreatePostsRequest createPosts_argumentRequest;
     public CreatePostsResult createPosts_returnValue;
     public Long getPostsByMemberId_argumentMemberId;
-    public List<PostsDto> findAllPostsOfMe_returnValue;
+    public List<PostsDto> getPostsByMemberId_returnValue;
     public int getPostsByMemberId_argumentPage;
     public int getPostsByMemberId_argumentSize;
+    public List<PostsDto> getPostsByTag_returnValue;
+    public String getPostsByTag_argumentTag;
+    public int getPostsByTag_argumentPage;
+    public int getPostsByTag_argumentSize;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -24,12 +28,16 @@ public class SpyPostsService implements PostsService {
         getPostsByMemberId_argumentMemberId = memberId;
         getPostsByMemberId_argumentPage = page;
         getPostsByMemberId_argumentSize = size;
-        return findAllPostsOfMe_returnValue;
+        return getPostsByMemberId_returnValue;
     }
 
     @Override
-    public Page<PostsDto> findPostsByTag(String tag, Pageable pageable) {
-        return null;
+    public List<PostsDto> getPostsByTag(String tag, int page, int size) {
+        getPostsByTag_argumentTag = tag;
+        getPostsByTag_argumentPage = page;
+        getPostsByTag_argumentSize = size;
+
+        return getPostsByTag_returnValue;
     }
 
     @Override

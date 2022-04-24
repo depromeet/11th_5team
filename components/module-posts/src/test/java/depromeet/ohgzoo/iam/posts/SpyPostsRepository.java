@@ -17,10 +17,13 @@ public class SpyPostsRepository implements PostsRepository {
     public Long findByMemberId_argumentId;
     public List<Posts> findByMemberId_returnValue = Collections.emptyList();
     public String findByTag_argumentTag;
+    public boolean findAll_wasCalled;
+    public List<Posts> findAll_returnValue = Collections.emptyList();
 
     @Override
     public List<Posts> findAll() {
-        return null;
+        findAll_wasCalled = true;
+        return findAll_returnValue;
     }
 
     @Override

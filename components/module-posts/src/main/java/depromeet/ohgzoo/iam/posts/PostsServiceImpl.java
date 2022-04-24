@@ -35,8 +35,14 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsDto> findPostsByTag(String tag, Pageable pageable) {
-        return postsRepository.findByTagsOrderByIdDesc(tag, pageable).map(PostsDto::new);
+    public List<PostsDto> getPostsByTag(String tag, int page, int size) {
+        return postsRepository.findAll()
+                .stream()
+                .filter(posts -> posts.getTags().contains(tag))
+                .skip(page)
+                .limit(size)
+                .map(PostsDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
