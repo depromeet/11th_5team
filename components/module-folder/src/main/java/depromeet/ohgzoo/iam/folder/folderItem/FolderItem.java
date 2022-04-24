@@ -1,5 +1,8 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
+import depromeet.ohgzoo.iam.folder.FirstCategory;
+import depromeet.ohgzoo.iam.folder.ListToStringConverter;
+import depromeet.ohgzoo.iam.folder.SecondCategory;
 import jdk.jfr.Timestamp;
 import lombok.Builder;
 import lombok.Getter;

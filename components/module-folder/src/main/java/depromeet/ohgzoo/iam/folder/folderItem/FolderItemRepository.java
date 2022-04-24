@@ -1,4 +1,4 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

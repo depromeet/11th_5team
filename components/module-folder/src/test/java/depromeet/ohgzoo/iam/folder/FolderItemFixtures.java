@@ -1,6 +1,8 @@
 package depromeet.ohgzoo.iam.folder;
 
-import static depromeet.ohgzoo.iam.folder.FolderItem.FolderItemBuilder;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
+
+import static depromeet.ohgzoo.iam.folder.folderItem.FolderItem.FolderItemBuilder;
 
 public class FolderItemFixtures {
     public static FolderItemBuilder aFolderItem(){

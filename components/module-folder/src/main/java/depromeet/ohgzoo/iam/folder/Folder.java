@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

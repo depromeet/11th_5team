@@ -1,16 +1,14 @@
 package depromeet.ohgzoo.iam.folder;
 
-import depromeet.ohgzoo.iam.folder.exception.ExistedNameException;
-import depromeet.ohgzoo.iam.folder.exception.InvalidUserException;
-import depromeet.ohgzoo.iam.folder.exception.NotExistsFolderException;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
 import depromeet.ohgzoo.iam.member.Member;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static depromeet.ohgzoo.iam.folder.CoverImageUrl.angryImage;
 import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
@@ -19,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FolderServiceImplTest {
 
     private FolderService folderService;
+    private FolderItemService folderItemService;
     private SpyFolderRepository spyFolderRepository;
     private SpyFolderItemRepository spyFolderItemRepository;
     private SpyMemberRepository spyMemberRepository;
@@ -28,7 +27,8 @@ public class FolderServiceImplTest {
         spyFolderRepository = new SpyFolderRepository();
         spyMemberRepository = new SpyMemberRepository();
         spyFolderItemRepository = new SpyFolderItemRepository();
-        folderService = new FolderServiceImpl(spyFolderRepository,spyFolderItemRepository);
+        folderService = new FolderServiceImpl(spyFolderRepository);
+        folderItemService = new FolderItemServiceImpl(spyFolderItemRepository,spyFolderRepository);
 
         spyMemberRepository.findById_returnValue = Member.builder().build();
     }
@@ -141,7 +141,7 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolderItem_callsSaveInFolderItemRepository() {
-        folderService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
+        folderItemService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
 
         FolderItem savedFolderItem = spyFolderItemRepository.save_argumentFolderItem;
         assertThat(savedFolderItem.getId()).isNull();
@@ -154,7 +154,7 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
+        folderItemService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
 
         assertThat(existedFolder.getFolderItems().get(0).getContent()).isEqualTo("post content");
     }
@@ -164,7 +164,7 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
+        folderItemService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
 
         assertThat(existedFolder.getCoverImg()).isEqualTo(angryImage);
     }

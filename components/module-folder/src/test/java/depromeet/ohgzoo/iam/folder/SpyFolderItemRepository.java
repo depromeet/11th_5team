@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class SpyFolderItemRepository  implements FolderItemRepository{
+public class SpyFolderItemRepository  implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
 
     @Override
