@@ -2,30 +2,66 @@ package depromeet.ohgzoo.iam.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import depromeet.ohgzoo.iam.IntegrationTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 public class PostsApiIntegrationTest extends IntegrationTest {
 
+    @Autowired
+    private PostsRepository postsRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    PostsRepository postsRepository;
+    @BeforeEach
+    void setUp() {
+        postsRepository.deleteAll();
+        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Idk,
+                "content", List.of("tag1", "tag2"), false));
+        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Unwritten,
+                "content", List.of("tag1", "tag2"), false));
+    }
 
     @Test
     void createPosts() throws Exception {
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"geon\",\"firstCategory\":\"NO1\",\"secondCategory\":\"NO2\",\"content\":\"content\",\"tags\":[\"1\",\"2\"],\"disclosure\":false}"))
+                        .content("{\"firstCategory\":\"NO1\",\"secondCategory\":\"Unwritten\",\"content\":\"content\",\"tags\":[\"1\",\"2\"],\"disclosure\":false}"))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void getMyPosts() throws Exception {
+        mockMvc.perform(get("/api/v1/posts"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsByTag() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/search")
+                        .param("tag", "tag1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsOrderByPopular() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/popular"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getRecentlyUnwrittenPosts() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/temp"))
+                .andExpect(status().isOk());
     }
 
     @Test

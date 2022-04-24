@@ -1,5 +1,5 @@
 plugins {
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id "org.asciidoctor.jvm.convert" version "3.2.0"
 }
 
 configurations {
@@ -21,6 +21,9 @@ dependencies {
     implementation 'com.github.zkdlu:api-response-spring-boot-starter:1.0.3'
 
     runtimeOnly 'com.h2database:h2'
+
+    runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java'
 }
 
 ext{
@@ -38,6 +41,10 @@ asciidoctor {
     dependsOn test
 }
 
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
 
@@ -47,9 +54,6 @@ task copyDocument(type: Copy) {
 
 bootJar {
     dependsOn copyDocument
-
-    from file('src/main/resources/static/docs')
-    into file('build/resources/main/static/docs')
 }
 
 bootRun {

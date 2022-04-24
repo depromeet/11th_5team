@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostsRepository extends JpaRepository<Posts, Long> {
+    List<Posts> findByMemberId(Long memberId);
 
     @Modifying(clearAutomatically = true)
     @Query("delete from Posts p where p.id in :postIds")

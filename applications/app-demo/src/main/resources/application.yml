@@ -1,15 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:test-db;
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    database: h2
-    show-sql: true
-    hibernate:
-      ddl-auto: create
+  profiles:
+    active: local
   response:
     success:
       code: 200
@@ -23,3 +14,7 @@ spring:
         code: 401
         msg: '유저가 존재하지 않습니다. '
         type: depromeet.ohgzoo.iam.member.NoExistsMemberException
+      postNotExists:
+        code: 401
+        msg: '글이 존재하지 않습니다. '
+        type: depromeet.ohgzoo.iam.posts.PostsNotFoundException

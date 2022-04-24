@@ -6,16 +6,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 public class SpyPostsRepository implements PostsRepository {
     public Posts save_entity;
+    public Long findByMemberId_argumentId;
+    public List<Posts> findByMemberId_returnValue = Collections.emptyList();
+    public boolean findAll_wasCalled;
+    public List<Posts> findAll_returnValue = Collections.emptyList();
 
     @Override
     public List<Posts> findAll() {
-        return null;
+        findAll_wasCalled = true;
+        return findAll_returnValue;
     }
 
     @Override
@@ -157,6 +163,12 @@ public class SpyPostsRepository implements PostsRepository {
     @Override
     public <S extends Posts, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Override
+    public List<Posts> findByMemberId(Long memberId) {
+        findByMemberId_argumentId = memberId;
+        return findByMemberId_returnValue;
     }
 
     @Override
