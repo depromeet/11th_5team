@@ -1,11 +1,18 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.exception.ExistedNameException;
+import depromeet.ohgzoo.iam.folder.exception.InvalidUserException;
+import depromeet.ohgzoo.iam.folder.exception.NotExistsFolderException;
 import depromeet.ohgzoo.iam.member.Member;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static depromeet.ohgzoo.iam.folder.CoverImageUrl.angryImage;
 import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,29 +20,22 @@ public class FolderServiceImplTest {
 
     private FolderService folderService;
     private SpyFolderRepository spyFolderRepository;
-    private SpyJwtService spyJwtService;
+    private SpyFolderItemRepository spyFolderItemRepository;
     private SpyMemberRepository spyMemberRepository;
 
     @BeforeEach
     void setUp() {
-        spyJwtService = new SpyJwtService();
         spyFolderRepository = new SpyFolderRepository();
         spyMemberRepository = new SpyMemberRepository();
-        folderService = new FolderServiceImpl(spyJwtService, spyFolderRepository);
+        spyFolderItemRepository = new SpyFolderItemRepository();
+        folderService = new FolderServiceImpl(spyFolderRepository,spyFolderItemRepository);
 
         spyMemberRepository.findById_returnValue = Member.builder().build();
     }
 
     @Test
-    void createFolder_extractMemberIdFromJwtService() {
-        folderService.createFolder("givenToken", new FolderCreateRequest(""));
-
-        assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
-    }
-
-    @Test
     void createFolder_callsSaveInFolderRepository() {
-        folderService.createFolder("givenToken", new FolderCreateRequest("folderName"));
+        folderService.createFolder(1L, new FolderCreateRequest("folderName"));
 
         Folder savedFolder = spyFolderRepository.save_argumentFolder;
         assertThat(savedFolder.getId()).isNull();
@@ -50,33 +50,27 @@ public class FolderServiceImplTest {
                 .name("givenFolderName")
                 .build();
 
-        FolderResponse result = folderService.createFolder("AUTH_TOKEN", new FolderCreateRequest("givenFolderName"));
+        FolderResponse result = folderService.createFolder(1L, new FolderCreateRequest("givenFolderName"));
 
         assertThat(result.getFolderId()).isEqualTo(null);
         assertThat(result.getFolderName()).isEqualTo("givenFolderName");
     }
 
-    @Test
-    void deleteFolder_extractMemberIdFromJwtService() {
-        folderService.deleteFolder("givenToken", 1L);
-        assertThat(spyJwtService.getSubject_argumentToken).isEqualTo("givenToken");
-    }
 
     @Test
     void deleteFolder_callsDeleteFromRepository() {
-        folderService.deleteFolder("givenToken", 1L);
+        folderService.deleteFolder(1L, 1L);
 
         assertThat(spyFolderRepository.delete_argumentFolderId).isNotNull();
     }
 
     @Test
     void deleteFolder_throwsException_whenMemberIdIsNotEqualsFolder() {
-        spyJwtService.getSubject_returnValue = "2";
         spyFolderRepository.save_returnValue = aFolder()
                 .memberId(1L)
                 .build();
 
-        Assertions.assertThatThrownBy(() -> folderService.deleteFolder("givenToken", 1L))
+        Assertions.assertThatThrownBy(() -> folderService.deleteFolder(2L, 1L))
                 .isInstanceOf(InvalidUserException.class);
     }
 
@@ -84,7 +78,7 @@ public class FolderServiceImplTest {
     @Test
     void updateFolder_passesFolderIdToRepository() {
 
-        folderService.updateFolder("", 1L, new UpdateFolderRequest("1234"));
+        folderService.updateFolder(1L, 1L, new FolderUpdateRequest("1234"));
 
         assertThat(spyFolderRepository.findById_argumentId).isEqualTo(1L);
     }
@@ -93,18 +87,17 @@ public class FolderServiceImplTest {
     void updateFolder_throwsNotExistsFolderException_whenFolderIsNotPresent() {
         spyFolderRepository.findById_returnValue = null;
 
-        Assertions.assertThatThrownBy(() -> folderService.updateFolder("", 1L, null))
+        Assertions.assertThatThrownBy(() -> folderService.updateFolder(1L, 1L, null))
                 .isInstanceOf(NotExistsFolderException.class);
     }
 
     @Test
     void updateFolder_throwsException_whenMemberIdIsNotEqualsFolder() {
-        spyJwtService.getSubject_returnValue = "2";
         spyFolderRepository.save_returnValue = aFolder()
                 .memberId(1L)
                 .build();
 
-        Assertions.assertThatThrownBy(() -> folderService.updateFolder("givenToken", 1L, new UpdateFolderRequest("newFolderName")))
+        Assertions.assertThatThrownBy(() -> folderService.updateFolder(2L, 1L, new FolderUpdateRequest("newFolderName")))
                 .isInstanceOf(InvalidUserException.class);
     }
 
@@ -116,7 +109,7 @@ public class FolderServiceImplTest {
                 .build();
         spyFolderRepository.findById_returnValue = givenFolder;
 
-        folderService.updateFolder("", 1L, new UpdateFolderRequest("givenNewName"));
+        folderService.updateFolder(1L, 1L, new FolderUpdateRequest("givenNewName"));
 
         assertThat(givenFolder.getName()).isEqualTo("givenNewName");
     }
@@ -128,7 +121,7 @@ public class FolderServiceImplTest {
                 .build();
 
         spyFolderRepository.findById_returnValue = givenFolder;
-        FolderResponse result = folderService.updateFolder("", 1L, new UpdateFolderRequest("givenNewName"));
+        FolderResponse result = folderService.updateFolder(1L, 1L, new FolderUpdateRequest("givenNewName"));
 
         assertThat(result.getFolderId()).isEqualTo(1L);
         assertThat(result.getFolderName()).isEqualTo("givenNewName");
@@ -142,7 +135,37 @@ public class FolderServiceImplTest {
 
         spyFolderRepository.findByName_returnValue = existedFolder;
 
-        Assertions.assertThatThrownBy(() -> folderService.updateFolder("givenToken", 1L, new UpdateFolderRequest("existedFolder")))
+        Assertions.assertThatThrownBy(() -> folderService.updateFolder(1L, 1L, new FolderUpdateRequest("existedFolder")))
                 .isInstanceOf(ExistedNameException.class);
+    }
+
+    @Test
+    void createFolderItem_callsSaveInFolderItemRepository() {
+        folderService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
+
+        FolderItem savedFolderItem = spyFolderItemRepository.save_argumentFolderItem;
+        assertThat(savedFolderItem.getId()).isNull();
+        assertThat(savedFolderItem.getContent()).isEqualTo("post content");
+    }
+
+    @Test
+    void createFolderItem_callsAddInFolderRepository(){
+        Folder existedFolder = aFolder()
+                .id(1L)
+                .build();
+        spyFolderRepository.findById_returnValue = existedFolder;
+        folderService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
+
+        assertThat(existedFolder.getFolderItems().get(0).getContent()).isEqualTo("post content");
+    }
+    @Test
+    void createFolderItem_changersFolderCoverImg(){
+        Folder existedFolder = aFolder()
+                .id(1L)
+                .build();
+        spyFolderRepository.findById_returnValue = existedFolder;
+        folderService.createFolderItem(1L,1L, new FolderItemCreateRequest(FirstCategory.ANGRY,SecondCategory.ANXIOUS,"post content",null,false));
+
+        assertThat(existedFolder.getCoverImg()).isEqualTo(angryImage);
     }
 }

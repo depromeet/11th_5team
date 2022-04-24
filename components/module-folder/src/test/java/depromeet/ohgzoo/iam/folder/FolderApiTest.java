@@ -1,6 +1,6 @@
 package depromeet.ohgzoo.iam.folder;
 
-import depromeet.ohgzoo.iam.jwt.JwtServiceImpl;
+import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -21,14 +21,17 @@ class FolderApiTest {
 
     private MockMvc mockMvc;
     private SpyFolderService spyFolderService;
+    private SpyJwtService spyJwtService;
 
     FolderRepository folderRepository;
 
     @BeforeEach
     void setUp() {
         spyFolderService = new SpyFolderService();
+        spyJwtService = new SpyJwtService();
         folderRepository = mock(FolderRepository.class);
         mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
+                .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
                 .build();
     }
 
@@ -91,18 +94,20 @@ class FolderApiTest {
         mockMvc.perform(patch("/api/v1/folders/1")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
+                        .content("{\"folderName\":\"givenName\"}"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void updateFolder_passesRequestToService() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+
         mockMvc.perform(patch("/api/v1/folders/1")
-                .header("AUTH_TOKEN", "givenToken")
+                .header("AUTH_TOKEN", "")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"folderName\":\"givenName\"}"));
 
-        assertThat(spyFolderService.updateFolder_argumentAuthToken).isEqualTo("givenToken");
+        assertThat(spyFolderService.updateFolder_argumentMemberId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentFolderId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentRequest.getFolderName()).isEqualTo("givenName");
     }
@@ -114,8 +119,38 @@ class FolderApiTest {
         mockMvc.perform(patch("/api/v1/folders/1")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
+                        .content("\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
                 .andExpect(jsonPath("$.folderId", equalTo(1)))
                 .andExpect(jsonPath("$.folderName", equalTo("givenFolderName")));
     }
+
+    @Test
+    void addFolderItem_OKHttpStatus() throws Exception {
+        mockMvc.perform(post("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
+                .andExpect(status().isOk());
+    }
+
+//    @Test
+//    void addFolderItem_returnsBadRequestWhenParameterIsNull() throws Exception {
+//        mockMvc.perform(post("/api/v1/folders/posts/1")
+//                .header("AUTH_TOKEN", "givenToken")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"firstCategory\":null,\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"));
+//        // 에러 처리를 하고싶어요..
+//    }
+
+    @Test
+    void addFolderItem_passesFolderNameToService() throws Exception {
+        mockMvc.perform(post("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
+                .andExpect(status().isOk());
+
+        assertThat(spyFolderService.createFolderItem_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
+    }
+
 }
