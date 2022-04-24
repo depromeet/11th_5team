@@ -2,10 +2,9 @@ package depromeet.ohgzoo.iam.posts;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +34,7 @@ class PostsServiceImplTest {
         assertThat(spyPostsRepository.save_entity.getSecondCategory()).isEqualTo(PostsSecondCategory.NO2);
         assertThat(spyPostsRepository.save_entity.getContent()).isEqualTo("blah blah");
         assertThat(spyPostsRepository.save_entity.getTags()).isEqualTo(Arrays.asList("tag1", "tag2"));
-        assertThat(spyPostsRepository.save_entity.getDisclosure()).isFalse();
+        assertThat(spyPostsRepository.save_entity.isDisclosure()).isFalse();
         assertThat(spyPostsRepository.save_entity.getViews()).isZero();
     }
 
@@ -52,27 +51,27 @@ class PostsServiceImplTest {
         assertThat(spyPostsRepository.save_entity.getId()).isEqualTo(result.getPostId());
     }
 
-//    @Test
-//    void findAllPostsOfMe_passesMemberIdToRepository() {
-//        Long memberId = 1L;
-//        postsService.findAllPostsOfMe(memberId, PageRequest.of(0, 20));
-//
-//        assertThat(spyPostsRepository.findByMemberId_argumentId).isEqualTo(memberId);
-//    }
-//
-//    @Test
-//    void findPostsByTag_passesTagToRepository() {
-//        String tag = "tag";
-//        postsService.findPostsByTag(tag, PageRequest.of(0, 20));
-//
-//        assertThat(spyPostsRepository.findByTag_argumentTag).isEqualTo(tag);
-//    }
-//
-//    @Test
-//    void findRecentPostWhereSecondCategoryIsNull_passesMemberIdToRepository() {
-//        Long memberId = 1L;
-//        postsService.findRecentPostWhereSecondCategoryIsNull(memberId);
-//
-//        assertThat(spyPostsRepository.findByMemberId_argumentId).isEqualTo(memberId);
-//    }
+    @Test
+    void getPostsByMemberId_passesMemberIdToRepository() {
+        postsService.getPostsByMemberId(1L, 0, 0);
+
+        assertThat(spyPostsRepository.findByMemberId_argumentId).isEqualTo(1L);
+    }
+
+    @Test
+    void getPostsByMemberId_returnsPagingPosts() {
+        spyPostsRepository.findByMemberId_returnValue = List.of(
+                Posts.builder().id(1L).build(),
+                Posts.builder().id(2L).build(),
+                Posts.builder().id(3L).build(),
+                Posts.builder().id(4L).build()
+        );
+
+        List<PostsDto> result = postsService.getPostsByMemberId(1L, 2, 2);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(3L).build(),
+                PostsDto.builder().id(4L).build()
+        );
+    }
 }

@@ -25,8 +25,13 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsDto> findAllPostsOfMe(Long memberId, Pageable pageable) {
-        return postsRepository.findByMemberIdOrderByIdDesc(memberId, pageable).map(PostsDto::new);
+    public List<PostsDto> getPostsByMemberId(Long memberId, int page, int size) {
+        return postsRepository.findByMemberId(memberId)
+                .stream()
+                .skip(page)
+                .limit(size)
+                .map(PostsDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

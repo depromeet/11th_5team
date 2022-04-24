@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -14,7 +15,7 @@ import java.util.function.Function;
 public class SpyPostsRepository implements PostsRepository {
     public Posts save_entity;
     public Long findByMemberId_argumentId;
-    public Posts findByMemberId_returnValue = Posts.builder().build();
+    public List<Posts> findByMemberId_returnValue = Collections.emptyList();
     public String findByTag_argumentTag;
 
     @Override
@@ -184,5 +185,11 @@ public class SpyPostsRepository implements PostsRepository {
     public Optional<Posts> findTop1ByMemberIdAndSecondCategoryAndCreatedAtGreaterThanEqualOrderByIdDesc(Long memberId, PostsSecondCategory secondCategory, LocalDateTime weekAgo) {
         findByMemberId_argumentId = memberId;
         return null;
+    }
+
+    @Override
+    public List<Posts> findByMemberId(Long memberId) {
+        findByMemberId_argumentId = memberId;
+        return findByMemberId_returnValue;
     }
 }

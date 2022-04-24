@@ -8,6 +8,10 @@ import java.util.List;
 public class SpyPostsService implements PostsService {
     public CreatePostsRequest createPosts_argumentRequest;
     public CreatePostsResult createPosts_returnValue;
+    public Long getPostsByMemberId_argumentMemberId;
+    public List<PostsDto> findAllPostsOfMe_returnValue;
+    public int getPostsByMemberId_argumentPage;
+    public int getPostsByMemberId_argumentSize;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -16,8 +20,11 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public Page<PostsDto> findAllPostsOfMe(Long memberId, Pageable pageable) {
-        return null;
+    public List<PostsDto> getPostsByMemberId(Long memberId, int page, int size) {
+        getPostsByMemberId_argumentMemberId = memberId;
+        getPostsByMemberId_argumentPage = page;
+        getPostsByMemberId_argumentSize = size;
+        return findAllPostsOfMe_returnValue;
     }
 
     @Override

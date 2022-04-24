@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -21,4 +22,6 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
     Page<Posts> findAllOrderByViewDesc(Pageable pageable);
 //    @Query("SELECT p FROM Posts p WHERE p.memberId = ?1 AND p.secondCategory = ?2 AND p.createdAt >= ?3  order by p.id desc")
     Optional<Posts> findTop1ByMemberIdAndSecondCategoryAndCreatedAtGreaterThanEqualOrderByIdDesc(Long memberId, PostsSecondCategory secondCategory, LocalDateTime weekAgo);
+
+    List<Posts> findByMemberId(Long memberId);
 }
