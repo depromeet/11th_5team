@@ -1,17 +1,6 @@
 spring:
-  jwt:
-    secret: jwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwtjwt
-  datasource:
-    url: jdbc:mysql://localhost:3306/iam?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
-    username:
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect #org.hibernate.dialect.H2Dialect
-#    database: h2
-    show-sql: true
-    hibernate:
-      ddl-auto: create
+  profiles:
+    active: local
   response:
     success:
       code: 200
