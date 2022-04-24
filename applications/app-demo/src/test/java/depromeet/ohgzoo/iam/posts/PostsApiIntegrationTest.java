@@ -22,13 +22,15 @@ public class PostsApiIntegrationTest extends IntegrationTest {
         postsRepository.deleteAll();
         postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Idk,
                 "content", List.of("tag1", "tag2"), false));
+        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Unwritten,
+                "content", List.of("tag1", "tag2"), false));
     }
 
     @Test
     void createPosts() throws Exception {
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"geon\",\"firstCategory\":\"NO1\",\"secondCategory\":\"NO2\",\"content\":\"content\",\"tags\":[\"1\",\"2\"],\"disclosure\":false}"))
+                        .content("{\"firstCategory\":\"NO1\",\"secondCategory\":\"Unwritten\",\"content\":\"content\",\"tags\":[\"1\",\"2\"],\"disclosure\":false}"))
                 .andExpect(status().isCreated());
     }
 
@@ -48,6 +50,12 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @Test
     void getPostsOrderByPopular() throws Exception {
         mockMvc.perform(get("/api/v1/posts/popular"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getRecentlyUnwrittenPosts() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/temp"))
                 .andExpect(status().isOk());
     }
 }
