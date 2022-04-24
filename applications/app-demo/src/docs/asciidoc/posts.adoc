@@ -8,4 +8,8 @@
 
 == Post 작성
 
-operation::posts-api-integration-test/create-posts[snippets='curl-request,http-request,http-response']
+operation::posts-api-integration-test/create-posts[snippets='http-request,http-response']
+
+== 내 글 조회
+
+operation::posts-api-integration-test/get-my-posts[snippets='http-request,http-response']
