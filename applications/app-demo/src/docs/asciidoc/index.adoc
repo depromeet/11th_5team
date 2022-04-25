@@ -9,3 +9,4 @@
 - xref:auth.adoc[Auth APIs]
 - xref:member.adoc[Member APIs]
 - xref:posts.adoc[Posts APIs]
+- xref:folder.adoc[Folder APIs]

@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
+import depromeet.ohgzoo.iam.folder.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,6 @@ public class FolderItemServiceImpl implements FolderItemService {
 
     private void changeFolderCoverImage(Folder folder) {
         FolderItem folderItem = folderItemRepository.findFirstByFolderOrderByCreatedAtDesc(folder);
-        folder.changeCoverImg(folderItem.getFirstCategory());
+        folder.changeCoverImg((folderItem == null) ? FirstCategory.DEFAULT : folderItem.getFirstCategory());
     }
 }

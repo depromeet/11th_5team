@@ -57,7 +57,7 @@ public class Folder {
 
     public void removeFolderItem(FolderItem folderItem) {
         folderItems.remove(folderItem);
-        folderItem.setFolder(null); //미분류 폴더로 리팩토링 예정
+        folderItem.setFolder(null);//미분류 폴더로 리팩토링 예정
     }
 
     public void changeCoverImg(FirstCategory firstCategory) {

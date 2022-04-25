@@ -1,6 +1,8 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.IntegrationTest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,39 @@ public class FolderIntegrationTest extends IntegrationTest {
 
     @Autowired
     FolderRepository folderRepository;
+    @Autowired
+    FolderItemRepository folderItemRepository;
+
+    @BeforeEach
+    void setUp() {
+        folderRepository.deleteAll();
+        folderItemRepository.deleteAll();
+        Folder folder1 = Folder.builder()
+                .id(1L)
+                .name("folder name")
+                .memberId(1L)
+                .coverImg("cover image").build();
+        folderRepository.save(folder1);
+
+        Folder folder2 = Folder.builder()
+                .id(2L)
+                .name("folder name")
+                .memberId(1L)
+                .coverImg("cover image").build();
+        folderRepository.save(folder2);
+
+        FolderItem folderItem = FolderItem.builder()
+                .id(1L)
+                .firstCategory(FirstCategory.ANGRY)
+                .secondCategory(SecondCategory.UPSET)
+                .content("post content")
+                .disclosure(false)
+                .folder(folder1)
+                .build();
+
+        folderItemRepository.save(folderItem);
+        folder1.addFolderItem(folderItem);
+    }
 
     @Test
     void addFolder() throws Exception {
@@ -48,10 +83,9 @@ public class FolderIntegrationTest extends IntegrationTest {
 
     @Test
     void moveFolderItem() throws Exception {
-        mockMvc.perform(patch("/api/v1/folders/posts/1")
+        mockMvc.perform(patch("/api/v1/folders/posts/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"postId\":1}"))
                 .andExpect(status().isOk());
     }
-
 }
