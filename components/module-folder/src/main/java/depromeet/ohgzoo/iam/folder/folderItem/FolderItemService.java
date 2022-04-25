@@ -1,8 +1,9 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
-import depromeet.ohgzoo.iam.folder.FolderItemMoveRequest;
+import depromeet.ohgzoo.iam.folder.Folder;
 
 public interface FolderItemService {
-    void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request);
-    void moveFolderItem(Long memberId,Long folderId, FolderItemMoveRequest request);
+    void createFolderItem(Long memberId, Folder folder, FolderItemCreateRequest request);
+
+    void moveFolderItem(Long memberId, Folder folder, FolderItemMoveRequest request);
 }

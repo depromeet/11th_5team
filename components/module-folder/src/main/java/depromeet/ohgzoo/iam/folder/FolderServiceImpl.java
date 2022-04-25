@@ -1,5 +1,8 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FolderServiceImpl implements FolderService {
     private final FolderRepository folderRepository;
-
+    private final FolderItemService folderItemService;
 
     public FolderResponse createFolder(Long memberId, FolderCreateRequest request) {
         Optional<Folder> existedFolder = folderRepository.findByName(request.getFolderName());
@@ -39,5 +42,21 @@ public class FolderServiceImpl implements FolderService {
 
         folder.updateName(request.getFolderName());
         return new FolderResponse(folder.getId(), folder.getName());
+    }
+
+    @Override
+    public void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request) {
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(NotExistsFolderException::new);
+
+        folderItemService.createFolderItem(memberId, folder, request);
+    }
+
+    @Override
+    public void moveFolderItem(Long memberId, Long folderId, FolderItemMoveRequest request) {
+        Folder newFolder = folderRepository.findById(folderId)
+                .orElseThrow(NotExistsFolderException::new);
+
+        folderItemService.moveFolderItem(memberId, newFolder, request);
     }
 }

@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemRepository;
@@ -29,8 +30,8 @@ public class FolderServiceImplTest {
         spyFolderRepository = new SpyFolderRepository();
         spyMemberRepository = new SpyMemberRepository();
         spyFolderItemRepository = new SpyFolderItemRepository();
-        folderService = new FolderServiceImpl(spyFolderRepository);
-        folderItemService = new FolderItemServiceImpl(spyFolderItemRepository, spyFolderRepository);
+        folderService = new FolderServiceImpl(spyFolderRepository, null);
+        folderItemService = new FolderItemServiceImpl(spyFolderItemRepository);
 
         spyMemberRepository.findById_returnValue = Member.builder().build();
     }
@@ -143,7 +144,7 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolderItem_callsSaveInFolderItemRepository() {
-        folderItemService.createFolderItem(1L, 1L, new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, aFolder().build(), new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
         FolderItem savedFolderItem = spyFolderItemRepository.save_argumentFolderItem;
         assertThat(savedFolderItem.getId()).isNull();
@@ -156,7 +157,7 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderItemService.createFolderItem(1L, 1L, new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
         assertThat(existedFolder.getFolderItems().get(0).getContent()).isEqualTo("post content");
     }
@@ -167,7 +168,7 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderItemService.createFolderItem(1L, 1L, new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
         assertThat(existedFolder.getCoverImg()).isEqualTo(angryImage);
     }
@@ -181,7 +182,7 @@ public class FolderServiceImplTest {
         spyFolderItemRepository.findById_returnValue = folderItem;
         spyFolderRepository.findById_returnValue = newFolder;
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem;
-        folderItemService.moveFolderItem(1L, 2L, new FolderItemMoveRequest(1L));
+        folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest(1L));
 
         assertThat(folderItem.getFolder().getId()).isEqualTo(2L);
     }
@@ -198,7 +199,7 @@ public class FolderServiceImplTest {
         spyFolderRepository.findById_returnValue = newFolder;
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem1;
 
-        folderItemService.moveFolderItem(1L, 1L, new FolderItemMoveRequest(2L));
+        folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest(2L));
         assertThat(newFolder.getCoverImg()).isEqualTo(angryImage);
     }
 }

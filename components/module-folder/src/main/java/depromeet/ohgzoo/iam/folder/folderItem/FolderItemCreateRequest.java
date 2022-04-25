@@ -6,13 +6,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FolderItemCreateRequest {
+    private Long postId;
     @NotNull
     private FirstCategory firstCategory;
     @NotNull

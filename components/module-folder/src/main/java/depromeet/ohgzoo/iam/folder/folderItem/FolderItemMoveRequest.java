@@ -1,4 +1,4 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;

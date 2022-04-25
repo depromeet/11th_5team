@@ -4,7 +4,6 @@ import depromeet.ohgzoo.iam.folder.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
 import depromeet.ohgzoo.iam.folder.ListToStringConverter;
 import depromeet.ohgzoo.iam.folder.SecondCategory;
-import jdk.jfr.Timestamp;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +23,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

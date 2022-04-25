@@ -33,7 +33,7 @@ class FolderApiTest {
         spyFolderItemService = new SpyFolderItemService();
         spyJwtService = new SpyJwtService();
         folderRepository = mock(FolderRepository.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService, spyFolderItemService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
                 .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
                 .build();
     }
@@ -144,7 +144,7 @@ class FolderApiTest {
                         .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
                 .andExpect(status().isOk());
 
-        assertThat(spyFolderItemService.createFolderItem_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
+        assertThat(spyFolderService.createFolderItem_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
     }
 
     @Test
@@ -164,6 +164,6 @@ class FolderApiTest {
                         .content("{\"postId\":1}"))
                 .andExpect(status().isOk());
 
-        assertThat(spyFolderItemService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo(1L);
+        assertThat(spyFolderService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo(1L);
     }
 }

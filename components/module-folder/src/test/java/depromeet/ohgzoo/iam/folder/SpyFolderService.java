@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 
 public class SpyFolderService implements FolderService {
     public Long argument_memberId;
@@ -11,7 +12,8 @@ public class SpyFolderService implements FolderService {
     public Long updateFolder_argumentMemberId;
     public Long updateFolder_argumentFolderId;
     public FolderResponse updateFolder_returnValue;
-
+    public FolderItemCreateRequest createFolderItem_argumentRequest;
+    public FolderItemMoveRequest moveFolderItem_argumentRequest;
 
 
     @Override
@@ -33,6 +35,16 @@ public class SpyFolderService implements FolderService {
         updateFolder_argumentFolderId = id;
         updateFolder_argumentRequest = request;
         return updateFolder_returnValue;
+    }
+
+    @Override
+    public void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request) {
+        createFolderItem_argumentRequest = request;
+    }
+
+    @Override
+    public void moveFolderItem(Long memberId, Long folderId, FolderItemMoveRequest request) {
+        moveFolderItem_argumentRequest = request;
     }
 
 }
