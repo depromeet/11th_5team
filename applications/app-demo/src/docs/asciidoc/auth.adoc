@@ -9,3 +9,12 @@
 == 로그인
 
 operation::login-api-integration-test/login[snippets='curl-request,http-request,http-response']
+
+== Oauth2 callback
+
+operation::login-api-integration-test/redirect-callback[snippets='curl-request,http-request,http-response']
+
+
+== 토큰 갱신
+
+operation::login-api-integration-test/refresh[snippets='curl-request,http-request,http-response']
