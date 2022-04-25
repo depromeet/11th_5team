@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.folder.SecondCategory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FolderItemCreateRequest {
+    @NotNull
     private Long postId;
     @NotNull
     private FirstCategory firstCategory;

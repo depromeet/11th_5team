@@ -12,7 +12,7 @@ public class FolderItemServiceImpl implements FolderItemService {
     private final FolderItemRepository folderItemRepository;
 
     public void createFolderItem(Long memberId, Folder folder, FolderItemCreateRequest request) {
-        FolderItem folderItem = new FolderItem(request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.getDisclosure());
+        FolderItem folderItem = new FolderItem(request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.getDisclosure(), request.getPostId());
         folderItemRepository.save(folderItem);
 
         folder.addFolderItem(folderItem);
@@ -22,7 +22,7 @@ public class FolderItemServiceImpl implements FolderItemService {
     @Override
     public void moveFolderItem(Long memberId, Folder folder, FolderItemMoveRequest request) {
         // 폴더 이동
-        FolderItem folderItem = folderItemRepository.findById(request.getFolderItemId())
+        FolderItem folderItem = folderItemRepository.findByPostId(request.getFolderItemId())
                 .orElseThrow(NotExistsFolderItemException::new);
 
         Folder oldFolder = folderItem.getFolder();

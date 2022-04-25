@@ -56,8 +56,11 @@ public class FolderItem {
     @JoinColumn(name = "folder_id")
     private Folder folder;
 
+    @Column(name = "post_id", unique = true)
+    private Long postId;
+
     @Builder
-    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Folder folder) {
+    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Folder folder, Long postId) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
@@ -65,10 +68,11 @@ public class FolderItem {
         this.tags = tags;
         this.disclosure = disclosure;
         this.folder = folder;
+        this.postId = postId;
     }
 
-    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
-        this(null, firstCategory, secondCategory, content, tags, disclosure,null);
+    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId) {
+        this(null, firstCategory, secondCategory, content, tags, disclosure, null, postId);
     }
 
     public void setFolder(Folder folder) {

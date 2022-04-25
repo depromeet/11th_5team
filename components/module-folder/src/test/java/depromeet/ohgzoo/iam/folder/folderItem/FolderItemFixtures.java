@@ -3,7 +3,7 @@ package depromeet.ohgzoo.iam.folder.folderItem;
 import depromeet.ohgzoo.iam.folder.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
 import depromeet.ohgzoo.iam.folder.SecondCategory;
-import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
+
 import static depromeet.ohgzoo.iam.folder.folderItem.FolderItem.FolderItemBuilder;
 
 public class FolderItemFixtures {
@@ -16,5 +16,4 @@ public class FolderItemFixtures {
                 .disclosure(false)
                 .folder(Folder.builder().id(1L).build());
     }
-
 }

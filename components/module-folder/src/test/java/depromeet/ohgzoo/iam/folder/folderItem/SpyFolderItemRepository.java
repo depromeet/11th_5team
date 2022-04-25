@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class SpyFolderItemRepository  implements FolderItemRepository {
+public class SpyFolderItemRepository implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
     public FolderItem findById_returnValue;
     public FolderItem latestFolderItem_returnValue;
@@ -163,8 +163,8 @@ public class SpyFolderItemRepository  implements FolderItemRepository {
     }
 
     @Override
-    public FolderItem findByFolderId(Folder folder) {
-        return latestFolderItem_returnValue;
+    public Optional<FolderItem> findByPostId(Long postId) {
+        return Optional.ofNullable(findById_returnValue);
     }
 
     @Override

@@ -77,7 +77,7 @@ public class FolderIntegrationTest extends IntegrationTest {
     void addFolderItem() throws Exception {
         mockMvc.perform(post("/api/v1/folders/posts/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
+                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false,\"postId\":1}"))
                 .andExpect(status().isOk());
     }
 
