@@ -1,8 +1,13 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
-import jdk.jfr.Timestamp;
+import depromeet.ohgzoo.iam.folder.FirstCategory;
+import depromeet.ohgzoo.iam.folder.Folder;
+import depromeet.ohgzoo.iam.folder.ListToStringConverter;
+import depromeet.ohgzoo.iam.folder.SecondCategory;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -18,11 +23,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FolderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,17 +52,36 @@ public class FolderItem {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "folder_id")
+    private Folder folder;
+
+    @Column(name = "post_id", unique = true)
+    private Long postId;
+
     @Builder
-    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
+    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;
         this.tags = tags;
         this.disclosure = disclosure;
+        this.postId = postId;
     }
 
-    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
-        this(null, firstCategory, secondCategory, content, tags, disclosure);
+    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId) {
+        this(null, firstCategory, secondCategory, content, tags, disclosure, postId);
+    }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder;
+        folder.getFolderItems().add(this);
+    }
+
+    public void changeFolder(Folder oldFolder, Folder newFolder) {
+        this.folder = newFolder;
+        oldFolder.getFolderItems().remove(this);
+        newFolder.getFolderItems().add(this);
     }
 }

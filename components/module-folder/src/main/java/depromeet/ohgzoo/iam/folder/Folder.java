@@ -1,16 +1,17 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,7 @@ public class Folder {
 
     private Long memberId;
 
-    @OneToMany
-    @JoinColumn(name = "folder_item_id")
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.REMOVE)
     private List<FolderItem> folderItems = new ArrayList<>();
 
     @Builder
@@ -50,10 +50,8 @@ public class Folder {
     public void updateName(String name) {
         this.name = name;
     }
-    public void addFolderItem(FolderItem folderItem){
-        folderItems.add(folderItem);
-    }
-    public void changeCoverImg(FirstCategory firstCategory){
-      this.coverImg = CoverImageUrl.returnCoverImage(firstCategory);
+
+    public void changeCoverImg(FirstCategory firstCategory) {
+        this.coverImg = CoverImageUrl.returnCoverImage(firstCategory);
     }
 }

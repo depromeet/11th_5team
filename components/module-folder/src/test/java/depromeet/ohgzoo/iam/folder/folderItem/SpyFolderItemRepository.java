@@ -1,5 +1,6 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
+import depromeet.ohgzoo.iam.folder.Folder;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,8 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class SpyFolderItemRepository  implements FolderItemRepository{
+public class SpyFolderItemRepository implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
+    public FolderItem findById_returnValue;
+    public FolderItem latestFolderItem_returnValue;
 
     @Override
     public List<FolderItem> findAll() {
@@ -76,7 +79,7 @@ public class SpyFolderItemRepository  implements FolderItemRepository{
 
     @Override
     public Optional<FolderItem> findById(Long aLong) {
-        return Optional.empty();
+        return Optional.ofNullable(findById_returnValue);
     }
 
     @Override
@@ -158,4 +161,16 @@ public class SpyFolderItemRepository  implements FolderItemRepository{
     public <S extends FolderItem, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
+
+    @Override
+    public Optional<FolderItem> findByPostId(Long postId) {
+        return Optional.ofNullable(findById_returnValue);
+    }
+
+    @Override
+    public FolderItem findFirstByFolderOrderByCreatedAtDesc(Folder folder) {
+        return latestFolderItem_returnValue;
+    }
+
+
 }

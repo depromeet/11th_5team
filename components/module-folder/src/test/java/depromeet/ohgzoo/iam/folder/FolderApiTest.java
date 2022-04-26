@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemService;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ class FolderApiTest {
 
     private MockMvc mockMvc;
     private SpyFolderService spyFolderService;
+    private SpyFolderItemService spyFolderItemService;
     private SpyJwtService spyJwtService;
 
     FolderRepository folderRepository;
@@ -28,6 +30,7 @@ class FolderApiTest {
     @BeforeEach
     void setUp() {
         spyFolderService = new SpyFolderService();
+        spyFolderItemService = new SpyFolderItemService();
         spyJwtService = new SpyJwtService();
         folderRepository = mock(FolderRepository.class);
         mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
@@ -129,28 +132,38 @@ class FolderApiTest {
         mockMvc.perform(post("/api/v1/folders/posts/1")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
+                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false,\"postId\":1}"))
                 .andExpect(status().isOk());
     }
-
-//    @Test
-//    void addFolderItem_returnsBadRequestWhenParameterIsNull() throws Exception {
-//        mockMvc.perform(post("/api/v1/folders/posts/1")
-//                .header("AUTH_TOKEN", "givenToken")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"firstCategory\":null,\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"));
-//        // 에러 처리를 하고싶어요..
-//    }
 
     @Test
     void addFolderItem_passesFolderNameToService() throws Exception {
         mockMvc.perform(post("/api/v1/folders/posts/1")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false}"))
+                        .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false,\"postId\":1}"))
                 .andExpect(status().isOk());
 
         assertThat(spyFolderService.createFolderItem_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
     }
 
+    @Test
+    void moveFolderItem_OkHttpStatus() throws Exception {
+        mockMvc.perform(patch("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"postId\":1}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void moveFolderItem_passesFolderNameToService() throws Exception {
+        mockMvc.perform(patch("/api/v1/folders/posts/1")
+                        .header("AUTH_TOKEN", "givenToken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"postId\":1}"))
+                .andExpect(status().isOk());
+
+        assertThat(spyFolderService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo(1L);
+    }
 }

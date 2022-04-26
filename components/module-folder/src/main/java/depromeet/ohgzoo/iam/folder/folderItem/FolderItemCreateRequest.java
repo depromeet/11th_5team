@@ -1,10 +1,12 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
+import depromeet.ohgzoo.iam.folder.FirstCategory;
+import depromeet.ohgzoo.iam.folder.SecondCategory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -12,13 +14,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FolderItemCreateRequest {
     @NotNull
+    private Long postId;
+    @NotNull
     private FirstCategory firstCategory;
     @NotNull
     private SecondCategory secondCategory;
     @NotNull
     private String content;
     @NotNull
-   private List<String> tags;
+    private List<String> tags;
     @NotNull
     private Boolean disclosure;
 

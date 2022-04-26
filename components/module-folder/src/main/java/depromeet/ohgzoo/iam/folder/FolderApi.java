@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
-import depromeet.ohgzoo.iam.folder.exception.ValidationException;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.jwt.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -17,7 +18,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 public class FolderApi {
-
     private final FolderService folderService;
 
     @PostMapping("/api/v1/folders")
@@ -46,5 +46,11 @@ public class FolderApi {
     public void addFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemCreateRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.createFolderItem(memberId, folderId, request);
+    }
+
+    @PatchMapping("/api/v1/folders/posts/{folderId}")
+    public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors){
+        if (errors.hasErrors()) throw new ValidationException();
+        folderService.moveFolderItem(memberId, folderId, request);
     }
 }
