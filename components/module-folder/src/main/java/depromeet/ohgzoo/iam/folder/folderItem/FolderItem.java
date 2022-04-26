@@ -60,22 +60,28 @@ public class FolderItem {
     private Long postId;
 
     @Builder
-    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Folder folder, Long postId) {
+    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;
         this.tags = tags;
         this.disclosure = disclosure;
-        this.folder = folder;
         this.postId = postId;
     }
 
     public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId) {
-        this(null, firstCategory, secondCategory, content, tags, disclosure, null, postId);
+        this(null, firstCategory, secondCategory, content, tags, disclosure, postId);
     }
 
     public void setFolder(Folder folder) {
         this.folder = folder;
+        folder.getFolderItems().add(this);
+    }
+
+    public void changeFolder(Folder oldFolder, Folder newFolder) {
+        this.folder = newFolder;
+        oldFolder.getFolderItems().remove(this);
+        newFolder.getFolderItems().add(this);
     }
 }
