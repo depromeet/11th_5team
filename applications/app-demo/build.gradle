@@ -1,5 +1,9 @@
 plugins {
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id "org.asciidoctor.jvm.convert" version "3.2.0"
+}
+
+configurations {
+    asciidoctorExt
 }
 
 dependencies {
@@ -7,13 +11,19 @@ dependencies {
     implementation project(':components:module-oauth')
     implementation project(':components:support-security')
     implementation project(':components:module-member')
+    implementation project(':components:module-folder')
+    implementation project(':components:module-posts')
     implementation project(':components:support-jwt')
     implementation project(':components:support-jpa')
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     implementation 'com.github.zkdlu:api-response-spring-boot-starter:1.0.3'
 
     runtimeOnly 'com.h2database:h2'
+
+    runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java'
 }
 
 ext{
@@ -26,8 +36,13 @@ test {
 }
 
 asciidoctor {
+    configurations 'asciidoctorExt'
     inputs.dir snippetDir
     dependsOn test
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
@@ -39,9 +54,6 @@ task copyDocument(type: Copy) {
 
 bootJar {
     dependsOn copyDocument
-
-    from file('src/main/resources/static/docs')
-    into file('build/resources/main/static/docs')
 }
 
 bootRun {

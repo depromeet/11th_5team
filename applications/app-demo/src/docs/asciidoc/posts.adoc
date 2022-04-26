@@ -1,0 +1,35 @@
+= Posts APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== Post 작성
+
+operation::posts-api-integration-test/create-posts[snippets='http-request,http-response']
+
+== Post 수정
+
+operation::posts-api-integration-test/update-posts[snippets='http-request,http-response']
+
+== Post 삭제
+
+operation::posts-api-integration-test/delete-posts[snippets='http-request,http-response']
+
+== 내 글 조회
+
+operation::posts-api-integration-test/get-my-posts[snippets='http-request,http-response']
+
+== 태그 별 글 조회
+
+operation::posts-api-integration-test/get-posts-by-tag[snippets='http-request,http-response']
+
+== 인기 순 글 조회
+
+operation::posts-api-integration-test/get-posts-order-by-popular[snippets='http-request,http-response']
+
+== 최신 미작성 글 조회
+
+operation::posts-api-integration-test/get-recently-unwritten-posts[snippets='http-request,http-response']

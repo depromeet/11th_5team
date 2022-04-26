@@ -65,13 +65,14 @@ public class IntegrationTest {
     static class TestSupportFilter implements Filter {
 
         private String token;
+
         public TestSupportFilter(String token) {
             this.token = token;
         }
 
         @Override
         public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-            HttpServletRequest httpServletRequest = (HttpServletRequest)request;
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             chain.doFilter(new TestRequestWrapper(httpServletRequest, token), response);
         }
     }

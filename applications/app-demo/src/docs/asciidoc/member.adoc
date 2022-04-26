@@ -1,0 +1,11 @@
+= Member APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== Member API
+
+operation::member-integration-test/get-my-self[snippets='curl-request,http-request,http-response']
