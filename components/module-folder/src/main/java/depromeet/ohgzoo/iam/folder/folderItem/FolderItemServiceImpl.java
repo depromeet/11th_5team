@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 public class FolderItemServiceImpl implements FolderItemService {
 
     private final FolderItemRepository folderItemRepository;
-
+    
+    @Override
     public void createFolderItem(Long memberId, Folder folder, FolderItemCreateRequest request) {
         FolderItem folderItem = new FolderItem(request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.getDisclosure(), request.getPostId());
         folderItemRepository.save(folderItem);
@@ -26,7 +27,7 @@ public class FolderItemServiceImpl implements FolderItemService {
                 .orElseThrow(NotExistsFolderItemException::new);
 
         Folder oldFolder = folderItem.getFolder();
-        folderItem.changeFolder(oldFolder,folder);
+        folderItem.changeFolder(oldFolder, folder);
 
         // coverImg 갱신
         changeFolderCoverImage(oldFolder);
