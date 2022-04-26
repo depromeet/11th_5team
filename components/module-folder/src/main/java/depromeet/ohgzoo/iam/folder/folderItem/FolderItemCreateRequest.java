@@ -22,7 +22,7 @@ public class FolderItemCreateRequest {
     @NotNull
     private String content;
     @NotNull
-   private List<String> tags;
+    private List<String> tags;
     @NotNull
     private Boolean disclosure;
 

@@ -178,6 +178,8 @@ public class FolderServiceImplTest {
         FolderItem folderItem = aFolderItem()
                 .id(1L)
                 .build();
+        Folder oldFolder = aFolder().id(1L).build();
+        folderItem.setFolder(oldFolder);
         Folder newFolder = aFolder().id(2L).build();
         spyFolderItemRepository.findById_returnValue = folderItem;
         spyFolderRepository.findById_returnValue = newFolder;
@@ -191,9 +193,10 @@ public class FolderServiceImplTest {
     void moveFolderItem_ChangesFolderCoverImage() {
         FolderItem folderItem1 = aFolderItem().id(2L).firstCategory(FirstCategory.ANGRY).build();
         FolderItem folderItem2 = aFolderItem().id(1L).firstCategory(FirstCategory.UPSET).build();
-
+        Folder oldFolder = aFolder().id(1L).build();
+        folderItem1.setFolder(oldFolder);
         Folder newFolder = aFolder().build();
-        newFolder.addFolderItem(folderItem2);
+        folderItem2.setFolder(newFolder);
 
         spyFolderItemRepository.findById_returnValue = folderItem1;
         spyFolderRepository.findById_returnValue = newFolder;

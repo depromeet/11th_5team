@@ -15,7 +15,7 @@ public class FolderItemServiceImpl implements FolderItemService {
         FolderItem folderItem = new FolderItem(request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.getDisclosure(), request.getPostId());
         folderItemRepository.save(folderItem);
 
-        folder.addFolderItem(folderItem);
+        folderItem.setFolder(folder);
         folder.changeCoverImg(folderItem.getFirstCategory());
     }
 
@@ -26,9 +26,7 @@ public class FolderItemServiceImpl implements FolderItemService {
                 .orElseThrow(NotExistsFolderItemException::new);
 
         Folder oldFolder = folderItem.getFolder();
-        oldFolder.removeFolderItem(folderItem);
-
-        folder.addFolderItem(folderItem);
+        folderItem.changeFolder(oldFolder,folder);
 
         // coverImg 갱신
         changeFolderCoverImage(oldFolder);

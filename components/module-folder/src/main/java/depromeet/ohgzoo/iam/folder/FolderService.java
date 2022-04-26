@@ -11,5 +11,6 @@ public interface FolderService {
     FolderResponse updateFolder(Long memberId, Long folderId, FolderUpdateRequest request);
 
     void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request);
-    void moveFolderItem(Long memberId,Long folderId, FolderItemMoveRequest request);
+
+    void moveFolderItem(Long memberId, Long folderId, FolderItemMoveRequest request);
 }
