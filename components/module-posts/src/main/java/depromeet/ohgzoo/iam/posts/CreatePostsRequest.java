@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,14 +13,14 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreatePostsRequest {
-    private PostsFirstCategory firstCategory;
-    private PostsSecondCategory secondCategory;
+    private FirstCategory firstCategory;
+    private SecondCategory secondCategory;
     private String content;
     private List<String> tags = new ArrayList<>();
     private boolean disclosure;
 
     @Builder
-    public CreatePostsRequest(PostsFirstCategory firstCategory, PostsSecondCategory secondCategory, String content, List<String> tags, boolean disclosure) {
+    public CreatePostsRequest(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure) {
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;
