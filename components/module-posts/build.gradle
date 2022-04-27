@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(':components:module-category')
+    api project(':components:module-category')
     implementation project(':components:support-jpa')
     implementation project(':components:support-jwt')
 }
