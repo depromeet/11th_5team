@@ -2,6 +2,8 @@ package depromeet.ohgzoo.iam.posts;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import depromeet.ohgzoo.iam.jwt.SpyJwtService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,7 +71,7 @@ class PostsApiTest {
 
     @Test
     void updatePosts_passesRequestToService() throws Exception {
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(PostsSecondCategory.NO1)
+        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.NO1)
                 .content("content").tags(List.of("tag")).disclosure(true).build();
         String json = objectMapper.writeValueAsString(request);
 
@@ -77,7 +79,7 @@ class PostsApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
 
-        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(PostsSecondCategory.NO1);
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.NO1);
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getContent()).isEqualTo("content");
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getTags()).isEqualTo(List.of("tag"));
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getDisclosure()).isEqualTo(true);
@@ -93,8 +95,8 @@ class PostsApiTest {
     @Test
     void createPosts_passesCreateRequestToService() throws Exception {
         CreatePostsRequest givenRequest = new CreatePostsRequest(
-                PostsFirstCategory.NO1,
-                PostsSecondCategory.Idk,
+                FirstCategory.NO1,
+                SecondCategory.Idk,
                 "givenContent",
                 List.of("tag1", "tag2", "tag3"),
                 true
@@ -105,8 +107,8 @@ class PostsApiTest {
                         .content(objectMapper.writeValueAsString(givenRequest)))
                 .andDo(print());
 
-        assertThat(spyPostsService.createPosts_argumentRequest.getFirstCategory()).isEqualTo(PostsFirstCategory.NO1);
-        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(PostsSecondCategory.Idk);
+        assertThat(spyPostsService.createPosts_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.NO1);
+        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.Idk);
         assertThat(spyPostsService.createPosts_argumentRequest.getContent()).isEqualTo("givenContent");
         assertThat(spyPostsService.createPosts_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
         assertThat(spyPostsService.createPosts_argumentRequest.isDisclosure()).isTrue();
@@ -123,8 +125,8 @@ class PostsApiTest {
         spyPostsService.getPostsByMemberId_returnValue = List.of(
                 new PostsDto(
                         1L,
-                        PostsFirstCategory.NO1,
-                        PostsSecondCategory.NO1,
+                        FirstCategory.NO1,
+                        SecondCategory.NO1,
                         "content",
                         List.of("1", "2"), true, 1,
                         LocalDateTime.of(2022, 4, 24, 12, 30, 30))
@@ -177,8 +179,8 @@ class PostsApiTest {
         spyPostsService.getPostsByTag_returnValue = List.of(
                 new PostsDto(
                         1L,
-                        PostsFirstCategory.NO1,
-                        PostsSecondCategory.NO1,
+                        FirstCategory.NO1,
+                        SecondCategory.NO1,
                         "content",
                         List.of("1", "2"), true, 1,
                         LocalDateTime.of(2022, 4, 24, 12, 30, 30))
@@ -222,8 +224,8 @@ class PostsApiTest {
         spyPostsService.getPostsOrderByPopular_returnValue = List.of(
                 new PostsDto(
                         1L,
-                        PostsFirstCategory.NO1,
-                        PostsSecondCategory.NO1,
+                        FirstCategory.NO1,
+                        SecondCategory.NO1,
                         "content",
                         List.of("1", "2"), true, 1,
                         LocalDateTime.of(2022, 4, 24, 12, 30, 30))
@@ -272,8 +274,8 @@ class PostsApiTest {
     void getRecentlyUnwrittenPosts_returnsPostsDto() throws Exception {
         spyPostsService.getRecentlyUnwrittenPosts_returnValue = new PostsDto(
                 1L,
-                PostsFirstCategory.NO1,
-                PostsSecondCategory.NO1,
+                FirstCategory.NO1,
+                SecondCategory.NO1,
                 "content",
                 List.of("1", "2"), true, 1,
                 LocalDateTime.of(2022, 4, 24, 12, 30, 30));
