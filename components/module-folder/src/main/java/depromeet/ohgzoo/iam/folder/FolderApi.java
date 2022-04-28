@@ -4,15 +4,19 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.jwt.Login;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.naming.Binding;
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -49,8 +53,13 @@ public class FolderApi {
     }
 
     @PatchMapping("/api/v1/folders/posts/{folderId}")
-    public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors){
+    public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.moveFolderItem(memberId, folderId, request);
+    }
+
+    @GetMapping("api/v1/folders")
+    public List<FolderGetResponse> getFolders(@Login Long memberId) {
+        return folderService.getFolders(memberId);
     }
 }

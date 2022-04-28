@@ -6,7 +6,9 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,5 +60,13 @@ public class FolderServiceImpl implements FolderService {
                 .orElseThrow(NotExistsFolderException::new);
 
         folderItemService.moveFolderItem(memberId, newFolder, request);
+    }
+
+    @Override
+    public List<FolderGetResponse> getFolders(Long memberId) {
+        List<Folder> folders = folderRepository.findAllByMemberId(memberId);
+        return folders.stream()
+                .map(FolderGetResponse::of)
+                .collect(Collectors.toList());
     }
 }

@@ -9,12 +9,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -165,5 +170,23 @@ class FolderApiTest {
                 .andExpect(status().isOk());
 
         assertThat(spyFolderService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo(1L);
+    }
+
+    @Test
+    void getFolders_OKHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/folders")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getFolders_returnsListResponse() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+        Folder folder = Folder.builder().memberId(1L).id(1L).name("folder name").build();
+        spyFolderService.getFolders_returnValue = new ArrayList<FolderGetResponse>(Arrays.asList(FolderGetResponse.of(folder)));
+        mockMvc.perform(get("/api/v1/folders")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(jsonPath("$[0].folderId", equalTo(1)))
+                .andExpect(jsonPath("$[0].folderName", equalTo("folder name")));
     }
 }

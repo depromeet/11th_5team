@@ -12,6 +12,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static depromeet.ohgzoo.iam.folder.CoverImageUrl.angryImage;
 import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
 import static depromeet.ohgzoo.iam.folder.folderItem.FolderItemFixtures.aFolderItem;
@@ -205,4 +209,34 @@ public class FolderServiceImplTest {
         folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest(2L));
         assertThat(newFolder.getCoverImg()).isEqualTo(angryImage);
     }
+
+    @Test
+    void getFolders_callsFindAllFoldersRepository() {
+        Folder existedFolder = aFolder()
+                .id(1L)
+                .build();
+        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(existedFolder));
+
+        folderService.getFolders(1L);
+
+        assertThat(spyFolderRepository.findAllByMemberId_argumentId).isEqualTo(1L);
+    }
+
+    @Test
+    void getFolders_returnsFolders() {
+        Folder folder1 = aFolder().build();
+        Folder folder2 = aFolder().id(2L).build();
+        FolderItem folderItem = aFolderItem().build();
+        folderItem.setFolder(folder1);
+        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1, folder2));
+
+        List<FolderGetResponse> result = folderService.getFolders(1L);
+
+        assertThat(result.get(0).getFolderId()).isEqualTo(1L);
+        assertThat(result.get(0).getFolderName()).isEqualTo("folder name");
+        assertThat(result.get(0).getCoverImg()).isEqualTo("cover image");
+        assertThat(result.get(0).getPostCount()).isEqualTo(1);
+        assertThat(result.get(1).getFolderId()).isEqualTo(2L);
+    }
+
 }
