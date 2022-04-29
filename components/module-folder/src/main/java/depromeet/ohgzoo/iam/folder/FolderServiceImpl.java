@@ -1,11 +1,15 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,10 +67,21 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<FolderGetResponse> getFolders(Long memberId) {
-        List<Folder> folders = folderRepository.findAllByMemberId(memberId);
-        return folders.stream()
+    public FoldersGetResponse getFolders(Long memberId) {
+        List<Folder> folders = new ArrayList<>();
+        List<FolderItem> folderItems = new ArrayList<>();
+
+        folders = folderRepository.findAllByMemberId(memberId);
+        folderItems = folderItemService.getRecentFolderItems(memberId);
+
+        List<String> coverImages = new ArrayList<String>(Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage));
+        for (int i = 0; i < folderItems.size(); i++) {
+            if (folderItems.get(i) != null)
+                coverImages.set(i, CoverImageUrl.returnCoverImage(folderItems.get(i).getFirstCategory()));
+        }
+
+        return new FoldersGetResponse(folders.stream()
                 .map(FolderGetResponse::of)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), coverImages);
     }
 }

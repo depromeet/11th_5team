@@ -13,8 +13,10 @@ import java.util.function.Function;
 
 public class SpyFolderItemRepository implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
+    public Long latestFolderItems_argumentMemberId;
     public FolderItem findById_returnValue;
     public FolderItem latestFolderItem_returnValue;
+    public List<FolderItem> latestFolderItems_returnValue;
 
     @Override
     public List<FolderItem> findAll() {
@@ -172,5 +174,9 @@ public class SpyFolderItemRepository implements FolderItemRepository {
         return latestFolderItem_returnValue;
     }
 
-
+    @Override
+    public List<FolderItem> findTop4ByMemberIdOrderByCreatedAtDesc(Long memberId) {
+        latestFolderItems_argumentMemberId = memberId;
+        return latestFolderItems_returnValue;
+    }
 }

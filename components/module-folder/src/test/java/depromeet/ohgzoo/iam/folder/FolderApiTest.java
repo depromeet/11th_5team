@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -183,10 +184,13 @@ class FolderApiTest {
     void getFolders_returnsListResponse() throws Exception {
         spyJwtService.getSubject_returnValue = "1";
         Folder folder = Folder.builder().memberId(1L).id(1L).name("folder name").build();
-        spyFolderService.getFolders_returnValue = new ArrayList<FolderGetResponse>(Arrays.asList(FolderGetResponse.of(folder)));
+        List<FolderGetResponse> folders = new ArrayList<FolderGetResponse>(Arrays.asList(FolderGetResponse.of(folder)));
+        spyFolderService.getFolders_returnValue = new FoldersGetResponse(folders, new ArrayList<String>(Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage)));
+
         mockMvc.perform(get("/api/v1/folders")
                         .header("AUTH_TOKEN", "givenToken"))
-                .andExpect(jsonPath("$[0].folderId", equalTo(1)))
-                .andExpect(jsonPath("$[0].folderName", equalTo("folder name")));
+                .andExpect(jsonPath("$.['folders'][0].folderId", equalTo(1)))
+                .andExpect(jsonPath("$['folders'][0].folderName", equalTo("folder name")))
+                .andExpect(jsonPath("$['postsThumbnail'][0]", equalTo(CoverImageUrl.defaultImage)));
     }
 }

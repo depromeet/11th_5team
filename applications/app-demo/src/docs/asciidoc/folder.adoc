@@ -10,6 +10,10 @@
 
 operation::folder-integration-test/add-folder[snippets='http-request,http-response']
 
+== 폴더 리스트 조회
+
+operation::folder-integration-test/get-folders[snippets='http-request,http-response']
+
 == 폴더 삭제
 
 operation::folder-integration-test/delete-folder[snippets='http-request,http-response']

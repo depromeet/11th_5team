@@ -14,6 +14,7 @@ public class FolderItemFixtures {
                 .secondCategory(SecondCategory.UPSET)
                 .content("post content")
                 .disclosure(false)
-                .postId(1L);
+                .postId(1L)
+                .memberId(1L);
     }
 }

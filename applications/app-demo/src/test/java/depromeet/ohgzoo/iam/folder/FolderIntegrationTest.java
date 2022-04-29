@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,6 +72,12 @@ public class FolderIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void getFolders() throws Exception {
+        mockMvc.perform(get("/api/v1/folders"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void addFolderItem() throws Exception {
         mockMvc.perform(post("/api/v1/folders/posts/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -101,6 +108,7 @@ public class FolderIntegrationTest extends IntegrationTest {
                 .content("post content")
                 .disclosure(false)
                 .postId(1L)
+                .memberId(1L)
                 .build();
     }
 }

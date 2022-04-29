@@ -2,11 +2,14 @@ package depromeet.ohgzoo.iam.folder.folderItem;
 
 import depromeet.ohgzoo.iam.folder.Folder;
 
+import java.util.List;
+
 public class SpyFolderItemService implements FolderItemService {
     public Long argument_memberId;
     public Long createFolderItem_argumentFolderId;
     public FolderItemMoveRequest moveFolderItem_argumentRequest;
     public FolderItemCreateRequest createFolderItem_argumentRequest;
+    public List<FolderItem> getFolderItem_returnValue;
 
     @Override
     public void createFolderItem(Long memberId, Folder folder, FolderItemCreateRequest request) {
@@ -19,5 +22,16 @@ public class SpyFolderItemService implements FolderItemService {
     public void moveFolderItem(Long memberId, Folder folder, FolderItemMoveRequest request) {
         argument_memberId = memberId;
         moveFolderItem_argumentRequest = request;
+    }
+
+    @Override
+    public void changeFolderCoverImage(Folder folder) {
+
+    }
+
+    @Override
+    public List<FolderItem> getRecentFolderItems(Long memberId) {
+        argument_memberId = memberId;
+        return getFolderItem_returnValue;
     }
 }
