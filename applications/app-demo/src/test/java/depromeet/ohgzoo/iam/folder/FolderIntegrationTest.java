@@ -1,6 +1,8 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.IntegrationTest;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemRepository;
 import org.junit.jupiter.api.AfterEach;

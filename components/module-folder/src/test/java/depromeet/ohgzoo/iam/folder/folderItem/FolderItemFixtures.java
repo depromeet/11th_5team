@@ -1,7 +1,7 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
-import depromeet.ohgzoo.iam.folder.FirstCategory;
-import depromeet.ohgzoo.iam.folder.SecondCategory;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 
 import static depromeet.ohgzoo.iam.folder.folderItem.FolderItem.FolderItemBuilder;
 

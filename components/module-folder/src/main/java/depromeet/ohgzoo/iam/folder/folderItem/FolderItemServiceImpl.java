@@ -1,6 +1,6 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
-import depromeet.ohgzoo.iam.folder.FirstCategory;
+import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
