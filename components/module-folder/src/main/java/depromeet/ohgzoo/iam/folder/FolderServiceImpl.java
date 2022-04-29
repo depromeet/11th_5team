@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,11 +67,8 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public FoldersGetResponse getFolders(Long memberId) {
-        List<Folder> folders = new ArrayList<>();
-        List<FolderItem> folderItems = new ArrayList<>();
-
-        folders = folderRepository.findAllByMemberId(memberId);
-        folderItems = folderItemService.getRecentFolderItems(memberId);
+        List<Folder> folders = folderRepository.findAllByMemberId(memberId);
+        List<FolderItem> folderItems = folderItemService.getRecentFolderItems(memberId);
 
         List<String> coverImages = new ArrayList<String>(Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage));
         for (int i = 0; i < folderItems.size(); i++) {

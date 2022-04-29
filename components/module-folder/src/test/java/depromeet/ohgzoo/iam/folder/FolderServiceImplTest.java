@@ -12,6 +12,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,8 +35,8 @@ public class FolderServiceImplTest {
         spyFolderRepository = new SpyFolderRepository();
         spyMemberRepository = new SpyMemberRepository();
         spyFolderItemRepository = new SpyFolderItemRepository();
-        folderService = new FolderServiceImpl(spyFolderRepository, null);
         folderItemService = new FolderItemServiceImpl(spyFolderItemRepository);
+        folderService = new FolderServiceImpl(spyFolderRepository, folderItemService);
 
         spyMemberRepository.findById_returnValue = Member.builder().build();
     }
@@ -216,35 +218,36 @@ public class FolderServiceImplTest {
         assertThat(folderItems).isEqualTo(Collections.emptyList());
     }
 
-//    @Test
-//    void getFolders_callsFindAllFoldersRepository() {
-//        Folder existedFolder = aFolder()
-//                .id(1L)
-//                .build();
-//        FolderItem existedFolderItem = aFolderItem().build();
-//
-//        spyFolderItemRepository.latestFolderItems_argumentMemberId = 1L;
-//        spyFolderItemRepository.latestFolderItems_returnValue= new ArrayList<>(Arrays.asList(existedFolderItem));
-//        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(existedFolder));
-//        folderService.getFolders(1L);
-//
-//        assertThat(spyFolderRepository.findAllByMemberId_argumentId).isEqualTo(1L);
-//    }
-//
-//    @Test
-//    void getFolders_returnsFolders() {
-//        Folder folder1 = aFolder().build();
-//        Folder folder2 = aFolder().id(2L).build();
-//        FolderItem folderItem = aFolderItem().build();
-//        folderItem.setFolder(folder1);
-//        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1, folder2));
-//
-//        FoldersGetResponse result = folderService.getFolders(1L);
-//
-//        assertThat(result.getFolders().get(0).getFolderId()).isEqualTo(1L);
-//        assertThat(result.getFolders().get(0).getFolderName()).isEqualTo("folder name");
-//        assertThat(result.getFolders().get(1).getFolderId()).isEqualTo(2L);
-//
-//        assertThat(result.getPostsThumbnail().get(0)).isEqualTo(CoverImageUrl.defaultImage);
-//    }
+    @Test
+    void getFolders_callsFindAllFoldersRepository() {
+        Folder existedFolder = aFolder()
+                .id(1L)
+                .build();
+        FolderItem existedFolderItem = aFolderItem().build();
+
+        spyFolderItemRepository.latestFolderItems_argumentMemberId = 1L;
+        spyFolderItemRepository.latestFolderItems_returnValue = Arrays.asList(existedFolderItem);
+        spyFolderRepository.findAllByMemberId_returnValue = Arrays.asList(existedFolder);
+
+        folderService.getFolders(1L);
+
+        assertThat(spyFolderRepository.findAllByMemberId_argumentId).isEqualTo(1L);
+    }
+
+    @Test
+    void getFolders_returnsFolders() {
+        Folder folder1 = aFolder().build();
+        Folder folder2 = aFolder().id(2L).build();
+        FolderItem folderItem = aFolderItem().build();
+        folderItem.setFolder(folder1);
+        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1, folder2));
+
+        FoldersGetResponse result = folderService.getFolders(1L);
+
+        assertThat(result.getFolders().get(0).getFolderId()).isEqualTo(1L);
+        assertThat(result.getFolders().get(0).getFolderName()).isEqualTo("folder name");
+        assertThat(result.getFolders().get(1).getFolderId()).isEqualTo(2L);
+
+        assertThat(result.getPostsThumbnail().get(0)).isEqualTo(CoverImageUrl.defaultImage);
+    }
 }

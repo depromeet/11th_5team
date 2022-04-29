@@ -46,7 +46,6 @@ public class FolderItemServiceImpl implements FolderItemService {
 
     @Override
     public List<FolderItem> getRecentFolderItems(Long memberId) {
-
         List<FolderItem> folderItems = folderItemRepository.findTop4ByMemberIdOrderByCreatedAtDesc(memberId);
         return (folderItems == null || folderItems.isEmpty()) ? Collections.emptyList() : new ArrayList<>(folderItems);
     }
