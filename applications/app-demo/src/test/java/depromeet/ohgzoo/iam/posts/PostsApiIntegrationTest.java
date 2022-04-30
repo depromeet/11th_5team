@@ -2,16 +2,19 @@ package depromeet.ohgzoo.iam.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import depromeet.ohgzoo.iam.IntegrationTest;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,9 +28,9 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @BeforeEach
     void setUp() {
         postsRepository.deleteAllInBatch();
-        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Idk,
+        postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Idk,
                 "content", List.of("tag1", "tag2"), false));
-        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Unwritten,
+        postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Unwritten,
                 "content", List.of("tag1", "tag2"), false));
     }
 
@@ -69,7 +72,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
         Posts posts = Posts.builder().content("test").build();
         postsRepository.save(posts);
 
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(PostsSecondCategory.NO1)
+        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.NO1)
                 .content("content").tags(List.of("tag1", "tag2")).disclosure(false).build();
         String json = objectMapper.writeValueAsString(request);
 

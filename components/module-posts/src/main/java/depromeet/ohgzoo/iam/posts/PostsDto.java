@@ -1,6 +1,8 @@
 package depromeet.ohgzoo.iam.posts;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,8 +14,8 @@ import java.util.List;
 @EqualsAndHashCode
 public class PostsDto {
     private Long id;
-    private PostsFirstCategory firstCategory;
-    private PostsSecondCategory secondCategory;
+    private FirstCategory firstCategory;
+    private SecondCategory secondCategory;
     private String content;
     private List<String> tags;
     private boolean disclosure;
@@ -22,7 +24,7 @@ public class PostsDto {
     private LocalDateTime createdAt;
 
     @Builder
-    public PostsDto(Long id, PostsFirstCategory firstCategory, PostsSecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
+    public PostsDto(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;

@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional
     public void updatePosts(Long postId, UpdatePostsRequest request, Long memberId) {
-        Posts post = postsRepository.findById(postId).orElseThrow(() -> new PostNotFoundException());
+        Posts post = postsRepository.findById(postId).orElseThrow(PostNotFoundException::new);
 
         // 권한 체크 후 예외 터뜨리는 로직 필요(posts에서 userId를 갖고 있을건지, 연관관계를 맺을건지)
 
@@ -77,7 +78,7 @@ public class PostsServiceImpl implements PostsService {
     public PostsDto getRecentlyUnwrittenPosts(Long memberId) {
         Posts first = postsRepository.findByMemberId(memberId)
                 .stream()
-                .filter(posts -> PostsSecondCategory.Unwritten.equals(posts.getSecondCategory()))
+                .filter(posts -> SecondCategory.Unwritten.equals(posts.getSecondCategory()))
                 .filter(posts -> LocalDateTime.now().minusDays(7).isBefore(posts.getCreatedAt()))
                 .sorted(Comparator.comparingLong(Posts::getId).reversed())
                 .findFirst()
