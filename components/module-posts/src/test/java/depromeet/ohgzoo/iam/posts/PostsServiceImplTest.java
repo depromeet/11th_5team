@@ -203,4 +203,35 @@ class PostsServiceImplTest {
         assertThat(result).usingRecursiveComparison()
                 .isEqualTo(PostsDto.builder().id(3L).secondCategory(PostsSecondCategory.Unwritten).createdAt(before7Day).build());
     }
+
+    @Test
+    void getPostsById_throwException() {
+        assertThatThrownBy(() -> postsService.getPostsById(1L)).isInstanceOf(PostNotFoundException.class);
+    }
+
+    @Test
+    void getAllPosts__callsFindAllInRepository() {
+        postsService.getAllPosts(0, 0);
+
+        assertThat(spyPostsRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void getAllPosts_returnAllPosts() {
+        spyPostsRepository.findAll_returnValue = List.of(
+                Posts.builder().id(1L).build(),
+                Posts.builder().id(2L).build(),
+                Posts.builder().id(3L).build(),
+                Posts.builder().id(4L).build()
+        );
+
+        List<PostsDto> result = postsService.getAllPosts(0, 4);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(1L).build(),
+                PostsDto.builder().id(2L).build(),
+                PostsDto.builder().id(3L).build(),
+                PostsDto.builder().id(4L).build()
+        );
+    }
 }

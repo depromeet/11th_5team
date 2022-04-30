@@ -24,7 +24,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        postsRepository.deleteAll();
+        postsRepository.deleteAllInBatch();
         postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Idk,
                 "content", List.of("tag1", "tag2"), false));
         postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Unwritten,
@@ -83,6 +83,20 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     void deletePosts() throws Exception {
         mockMvc.perform(delete("/api/v1/posts")
                         .param("postIds", "1, 2, 3"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsById() throws Exception {
+        Posts posts = Posts.builder().content("test").build();
+        postsRepository.save(posts);
+        mockMvc.perform(get("/api/v1/posts/" + posts.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllPosts() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/all"))
                 .andExpect(status().isOk());
     }
 }

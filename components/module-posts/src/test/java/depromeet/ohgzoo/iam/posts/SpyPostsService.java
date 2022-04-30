@@ -19,6 +19,11 @@ public class SpyPostsService implements PostsService {
     public List<PostsDto> getPostsOrderByPopular_returnValue;
     public Long getRecentlyUnwrittenPosts_argumentMemberId;
     public PostsDto getRecentlyUnwrittenPosts_returnValue;
+    public Long getPostsById_argumentId;
+    public PostsDto getPostsById_returnValue;
+    public int getAllPosts_argumentPage;
+    public int getAllPosts_argumentSize;
+    public List<PostsDto> getAllPosts_returnValue;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -59,6 +64,19 @@ public class SpyPostsService implements PostsService {
     public PostsDto getRecentlyUnwrittenPosts(Long memberId) {
         getRecentlyUnwrittenPosts_argumentMemberId = memberId;
         return getRecentlyUnwrittenPosts_returnValue;
+    }
+
+    @Override
+    public PostsDto getPostsById(Long postId) {
+        getPostsById_argumentId = postId;
+        return getPostsById_returnValue;
+    }
+
+    @Override
+    public List<PostsDto> getAllPosts(int page, int size) {
+        getAllPosts_argumentPage = page;
+        getAllPosts_argumentSize = size;
+        return getAllPosts_returnValue;
     }
 
     @Override
