@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemService;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -40,6 +41,7 @@ class FolderApiTest {
         folderRepository = mock(FolderRepository.class);
         mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
                 .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
     }
 
@@ -191,5 +193,18 @@ class FolderApiTest {
                 .andExpect(jsonPath("$.['folders'][0].folderId", equalTo(1)))
                 .andExpect(jsonPath("$['folders'][0].folderName", equalTo("folder name")))
                 .andExpect(jsonPath("$['postsThumbnail'][0]", equalTo(CoverImageUrl.defaultImage)));
+    }
+
+    @Test
+    void getFolderItems_OKHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getFolderItems_returns() throws Exception{
+        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+                .header("AUTH_TOKEN", "givenToken"));
     }
 }

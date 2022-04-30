@@ -2,9 +2,13 @@ package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDto;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,6 +54,22 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public FoldersGetResponse getFolders(Long memberId) {
+        List<Folder> folders = folderRepository.findAllByMemberId(memberId);
+        List<FolderItem> folderItems = folderItemService.getRecentFolderItems(memberId);
+
+        List<String> coverImages = new ArrayList<String>(Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage));
+        for (int i = 0; i < folderItems.size(); i++) {
+            if (folderItems.get(i) != null)
+                coverImages.set(i, CoverImageUrl.returnCoverImage(folderItems.get(i).getFirstCategory()));
+        }
+
+        return new FoldersGetResponse(folders.stream()
+                .map(FolderGetResponse::of)
+                .collect(Collectors.toList()), coverImages);
+    }
+
+    @Override
     public void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request) {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(NotExistsFolderException::new);
@@ -66,18 +86,18 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public FoldersGetResponse getFolders(Long memberId) {
-        List<Folder> folders = folderRepository.findAllByMemberId(memberId);
-        List<FolderItem> folderItems = folderItemService.getRecentFolderItems(memberId);
+    public FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable) {
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(NotExistsFolderException::new);
 
-        List<String> coverImages = new ArrayList<String>(Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage));
-        for (int i = 0; i < folderItems.size(); i++) {
-            if (folderItems.get(i) != null)
-                coverImages.set(i, CoverImageUrl.returnCoverImage(folderItems.get(i).getFirstCategory()));
-        }
+        List<FolderItem> folderItems = folder.getFolderItems()
+                .stream()
+                .skip(pageable.getPageNumber()-1)
+                .limit(pageable.getPageSize())
+                .collect(Collectors.toList());
+        //createdAtDesc 아니면 페치조인이 일어나야 함.
 
-        return new FoldersGetResponse(folders.stream()
-                .map(FolderGetResponse::of)
-                .collect(Collectors.toList()), coverImages);
+        return new FolderItemsGetResponse(folder.getFolderItems().size(), folderItems.stream()
+                .map(FolderItemDto::of).collect(Collectors.toList()));
     }
 }

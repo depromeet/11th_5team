@@ -179,4 +179,9 @@ public class SpyFolderItemRepository implements FolderItemRepository {
         latestFolderItems_argumentMemberId = memberId;
         return latestFolderItems_returnValue;
     }
+
+    @Override
+    public Page<FolderItem> findByFolderAndMemberIdOrderByCreatedAtDesc(Folder folder, Long memberId, Pageable pageable) {
+        return null;
+    }
 }
