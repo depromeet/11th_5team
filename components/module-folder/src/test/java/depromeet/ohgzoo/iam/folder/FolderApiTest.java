@@ -203,7 +203,7 @@ class FolderApiTest {
     }
 
     @Test
-    void getFolderItems_returns() throws Exception{
+    void getFolderItems_returns() throws Exception {
         mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
                 .header("AUTH_TOKEN", "givenToken"));
     }

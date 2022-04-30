@@ -261,7 +261,7 @@ public class FolderServiceImplTest {
         Folder folder1 = aFolder().id(1L).build();
         FolderItem folderItem = aFolderItem().content("new post").build();
         folderItem.setFolder(folder1);
-        
+
         spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1));
         spyFolderRepository.findById_returnValue = folder1;
 

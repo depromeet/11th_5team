@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,10 +93,10 @@ public class FolderServiceImpl implements FolderService {
 
         List<FolderItem> folderItems = folder.getFolderItems()
                 .stream()
-                .skip(pageable.getPageNumber()-1)
+                .sorted(Comparator.comparing(FolderItem::getCreatedAt).reversed())
+                .skip(pageable.getPageNumber() - 1)
                 .limit(pageable.getPageSize())
                 .collect(Collectors.toList());
-        //createdAtDesc 아니면 페치조인이 일어나야 함.
 
         return new FolderItemsGetResponse(folder.getFolderItems().size(), folderItems.stream()
                 .map(FolderItemDto::of).collect(Collectors.toList()));
