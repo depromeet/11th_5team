@@ -113,11 +113,10 @@ class FolderApiTest {
         spyJwtService.getSubject_returnValue = "1";
 
         mockMvc.perform(patch("/api/v1/folders/1")
-                .header("AUTH_TOKEN", "")
+                .header("AUTH_TOKEN", "givenToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"folderName\":\"givenName\"}"));
 
-        assertThat(spyFolderService.updateFolder_argumentMemberId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentFolderId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentRequest.getFolderName()).isEqualTo("givenName");
     }
