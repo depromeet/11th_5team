@@ -7,12 +7,15 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemRepository;
 import depromeet.ohgzoo.iam.member.Member;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -251,5 +254,20 @@ public class FolderServiceImplTest {
         assertThat(result.getFolders().get(1).getFolderId()).isEqualTo(2L);
 
         assertThat(result.getPostsThumbnail().get(0)).isEqualTo(CoverImageUrl.defaultImage);
+    }
+
+    @Test
+    void getFolderItems_returnsFolderItems() {
+        Folder folder1 = aFolder().id(1L).build();
+        FolderItem folderItem = aFolderItem().content("new post").build();
+        folderItem.setFolder(folder1);
+        
+        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1));
+        spyFolderRepository.findById_returnValue = folder1;
+
+        FolderItemsGetResponse folderItemsGetResponse = folderService.getFolderItems(1L, 1L, PageRequest.of(1, 20));
+
+        assertThat(folderItemsGetResponse.getTotalCount()).isEqualTo(1);
+        assertThat(folderItemsGetResponse.getPosts().get(0).getContent()).isEqualTo("new post");
     }
 }

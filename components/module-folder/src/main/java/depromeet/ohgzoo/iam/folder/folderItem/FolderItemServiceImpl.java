@@ -4,6 +4,8 @@ import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,5 +50,10 @@ public class FolderItemServiceImpl implements FolderItemService {
     public List<FolderItem> getRecentFolderItems(Long memberId) {
         List<FolderItem> folderItems = folderItemRepository.findTop4ByMemberIdOrderByCreatedAtDesc(memberId);
         return (folderItems == null || folderItems.isEmpty()) ? Collections.emptyList() : new ArrayList<>(folderItems);
+    }
+
+    @Override
+    public Page<FolderItem> getFolderItemsByFolder(Long memberId, Folder folder, Pageable pageable) {
+        return folderItemRepository.findByFolderAndMemberIdOrderByCreatedAtDesc(folder, memberId, pageable);
     }
 }
