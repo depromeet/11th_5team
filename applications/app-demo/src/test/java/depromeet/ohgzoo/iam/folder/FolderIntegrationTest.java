@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -88,6 +90,13 @@ public class FolderIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void getFolderItems() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void moveFolderItem() throws Exception {
         System.out.println(folderItemRepository.findAll().get(0).getPostId());
         mockMvc.perform(patch("/api/v1/folders/posts/2")
@@ -111,6 +120,7 @@ public class FolderIntegrationTest extends IntegrationTest {
                 .disclosure(false)
                 .postId(1L)
                 .memberId(1L)
+                .tags(Arrays.asList("일상","배고픔","졸림"))
                 .build();
     }
 }
