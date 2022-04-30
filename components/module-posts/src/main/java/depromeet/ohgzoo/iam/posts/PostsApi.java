@@ -69,4 +69,10 @@ public class PostsApi {
         postsService.deletePosts(postIds, memberId);
     }
 
+    @PatchMapping("/{postid}/views")
+    public void increaseViews(
+            @PathVariable("postid") Long postId) {
+        postsService.increaseViews(postId);
+    }
+
 }

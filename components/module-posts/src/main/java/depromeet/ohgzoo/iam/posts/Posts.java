@@ -74,4 +74,8 @@ public class Posts {
         this.tags = request.getTags();
         this.disclosure = request.getDisclosure();
     }
+
+    public void increaseViews() {
+        views++;
+    }
 }

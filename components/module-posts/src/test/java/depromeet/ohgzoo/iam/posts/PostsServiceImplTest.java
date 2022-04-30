@@ -4,11 +4,13 @@ import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -44,9 +46,22 @@ class PostsServiceImplTest {
     }
 
     @Test
-    void updatePosts_throwException() {
-        assertThatThrownBy(() -> postsService.updatePosts(1L, null, null))
-                .isInstanceOf(PostNotFoundException.class);
+    void updatePosts_PostsNotFoundException() {
+        assertThatThrownBy(() -> postsService.updatePosts(0L, null, null))
+                .isInstanceOf(PostsNotFoundException.class);
+    }
+
+    @Test
+    void updatePosts_AccessDeniedException() {
+        assertThatThrownBy(() -> postsService.updatePosts(1L, null, 2L))
+                .isInstanceOf(AccessDeniedException.class);
+    }
+
+    @Test
+    void deletePosts_AccessDeniedException() {
+        List<Long> postIds = List.of(1L, 2L);
+        assertThatThrownBy(() -> postsService.deletePosts(postIds, 2L))
+                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Test
@@ -204,5 +219,11 @@ class PostsServiceImplTest {
 
         assertThat(result).usingRecursiveComparison()
                 .isEqualTo(PostsDto.builder().id(3L).secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build());
+    }
+
+    @Test
+    public void increaseViews() throws Exception {
+        postsService.increaseViews(1L);
+        assertThat(spyPostsRepository.findById.get().getViews()).isEqualTo(1);
     }
 }
