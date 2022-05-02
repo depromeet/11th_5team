@@ -87,6 +87,13 @@ public class FolderIntegrationTest extends IntegrationTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void deleteFolderItem() throws Exception {
+        mockMvc.perform(delete("/api/v1/folders/posts/1")
+                .header("AUTH_TOKEN", "givenToken")
+        ).andExpect(status().isOk());
+    }
+
     private Folder folderGenerator() {
         return Folder.builder()
                 .name("folder name")
