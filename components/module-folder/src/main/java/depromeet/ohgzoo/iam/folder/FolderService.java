@@ -13,4 +13,6 @@ public interface FolderService {
     void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request);
 
     void moveFolderItem(Long memberId, Long folderId, FolderItemMoveRequest request);
+
+    void deleteFolderItem(Long memberId, Long postId);
 }

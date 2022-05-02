@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
+import depromeet.ohgzoo.iam.folder.folderItem.NotExistsFolderItemException;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemRepository;
 import depromeet.ohgzoo.iam.member.Member;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
@@ -205,4 +206,27 @@ public class FolderServiceImplTest {
         folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest(2L));
         assertThat(newFolder.getCoverImg()).isEqualTo(angryImage);
     }
+
+    @Test
+    void deleteFolderItem_throwsExceptionWhenFolderItemIsNotExisted() {
+        Assertions.assertThatThrownBy(() -> folderItemService.deleteFolderItem(1L, 1L))
+                .isInstanceOf(NotExistsFolderItemException.class);
+    }
+
+    @Test
+    void deleteFolderItem_deleteFolderItemFromFolder() {
+        FolderItem folderItem1 = aFolderItem().id(1L).postId(1L).firstCategory(FirstCategory.ANGRY).build();
+        FolderItem folderItem2 = aFolderItem().id(2L).postId(2L).firstCategory(FirstCategory.UPSET).build();
+        Folder folder = aFolder().id(1L).build();
+        folderItem1.setFolder(folder);
+        folderItem2.setFolder(folder);
+
+        spyFolderItemRepository.findById_returnValue = folderItem1;
+        folderItemService.deleteFolderItem(1L, 1L);
+
+        assertThat(folder.getFolderItems().size()).isEqualTo(1);
+        assertThat(folder.getFolderItems().get(0).getPostId()).isEqualTo(2L);
+    }
+
+
 }

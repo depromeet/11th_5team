@@ -49,8 +49,13 @@ public class FolderApi {
     }
 
     @PatchMapping("/api/v1/folders/posts/{folderId}")
-    public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors){
+    public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.moveFolderItem(memberId, folderId, request);
+    }
+
+    @DeleteMapping("/api/v1/folders/posts/{postId}")
+    public void deleteFolderItem(@Login Long memberId, @PathVariable Long postId) {
+        folderService.deleteFolderItem(memberId, postId);
     }
 }

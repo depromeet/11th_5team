@@ -59,4 +59,9 @@ public class FolderServiceImpl implements FolderService {
 
         folderItemService.moveFolderItem(memberId, newFolder, request);
     }
+
+    @Override
+    public void deleteFolderItem(Long memberId, Long postId) {
+        folderItemService.deleteFolderItem(memberId, postId);
+    }
 }
