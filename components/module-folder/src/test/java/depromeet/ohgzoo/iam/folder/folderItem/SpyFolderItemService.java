@@ -13,6 +13,7 @@ public class SpyFolderItemService implements FolderItemService {
     public FolderItemCreateRequest createFolderItem_argumentRequest;
     public List<FolderItem> getFolderItem_returnValue;
 
+
     @Override
     public void createFolderItem(Long memberId, Folder folder, FolderItemCreateRequest request) {
         argument_memberId = memberId;
@@ -28,7 +29,6 @@ public class SpyFolderItemService implements FolderItemService {
 
     @Override
     public void changeFolderCoverImage(Folder folder) {
-
     }
 
     @Override

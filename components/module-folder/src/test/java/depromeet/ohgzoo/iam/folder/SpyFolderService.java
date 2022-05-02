@@ -17,6 +17,7 @@ public class SpyFolderService implements FolderService {
     public FolderItemCreateRequest createFolderItem_argumentRequest;
     public FolderItemMoveRequest moveFolderItem_argumentRequest;
     public FoldersGetResponse getFolders_returnValue;
+    public FolderItemsGetResponse getFolderItems_returnValue;
 
 
     @Override
@@ -52,7 +53,7 @@ public class SpyFolderService implements FolderService {
 
     @Override
     public FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable) {
-        return null;
+        return getFolderItems_returnValue;
     }
 
     @Override

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FolderItemServiceImpl implements FolderItemService {
 
     private final FolderItemRepository folderItemRepository;
@@ -47,12 +49,14 @@ public class FolderItemServiceImpl implements FolderItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FolderItem> getRecentFolderItems(Long memberId) {
         List<FolderItem> folderItems = folderItemRepository.findTop4ByMemberIdOrderByCreatedAtDesc(memberId);
         return (folderItems == null || folderItems.isEmpty()) ? Collections.emptyList() : new ArrayList<>(folderItems);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<FolderItem> getFolderItemsByFolder(Long memberId, Folder folder, Pageable pageable) {
         return folderItemRepository.findByFolderAndMemberIdOrderByCreatedAtDesc(folder, memberId, pageable);
     }

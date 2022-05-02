@@ -1,6 +1,9 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDto;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemService;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
@@ -202,8 +205,18 @@ class FolderApiTest {
     }
 
     @Test
-    void getFolderItems_returns() throws Exception {
+    void getFolderItems_returnsResponse() throws Exception {
+        Folder folder = Folder.builder().id(1L).build();
+        FolderItem folderItem1 = FolderItem.builder().postId(1L).build();
+        FolderItem folderItem2 = FolderItem.builder().postId(2L).build();
+        folderItem1.setFolder(folder);
+        folderItem2.setFolder(folder);
+        spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2, new ArrayList<>(Arrays.asList(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2))));
+
         mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
-                .header("AUTH_TOKEN", "givenToken"));
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(jsonPath("$.totalCount", equalTo(2)))
+                .andExpect(jsonPath("$['posts'][0].postId", equalTo(1)))
+                .andExpect(jsonPath("$['posts'][1].postId", equalTo(2)));
     }
 }

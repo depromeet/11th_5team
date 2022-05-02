@@ -7,9 +7,9 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FolderServiceImpl implements FolderService {
     private final FolderRepository folderRepository;
     private final FolderItemService folderItemService;
 
+    @Override
     public FolderResponse createFolder(Long memberId, FolderCreateRequest request) {
         Optional<Folder> existedFolder = folderRepository.findByName(request.getFolderName());
         if (existedFolder.isPresent()) throw new ExistedNameException();
@@ -34,6 +36,7 @@ public class FolderServiceImpl implements FolderService {
         return new FolderResponse(folder.getId(), folder.getName());
     }
 
+    @Override
     public void deleteFolder(Long memberId, Long folderId) {
 
         Folder folder = folderRepository.findById(folderId).orElseThrow(NotExistsFolderException::new);
@@ -42,6 +45,7 @@ public class FolderServiceImpl implements FolderService {
         folderRepository.deleteById(folderId);
     }
 
+    @Override
     public FolderResponse updateFolder(Long memberId, Long folderId, FolderUpdateRequest request) {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(NotExistsFolderException::new);
@@ -55,6 +59,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public FoldersGetResponse getFolders(Long memberId) {
         List<Folder> folders = folderRepository.findAllByMemberId(memberId);
         List<FolderItem> folderItems = folderItemService.getRecentFolderItems(memberId);
@@ -87,6 +92,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable) {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(NotExistsFolderException::new);
