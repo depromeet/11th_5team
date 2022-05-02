@@ -27,9 +27,9 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional
     public void updatePosts(Long postId, UpdatePostsRequest request, Long memberId) {
-        Posts post = postsRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        Posts post = findPostById(postId);
 
-        // 권한 체크 후 예외 터뜨리는 로직 필요(posts에서 userId를 갖고 있을건지, 연관관계를 맺을건지)
+        if (!canAccess(post.getMemberId(), memberId)) throw new AccessDeniedException();
 
         post.update(request);
     }
@@ -37,7 +37,10 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional
     public void deletePosts(List<Long> postIds, Long memberId) {
-        // 권한 체크 후 예외 터뜨리는 로직 필요(posts에서 userId를 갖고 있을건지, 연관관계를 맺을건지)
+        for (Long postId : postIds) {
+            Posts post = findPostById(postId);
+            if (!canAccess(post.getMemberId(), memberId)) throw new AccessDeniedException();
+        }
 
         postsRepository.bulkDeletePosts(postIds);
     }
@@ -86,4 +89,20 @@ public class PostsServiceImpl implements PostsService {
 
         return new PostsDto(first);
     }
+
+    @Override
+    @Transactional
+    public void increaseViews(Long postId) {
+        Posts post = findPostById(postId);
+        post.increaseViews();
+    }
+
+    private Posts findPostById(Long postId) {
+        return postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new);
+    }
+
+    private boolean canAccess(Long ownerId, Long memberId) {
+        return ownerId.equals(memberId);
+    }
+
 }

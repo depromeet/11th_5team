@@ -24,13 +24,15 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @Autowired
     private PostsRepository postsRepository;
     ObjectMapper objectMapper = new ObjectMapper();
+    Posts post1;
+    Posts post2;
 
     @BeforeEach
     void setUp() {
         postsRepository.deleteAll();
-        postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Idk,
+        post1 = postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Idk,
                 "content", List.of("tag1", "tag2"), false));
-        postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Unwritten,
+        post2 = postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Unwritten,
                 "content", List.of("tag1", "tag2"), false));
     }
 
@@ -69,7 +71,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
 
     @Test
     void updatePosts() throws Exception {
-        Posts posts = Posts.builder().content("test").build();
+        Posts posts = Posts.builder().content("test").memberId(1L).build();
         postsRepository.save(posts);
 
         UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.NO1)
@@ -85,7 +87,13 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @Test
     void deletePosts() throws Exception {
         mockMvc.perform(delete("/api/v1/posts")
-                        .param("postIds", "1, 2, 3"))
+                        .param("postIds", post1.getId() + ", " + post2.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void increaseViews() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/{postid}/views", post1.getId()))
                 .andExpect(status().isOk());
     }
 }

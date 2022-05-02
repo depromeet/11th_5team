@@ -17,6 +17,7 @@ public class SpyPostsRepository implements PostsRepository {
     public List<Posts> findByMemberId_returnValue = Collections.emptyList();
     public boolean findAll_wasCalled;
     public List<Posts> findAll_returnValue = Collections.emptyList();
+    public Optional<Posts> findById;
 
     @Override
     public List<Posts> findAll() {
@@ -82,7 +83,13 @@ public class SpyPostsRepository implements PostsRepository {
 
     @Override
     public Optional<Posts> findById(Long aLong) {
-        return Optional.empty();
+        if (aLong.equals(0L)) {
+            this.findById = Optional.empty();
+        } else {
+            this.findById = Optional.of(Posts.builder().memberId(1L).build());
+        }
+
+        return findById;
     }
 
     @Override

@@ -44,9 +44,22 @@ class PostsServiceImplTest {
     }
 
     @Test
-    void updatePosts_throwException() {
-        assertThatThrownBy(() -> postsService.updatePosts(1L, null, null))
-                .isInstanceOf(PostNotFoundException.class);
+    void updatePosts_PostsNotFoundException() {
+        assertThatThrownBy(() -> postsService.updatePosts(0L, null, null))
+                .isInstanceOf(PostsNotFoundException.class);
+    }
+
+    @Test
+    void updatePosts_AccessDeniedException() {
+        assertThatThrownBy(() -> postsService.updatePosts(1L, null, 2L))
+                .isInstanceOf(AccessDeniedException.class);
+    }
+
+    @Test
+    void deletePosts_AccessDeniedException() {
+        List<Long> postIds = List.of(1L, 2L);
+        assertThatThrownBy(() -> postsService.deletePosts(postIds, 2L))
+                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Test
@@ -204,5 +217,11 @@ class PostsServiceImplTest {
 
         assertThat(result).usingRecursiveComparison()
                 .isEqualTo(PostsDto.builder().id(3L).secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build());
+    }
+
+    @Test
+    public void increaseViews() throws Exception {
+        postsService.increaseViews(1L);
+        assertThat(spyPostsRepository.findById.get().getViews()).isEqualTo(1);
     }
 }
