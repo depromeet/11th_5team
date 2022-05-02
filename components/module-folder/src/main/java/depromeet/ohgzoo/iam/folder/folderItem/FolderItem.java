@@ -1,9 +1,9 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
+import depromeet.ohgzoo.iam.ListToStringConverter;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
-import depromeet.ohgzoo.iam.folder.ListToStringConverter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package depromeet.ohgzoo.iam.folder;
+package depromeet.ohgzoo.iam;
 
 import javax.persistence.AttributeConverter;
 import java.util.ArrayList;
