@@ -25,3 +25,7 @@ operation::folder-integration-test/add-folder-item[snippets='http-request,http-r
 == 폴더 글 이동
 
 operation::folder-integration-test/move-folder-item[snippets='http-request,http-response']
+
+== 폴더 글 삭제
+
+operation::folder-integration-test/delete-folder-item[snippets='http-request,http-response']
