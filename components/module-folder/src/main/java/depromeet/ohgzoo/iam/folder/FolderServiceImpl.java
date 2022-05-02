@@ -107,4 +107,9 @@ public class FolderServiceImpl implements FolderService {
         return new FolderItemsGetResponse(folder.getFolderItems().size(), folderItems.stream()
                 .map(FolderItemDto::of).collect(Collectors.toList()));
     }
+
+    @Override
+    public void deleteFolderItem(Long memberId, Long postId) {
+        folderItemService.deleteFolderItem(memberId, postId);
+    }
 }

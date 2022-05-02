@@ -16,4 +16,6 @@ public interface FolderItemService {
     List<FolderItem> getRecentFolderItems(Long memberId);
 
     Page<FolderItem> getFolderItemsByFolder(Long memberId, Folder folder, Pageable pageable);
+
+    void deleteFolderItem(Long memberId, Long postId);
 }

@@ -7,13 +7,14 @@ import org.springframework.data.domain.Pageable;
 
 public class SpyFolderService implements FolderService {
     public Long argument_memberId;
-    public FolderResponse createFolder_returnValue;
-    public Long deleteFolder_argumentId;
-    public FolderUpdateRequest updateFolder_argumentRequest;
-    public FolderCreateRequest createFolder_argumentRequest;
     public Long updateFolder_argumentMemberId;
     public Long updateFolder_argumentFolderId;
+    public Long deleteFolder_argumentId;
+    public Long deleteFolderItem_argumentPostId;
+    public FolderResponse createFolder_returnValue;
     public FolderResponse updateFolder_returnValue;
+    public FolderCreateRequest createFolder_argumentRequest;
+    public FolderUpdateRequest updateFolder_argumentRequest;
     public FolderItemCreateRequest createFolderItem_argumentRequest;
     public FolderItemMoveRequest moveFolderItem_argumentRequest;
     public FoldersGetResponse getFolders_returnValue;
@@ -60,5 +61,9 @@ public class SpyFolderService implements FolderService {
     public FoldersGetResponse getFolders(Long memberId) {
         argument_memberId = memberId;
         return getFolders_returnValue;
+    }
+    @Override
+    public void deleteFolderItem(Long memberId, Long postId) {
+        deleteFolderItem_argumentPostId = postId;
     }
 }

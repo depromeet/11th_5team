@@ -19,4 +19,6 @@ public interface FolderService {
     void moveFolderItem(Long memberId, Long folderId, FolderItemMoveRequest request);
 
     FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable);
+
+    void deleteFolderItem(Long memberId, Long postId);
 }

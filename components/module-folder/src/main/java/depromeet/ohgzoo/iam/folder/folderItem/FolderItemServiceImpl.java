@@ -43,9 +43,12 @@ public class FolderItemServiceImpl implements FolderItemService {
     }
 
     @Override
-    public void changeFolderCoverImage(Folder folder) {
-        FolderItem folderItem = folderItemRepository.findFirstByFolderOrderByCreatedAtDesc(folder);
-        folder.changeCoverImg((folderItem == null) ? FirstCategory.DEFAULT : folderItem.getFirstCategory());
+    public void deleteFolderItem(Long memberId, Long postId) {
+        FolderItem folderItem = folderItemRepository.findByPostId(postId)
+                .orElseThrow(NotExistsFolderItemException::new);
+
+        folderItem.unsetFolder();
+        folderItemRepository.delete(folderItem);
     }
 
     @Override
@@ -59,5 +62,11 @@ public class FolderItemServiceImpl implements FolderItemService {
     @Transactional(readOnly = true)
     public Page<FolderItem> getFolderItemsByFolder(Long memberId, Folder folder, Pageable pageable) {
         return folderItemRepository.findByFolderAndMemberIdOrderByCreatedAtDesc(folder, memberId, pageable);
+    }
+
+    @Override
+    public void changeFolderCoverImage(Folder folder) {
+        FolderItem folderItem = folderItemRepository.findFirstByFolderOrderByCreatedAtDesc(folder);
+        folder.changeCoverImg((folderItem == null) ? FirstCategory.DEFAULT : folderItem.getFirstCategory());
     }
 }

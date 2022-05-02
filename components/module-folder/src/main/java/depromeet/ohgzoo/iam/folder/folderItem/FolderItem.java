@@ -75,6 +75,10 @@ public class FolderItem extends BaseEntity {
         folder.getFolderItems().add(this);
     }
 
+    public void unsetFolder() {
+        this.folder.getFolderItems().remove(this);
+    }
+
     public void changeFolder(Folder oldFolder, Folder newFolder) {
         this.folder = newFolder;
         oldFolder.getFolderItems().remove(this);

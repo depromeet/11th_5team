@@ -291,4 +291,18 @@ class PostsApiTest {
                 .andExpect(jsonPath("$.createdAt", equalTo("2022-04-24 12:30:30")))
         ;
     }
+
+    @Test
+    public void increaseViews_isOk() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/1/views"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void increaseViews_passesPostIdToService() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/{postid}/views", "1"))
+                .andExpect(status().isOk());
+
+        assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo(1L);
+    }
 }
