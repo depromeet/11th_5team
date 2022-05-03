@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.BaseEntity;
+import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,7 +21,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Folder {
+public class Folder extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

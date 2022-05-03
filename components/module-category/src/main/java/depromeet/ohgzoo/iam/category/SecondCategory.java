@@ -3,5 +3,6 @@ package depromeet.ohgzoo.iam.category;
 public enum SecondCategory {
     NO1,
     Idk,
-    Unwritten
+    Unwritten,
+    UPSET,ANGRY,ANXIOUS
 }

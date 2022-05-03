@@ -15,15 +15,22 @@ import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
 public class SpyFolderRepository implements FolderRepository {
     public Folder save_argumentFolder;
     public Long delete_argumentFolderId;
-    public Long add_argumentFolderFolderItemId;
     public Folder save_returnValue = aFolder().build();
     public Long findById_argumentId;
     public Folder findById_returnValue = aFolder().build();
     public Folder findByName_returnValue;
+    public List<Folder> findAllByMemberId_returnValue;
+    public Long findAllByMemberId_argumentId;
 
     @Override
     public Optional<Folder> findByName(String name) {
         return Optional.ofNullable(findByName_returnValue);
+    }
+
+    @Override
+    public List<Folder> findAllByMemberId(Long memberId) {
+        findAllByMemberId_argumentId = memberId;
+        return findAllByMemberId_returnValue;
     }
 
     @Override

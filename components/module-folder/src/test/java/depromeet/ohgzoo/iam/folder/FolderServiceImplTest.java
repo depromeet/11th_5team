@@ -1,10 +1,13 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import depromeet.ohgzoo.iam.folder.folderItem.NotExistsFolderItemException;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemRepository;
 import depromeet.ohgzoo.iam.member.Member;
@@ -12,6 +15,12 @@ import depromeet.ohgzoo.iam.member.SpyMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static depromeet.ohgzoo.iam.folder.CoverImageUrl.angryImage;
 import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
@@ -31,8 +40,8 @@ public class FolderServiceImplTest {
         spyFolderRepository = new SpyFolderRepository();
         spyMemberRepository = new SpyMemberRepository();
         spyFolderItemRepository = new SpyFolderItemRepository();
-        folderService = new FolderServiceImpl(spyFolderRepository, null);
         folderItemService = new FolderItemServiceImpl(spyFolderItemRepository);
+        folderService = new FolderServiceImpl(spyFolderRepository, folderItemService);
 
         spyMemberRepository.findById_returnValue = Member.builder().build();
     }
@@ -205,6 +214,61 @@ public class FolderServiceImplTest {
 
         folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest(2L));
         assertThat(newFolder.getCoverImg()).isEqualTo(angryImage);
+    }
+
+    @Test
+    void getRecentFolderItems_returnNullWhenFolderItemIsNull() {
+        List<FolderItem> folderItems = folderItemService.getRecentFolderItems(1L);
+
+        assertThat(folderItems).isEqualTo(Collections.emptyList());
+    }
+
+    @Test
+    void getFolders_callsFindAllFoldersRepository() {
+        Folder existedFolder = aFolder()
+                .id(1L)
+                .build();
+        FolderItem existedFolderItem = aFolderItem().build();
+
+        spyFolderItemRepository.latestFolderItems_argumentMemberId = 1L;
+        spyFolderItemRepository.latestFolderItems_returnValue = Arrays.asList(existedFolderItem);
+        spyFolderRepository.findAllByMemberId_returnValue = Arrays.asList(existedFolder);
+
+        folderService.getFolders(1L);
+
+        assertThat(spyFolderRepository.findAllByMemberId_argumentId).isEqualTo(1L);
+    }
+
+    @Test
+    void getFolders_returnsFolders() {
+        Folder folder1 = aFolder().build();
+        Folder folder2 = aFolder().id(2L).build();
+        FolderItem folderItem = aFolderItem().build();
+        folderItem.setFolder(folder1);
+        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1, folder2));
+
+        FoldersGetResponse result = folderService.getFolders(1L);
+
+        assertThat(result.getFolders().get(0).getFolderId()).isEqualTo(1L);
+        assertThat(result.getFolders().get(0).getFolderName()).isEqualTo("folder name");
+        assertThat(result.getFolders().get(1).getFolderId()).isEqualTo(2L);
+
+        assertThat(result.getPostsThumbnail().get(0)).isEqualTo(CoverImageUrl.defaultImage);
+    }
+
+    @Test
+    void getFolderItems_returnsFolderItems() {
+        Folder folder1 = aFolder().id(1L).build();
+        FolderItem folderItem = aFolderItem().content("new post").build();
+        folderItem.setFolder(folder1);
+
+        spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1));
+        spyFolderRepository.findById_returnValue = folder1;
+
+        FolderItemsGetResponse folderItemsGetResponse = folderService.getFolderItems(1L, 1L, PageRequest.of(0, 20));
+
+        assertThat(folderItemsGetResponse.getTotalCount()).isEqualTo(1);
+        assertThat(folderItemsGetResponse.getPosts().get(0).getContent()).isEqualTo("new post");
     }
 
     @Test

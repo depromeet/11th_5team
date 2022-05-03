@@ -1,6 +1,8 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.IntegrationTest;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +14,10 @@ import org.springframework.http.MediaType;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,10 +76,23 @@ public class FolderIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void getFolders() throws Exception {
+        mockMvc.perform(get("/api/v1/folders"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void addFolderItem() throws Exception {
         mockMvc.perform(post("/api/v1/folders/posts/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstCategory\":\"ANGRY\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false,\"postId\":10}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getFolderItems() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+                        .header("AUTH_TOKEN", "givenToken"))
                 .andExpect(status().isOk());
     }
 
@@ -108,6 +126,8 @@ public class FolderIntegrationTest extends IntegrationTest {
                 .content("post content")
                 .disclosure(false)
                 .postId(1L)
+                .memberId(1L)
+                .tags(Arrays.asList("일상","배고픔","졸림"))
                 .build();
     }
 }

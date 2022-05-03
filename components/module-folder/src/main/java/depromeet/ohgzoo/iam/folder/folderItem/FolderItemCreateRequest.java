@@ -1,11 +1,10 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
-import depromeet.ohgzoo.iam.folder.FirstCategory;
-import depromeet.ohgzoo.iam.folder.SecondCategory;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
