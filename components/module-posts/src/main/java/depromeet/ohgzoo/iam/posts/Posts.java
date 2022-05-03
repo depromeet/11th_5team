@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,10 +30,10 @@ public class Posts {
     private Long memberId;
 
     @Enumerated(EnumType.STRING) // 리팩토링 필요
-    private PostsFirstCategory firstCategory;
+    private FirstCategory firstCategory;
 
     @Enumerated(EnumType.STRING) // 리팩토링 필요
-    private PostsSecondCategory secondCategory;
+    private SecondCategory secondCategory;
 
     private String content; // 글씨 제한?
 
@@ -45,7 +47,7 @@ public class Posts {
     private LocalDateTime createdAt;
 
     @Builder
-    public Posts(Long id, Long memberId, PostsFirstCategory firstCategory, PostsSecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
+    public Posts(Long id, Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
         this.id = id;
         this.memberId = memberId;
         this.firstCategory = firstCategory;
@@ -57,7 +59,7 @@ public class Posts {
         this.createdAt = createdAt;
     }
 
-    public Posts(Long memberId, PostsFirstCategory firstCategory, PostsSecondCategory secondCategory, String content,
+    public Posts(Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content,
                  List<String> tags, boolean disclosure) {
         this(null, memberId, firstCategory, secondCategory, content, tags, disclosure, 0, LocalDateTime.now());
     }
@@ -71,5 +73,9 @@ public class Posts {
         this.content = request.getContent();
         this.tags = request.getTags();
         this.disclosure = request.getDisclosure();
+    }
+
+    public void increaseViews() {
+        views++;
     }
 }

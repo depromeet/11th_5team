@@ -1,18 +1,27 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDto;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemService;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,6 +44,7 @@ class FolderApiTest {
         folderRepository = mock(FolderRepository.class);
         mockMvc = MockMvcBuilders.standaloneSetup(new FolderApi(spyFolderService))
                 .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
     }
 
@@ -106,11 +116,10 @@ class FolderApiTest {
         spyJwtService.getSubject_returnValue = "1";
 
         mockMvc.perform(patch("/api/v1/folders/1")
-                .header("AUTH_TOKEN", "")
+                .header("AUTH_TOKEN", "givenToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"folderName\":\"givenName\"}"));
 
-        assertThat(spyFolderService.updateFolder_argumentMemberId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentFolderId).isEqualTo(1L);
         assertThat(spyFolderService.updateFolder_argumentRequest.getFolderName()).isEqualTo("givenName");
     }
@@ -166,4 +175,65 @@ class FolderApiTest {
 
         assertThat(spyFolderService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo(1L);
     }
+
+    @Test
+    void getFolders_OKHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/folders")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getFolders_returnsListResponse() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+        Folder folder = Folder.builder().memberId(1L).id(1L).name("folder name").build();
+        List<FolderGetResponse> folders = new ArrayList<FolderGetResponse>(Arrays.asList(FolderGetResponse.of(folder)));
+        spyFolderService.getFolders_returnValue = new FoldersGetResponse(folders, new ArrayList<String>(Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage)));
+
+        mockMvc.perform(get("/api/v1/folders")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(jsonPath("$.['folders'][0].folderId", equalTo(1)))
+                .andExpect(jsonPath("$['folders'][0].folderName", equalTo("folder name")))
+                .andExpect(jsonPath("$['postsThumbnail'][0]", equalTo(CoverImageUrl.defaultImage)));
+    }
+
+    @Test
+    void getFolderItems_OKHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getFolderItems_returnsResponse() throws Exception {
+        Folder folder = Folder.builder().id(1L).build();
+        FolderItem folderItem1 = FolderItem.builder().postId(1L).build();
+        FolderItem folderItem2 = FolderItem.builder().postId(2L).build();
+        folderItem1.setFolder(folder);
+        folderItem2.setFolder(folder);
+        spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2, new ArrayList<>(Arrays.asList(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2))));
+
+        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(jsonPath("$.totalCount", equalTo(2)))
+                .andExpect(jsonPath("$['posts'][0].postId", equalTo(1)))
+                .andExpect(jsonPath("$['posts'][1].postId", equalTo(2)));
+    }
+
+    @Test
+    void deleteFolderItem_OkHttpStatus() throws Exception {
+        mockMvc.perform(delete("/api/v1/folders/posts/1")
+                .header("AUTH_TOKEN", "givenToken")
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteFolderItem_passesPostIdToService() throws Exception {
+        mockMvc.perform(delete("/api/v1/folders/posts/1")
+                .header("AUTH_TOKEN", "givenToken")
+        ).andExpect(status().isOk());
+
+        assertThat(spyFolderService.deleteFolderItem_argumentPostId).isEqualTo(1L);
+    }
+
 }

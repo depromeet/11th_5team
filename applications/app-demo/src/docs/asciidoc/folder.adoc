@@ -10,6 +10,10 @@
 
 operation::folder-integration-test/add-folder[snippets='http-request,http-response']
 
+== 폴더 리스트 조회
+
+operation::folder-integration-test/get-folders[snippets='http-request,http-response']
+
 == 폴더 삭제
 
 operation::folder-integration-test/delete-folder[snippets='http-request,http-response']
@@ -22,6 +26,14 @@ operation::folder-integration-test/update-folder[snippets='http-request,http-res
 
 operation::folder-integration-test/add-folder-item[snippets='http-request,http-response']
 
+== 폴더 글 조회
+
+operation::folder-integration-test/get-folder-items[snippets='http-request,http-response']
+
 == 폴더 글 이동
 
 operation::folder-integration-test/move-folder-item[snippets='http-request,http-response']
+
+== 폴더 글 삭제
+
+operation::folder-integration-test/delete-folder-item[snippets='http-request,http-response']

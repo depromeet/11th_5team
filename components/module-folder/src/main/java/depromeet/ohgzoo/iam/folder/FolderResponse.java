@@ -11,6 +11,4 @@ public class FolderResponse {
         this.folderId = folderId;
         this.folderName = folderName;
     }
-
-
 }

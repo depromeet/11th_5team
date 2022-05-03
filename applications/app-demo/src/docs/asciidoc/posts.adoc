@@ -33,3 +33,15 @@ operation::posts-api-integration-test/get-posts-order-by-popular[snippets='http-
 == 최신 미작성 글 조회
 
 operation::posts-api-integration-test/get-recently-unwritten-posts[snippets='http-request,http-response']
+
+== 조회수 증가
+
+operation::posts-api-integration-test/increase-views[snippets='http-request,http-response']
+
+== Post Id로 조회
+
+operation::posts-api-integration-test/get-posts-by-id[snippets='http-request,http-response']
+
+== 전체 Post 조회
+
+operation::posts-api-integration-test/get-all-posts[snippets='http-request,http-response']

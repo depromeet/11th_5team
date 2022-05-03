@@ -1,6 +1,15 @@
 spring:
   profiles:
     active: local
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   response:
     success:
       code: 200
@@ -18,3 +27,7 @@ spring:
         code: 401
         msg: '글이 존재하지 않습니다. '
         type: depromeet.ohgzoo.iam.posts.PostsNotFoundException
+      accessDenied:
+        code: 403
+        msg: '접근 권한이 없습니다. '
+        type: depromeet.ohgzoo.iam.posts.AccessDeniedException

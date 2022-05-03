@@ -2,16 +2,19 @@ package depromeet.ohgzoo.iam.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import depromeet.ohgzoo.iam.IntegrationTest;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,13 +24,15 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @Autowired
     private PostsRepository postsRepository;
     ObjectMapper objectMapper = new ObjectMapper();
+    Posts post1;
+    Posts post2;
 
     @BeforeEach
     void setUp() {
-        postsRepository.deleteAll();
-        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Idk,
+        postsRepository.deleteAllInBatch();
+        post1 = postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Idk,
                 "content", List.of("tag1", "tag2"), false));
-        postsRepository.save(new Posts(1L, PostsFirstCategory.NO1, PostsSecondCategory.Unwritten,
+        post2 = postsRepository.save(new Posts(1L, FirstCategory.NO1, SecondCategory.Unwritten,
                 "content", List.of("tag1", "tag2"), false));
     }
 
@@ -66,10 +71,10 @@ public class PostsApiIntegrationTest extends IntegrationTest {
 
     @Test
     void updatePosts() throws Exception {
-        Posts posts = Posts.builder().content("test").build();
+        Posts posts = Posts.builder().content("test").memberId(1L).build();
         postsRepository.save(posts);
 
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(PostsSecondCategory.NO1)
+        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.NO1)
                 .content("content").tags(List.of("tag1", "tag2")).disclosure(false).build();
         String json = objectMapper.writeValueAsString(request);
 
@@ -82,7 +87,27 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     @Test
     void deletePosts() throws Exception {
         mockMvc.perform(delete("/api/v1/posts")
-                        .param("postIds", "1, 2, 3"))
+                        .param("postIds", post1.getId() + ", " + post2.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void increaseViews() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/{postid}/views", post1.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getPostsById() throws Exception {
+        Posts posts = Posts.builder().content("test").build();
+        postsRepository.save(posts);
+        mockMvc.perform(get("/api/v1/posts/" + posts.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllPosts() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/all"))
                 .andExpect(status().isOk());
     }
 }

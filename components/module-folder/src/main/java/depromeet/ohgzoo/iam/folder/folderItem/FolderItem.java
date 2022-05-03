@@ -1,15 +1,14 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
-import depromeet.ohgzoo.iam.folder.FirstCategory;
+import depromeet.ohgzoo.iam.BaseEntity;
+import depromeet.ohgzoo.iam.ListToStringConverter;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
-import depromeet.ohgzoo.iam.folder.ListToStringConverter;
-import depromeet.ohgzoo.iam.folder.SecondCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -22,13 +21,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FolderItem {
+public class FolderItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "folder_item_id")
@@ -47,11 +45,6 @@ public class FolderItem {
 
     private Boolean disclosure;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id")
     private Folder folder;
@@ -59,8 +52,10 @@ public class FolderItem {
     @Column(name = "post_id", unique = true)
     private Long postId;
 
+    private Long memberId;
+
     @Builder
-    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId) {
+    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId, Long memberId) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
@@ -68,15 +63,20 @@ public class FolderItem {
         this.tags = tags;
         this.disclosure = disclosure;
         this.postId = postId;
+        this.memberId = memberId;
     }
 
-    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId) {
-        this(null, firstCategory, secondCategory, content, tags, disclosure, postId);
+    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId, Long memberId) {
+        this(null, firstCategory, secondCategory, content, tags, disclosure, postId, memberId);
     }
 
     public void setFolder(Folder folder) {
         this.folder = folder;
         folder.getFolderItems().add(this);
+    }
+
+    public void unsetFolder() {
+        this.folder.getFolderItems().remove(this);
     }
 
     public void changeFolder(Folder oldFolder, Folder newFolder) {

@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +27,9 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional
     public void updatePosts(Long postId, UpdatePostsRequest request, Long memberId) {
-        Posts post = postsRepository.findById(postId).orElseThrow(() -> new PostNotFoundException());
+        Posts post = findPostById(postId);
 
-        // 권한 체크 후 예외 터뜨리는 로직 필요(posts에서 userId를 갖고 있을건지, 연관관계를 맺을건지)
+        if (!canAccess(post.getMemberId(), memberId)) throw new AccessDeniedException();
 
         post.update(request);
     }
@@ -36,7 +37,10 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional
     public void deletePosts(List<Long> postIds, Long memberId) {
-        // 권한 체크 후 예외 터뜨리는 로직 필요(posts에서 userId를 갖고 있을건지, 연관관계를 맺을건지)
+        for (Long postId : postIds) {
+            Posts post = findPostById(postId);
+            if (!canAccess(post.getMemberId(), memberId)) throw new AccessDeniedException();
+        }
 
         postsRepository.bulkDeletePosts(postIds);
     }
@@ -77,12 +81,42 @@ public class PostsServiceImpl implements PostsService {
     public PostsDto getRecentlyUnwrittenPosts(Long memberId) {
         Posts first = postsRepository.findByMemberId(memberId)
                 .stream()
-                .filter(posts -> PostsSecondCategory.Unwritten.equals(posts.getSecondCategory()))
+                .filter(posts -> SecondCategory.Unwritten.equals(posts.getSecondCategory()))
                 .filter(posts -> LocalDateTime.now().minusDays(7).isBefore(posts.getCreatedAt()))
                 .sorted(Comparator.comparingLong(Posts::getId).reversed())
                 .findFirst()
                 .orElseThrow(PostsNotFoundException::new);
 
         return new PostsDto(first);
+    }
+
+    @Override
+    @Transactional
+    public void increaseViews(Long postId) {
+        Posts post = findPostById(postId);
+        post.increaseViews();
+    }
+
+    private Posts findPostById(Long postId) {
+        return postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new);
+    }
+
+    private boolean canAccess(Long ownerId, Long memberId) {
+        return ownerId.equals(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public PostsDto getPostsById(Long postId) {
+        return new PostsDto(postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsDto> getAllPosts(int page, int size) {
+        return postsRepository.findAll()
+                .stream()
+                .skip(page)
+                .limit(size)
+                .map(PostsDto::new)
+                .collect(Collectors.toList());
     }
 }

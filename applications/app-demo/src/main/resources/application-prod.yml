@@ -3,7 +3,7 @@ spring:
     secret: ${JWT_KEY}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
       use-new-id-generator-mappings: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
@@ -11,14 +11,10 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
 
 kakaoClientId: ${KAKAO_CLIENT_ID}
 kakaoRedirectUrl: ${KAKAO_REDIRECT_URL}
 
-logging:
-  level:
-    root: error
+#logging:
+#  level:
+#    root: error

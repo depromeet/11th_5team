@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,16 +27,16 @@ class PostsServiceImplTest {
     void createPosts_saveInPostsRepository() {
         Long memberId = 1L;
         CreatePostsRequest request =
-                CreatePostsRequest.builder().firstCategory(PostsFirstCategory.NO1)
-                        .secondCategory(PostsSecondCategory.Idk).content("blah blah")
+                CreatePostsRequest.builder().firstCategory(FirstCategory.NO1)
+                        .secondCategory(SecondCategory.Idk).content("blah blah")
                         .tags(Arrays.asList("tag1", "tag2")).disclosure(false).build();
 
         postsService.createPosts(memberId, request);
 
         assertThat(spyPostsRepository.save_entity.getId()).isNull();
         assertThat(spyPostsRepository.save_entity.getMemberId()).isEqualTo(1L);
-        assertThat(spyPostsRepository.save_entity.getFirstCategory()).isEqualTo(PostsFirstCategory.NO1);
-        assertThat(spyPostsRepository.save_entity.getSecondCategory()).isEqualTo(PostsSecondCategory.Idk);
+        assertThat(spyPostsRepository.save_entity.getFirstCategory()).isEqualTo(FirstCategory.NO1);
+        assertThat(spyPostsRepository.save_entity.getSecondCategory()).isEqualTo(SecondCategory.Idk);
         assertThat(spyPostsRepository.save_entity.getContent()).isEqualTo("blah blah");
         assertThat(spyPostsRepository.save_entity.getTags()).isEqualTo(Arrays.asList("tag1", "tag2"));
         assertThat(spyPostsRepository.save_entity.isDisclosure()).isFalse();
@@ -42,17 +44,40 @@ class PostsServiceImplTest {
     }
 
     @Test
-    void updatePosts_throwException() {
-        assertThatThrownBy(() -> postsService.updatePosts(1L, null, null))
-                .isInstanceOf(PostNotFoundException.class);
+    void updatePosts_PostsNotFoundException() {
+        assertThatThrownBy(() -> postsService.updatePosts(0L, null, null))
+                .isInstanceOf(PostsNotFoundException.class);
+    }
+
+    @Test
+    void updatePosts_AccessDeniedException() {
+        spyPostsRepository.findById_returnValue = Posts.builder()
+                .memberId(1L)
+                .id(1L)
+                .build();
+
+        assertThatThrownBy(() -> postsService.updatePosts(1L, null, 2L))
+                .isInstanceOf(AccessDeniedException.class);
+    }
+
+    @Test
+    void deletePosts_AccessDeniedException() {
+        spyPostsRepository.findById_returnValue = Posts.builder()
+                .memberId(1L)
+                .id(1L)
+                .build();
+
+        List<Long> postIds = List.of(1L, 2L);
+        assertThatThrownBy(() -> postsService.deletePosts(postIds, 2L))
+                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Test
     void createPosts_returnCreatePostsResponse() {
         Long memberId = 1L;
         CreatePostsRequest request =
-                CreatePostsRequest.builder().firstCategory(PostsFirstCategory.NO1)
-                        .secondCategory(PostsSecondCategory.Idk).content("blah blah")
+                CreatePostsRequest.builder().firstCategory(FirstCategory.NO1)
+                        .secondCategory(SecondCategory.Idk).content("blah blah")
                         .tags(Arrays.asList("tag1", "tag2")).disclosure(false).build();
 
         CreatePostsResult result = postsService.createPosts(memberId, request);
@@ -170,7 +195,7 @@ class PostsServiceImplTest {
     @Test
     void getRecentlyUnwrittenPosts_passesMemberIdToRepository() {
         spyPostsRepository.findByMemberId_returnValue = List.of(
-                Posts.builder().id(3L).secondCategory(PostsSecondCategory.Unwritten).createdAt(LocalDateTime.now()).build()
+                Posts.builder().id(3L).secondCategory(SecondCategory.Unwritten).createdAt(LocalDateTime.now()).build()
         );
 
         postsService.getRecentlyUnwrittenPosts(1L);
@@ -192,15 +217,55 @@ class PostsServiceImplTest {
         LocalDateTime before8Day = now.minusDays(7).minusNanos(1);
 
         spyPostsRepository.findByMemberId_returnValue = List.of(
-                Posts.builder().id(1L).secondCategory(PostsSecondCategory.NO1).build(),
-                Posts.builder().id(2L).secondCategory(PostsSecondCategory.Idk).build(),
-                Posts.builder().id(3L).secondCategory(PostsSecondCategory.Unwritten).createdAt(before7Day).build(),
-                Posts.builder().id(4L).secondCategory(PostsSecondCategory.Unwritten).createdAt(before8Day).build()
+                Posts.builder().id(1L).secondCategory(SecondCategory.NO1).build(),
+                Posts.builder().id(2L).secondCategory(SecondCategory.Idk).build(),
+                Posts.builder().id(3L).secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build(),
+                Posts.builder().id(4L).secondCategory(SecondCategory.Unwritten).createdAt(before8Day).build()
         );
 
         PostsDto result = postsService.getRecentlyUnwrittenPosts(1L);
 
         assertThat(result).usingRecursiveComparison()
-                .isEqualTo(PostsDto.builder().id(3L).secondCategory(PostsSecondCategory.Unwritten).createdAt(before7Day).build());
+                .isEqualTo(PostsDto.builder().id(3L).secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build());
+    }
+
+    @Test
+    public void increaseViews() throws Exception {
+        spyPostsRepository.findById_returnValue = Posts.builder().views(0).build();
+
+        postsService.increaseViews(1L);
+
+        assertThat(spyPostsRepository.findById_returnValue.getViews()).isEqualTo(1);
+    }
+
+    @Test
+    void getPostsById_throwException() {
+        assertThatThrownBy(() -> postsService.getPostsById(1L)).isInstanceOf(PostsNotFoundException.class);
+    }
+
+    @Test
+    void getAllPosts__callsFindAllInRepository() {
+        postsService.getAllPosts(0, 0);
+
+        assertThat(spyPostsRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void getAllPosts_returnAllPosts() {
+        spyPostsRepository.findAll_returnValue = List.of(
+                Posts.builder().id(1L).build(),
+                Posts.builder().id(2L).build(),
+                Posts.builder().id(3L).build(),
+                Posts.builder().id(4L).build()
+        );
+
+        List<PostsDto> result = postsService.getAllPosts(0, 4);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(1L).build(),
+                PostsDto.builder().id(2L).build(),
+                PostsDto.builder().id(3L).build(),
+                PostsDto.builder().id(4L).build()
+        );
     }
 }
