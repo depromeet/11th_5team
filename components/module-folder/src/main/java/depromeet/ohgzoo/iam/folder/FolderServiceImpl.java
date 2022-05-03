@@ -100,7 +100,7 @@ public class FolderServiceImpl implements FolderService {
         List<FolderItem> folderItems = folder.getFolderItems()
                 .stream()
                 .sorted(Comparator.comparing(FolderItem::getCreatedAt).reversed())
-                .skip(pageable.getPageNumber() - 1)
+                .skip(pageable.getPageNumber())
                 .limit(pageable.getPageSize())
                 .collect(Collectors.toList());
 
