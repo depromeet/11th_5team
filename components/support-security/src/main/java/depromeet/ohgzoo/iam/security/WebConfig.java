@@ -43,7 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("docs/index.html")
+        registry.addResourceHandler("docs/**")
                 .addResourceLocations("classpath:/static/")
                 .setCachePeriod(20);
     }
