@@ -105,4 +105,18 @@ public class PostsServiceImpl implements PostsService {
         return ownerId.equals(memberId);
     }
 
+    @Transactional(readOnly = true)
+    public PostsDto getPostsById(Long postId) {
+        return new PostsDto(postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsDto> getAllPosts(int page, int size) {
+        return postsRepository.findAll()
+                .stream()
+                .skip(page)
+                .limit(size)
+                .map(PostsDto::new)
+                .collect(Collectors.toList());
+    }
 }

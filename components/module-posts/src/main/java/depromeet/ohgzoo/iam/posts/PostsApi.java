@@ -38,8 +38,8 @@ public class PostsApi {
 
     @GetMapping("/search")
     public List<PostsDto> getPostsByTag(@RequestParam String tag,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "20") int size) {
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "20") int size) {
         return postsService.getPostsByTag(tag, page, size);
     }
 
@@ -75,4 +75,14 @@ public class PostsApi {
         postsService.increaseViews(postId);
     }
 
+    @GetMapping("/{postId}")
+    public PostsDto getPostsById(@PathVariable Long postId) {
+        return postsService.getPostsById(postId);
+    }
+
+    @GetMapping("/all")
+    public List<PostsDto> getAllPosts(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "20") int size) {
+        return postsService.getAllPosts(page, size);
+    }
 }

@@ -51,12 +51,22 @@ class PostsServiceImplTest {
 
     @Test
     void updatePosts_AccessDeniedException() {
+        spyPostsRepository.findById_returnValue = Posts.builder()
+                .memberId(1L)
+                .id(1L)
+                .build();
+
         assertThatThrownBy(() -> postsService.updatePosts(1L, null, 2L))
                 .isInstanceOf(AccessDeniedException.class);
     }
 
     @Test
     void deletePosts_AccessDeniedException() {
+        spyPostsRepository.findById_returnValue = Posts.builder()
+                .memberId(1L)
+                .id(1L)
+                .build();
+
         List<Long> postIds = List.of(1L, 2L);
         assertThatThrownBy(() -> postsService.deletePosts(postIds, 2L))
                 .isInstanceOf(AccessDeniedException.class);
@@ -221,7 +231,41 @@ class PostsServiceImplTest {
 
     @Test
     public void increaseViews() throws Exception {
+        spyPostsRepository.findById_returnValue = Posts.builder().views(0).build();
+
         postsService.increaseViews(1L);
-        assertThat(spyPostsRepository.findById.get().getViews()).isEqualTo(1);
+
+        assertThat(spyPostsRepository.findById_returnValue.getViews()).isEqualTo(1);
+    }
+
+    @Test
+    void getPostsById_throwException() {
+        assertThatThrownBy(() -> postsService.getPostsById(1L)).isInstanceOf(PostsNotFoundException.class);
+    }
+
+    @Test
+    void getAllPosts__callsFindAllInRepository() {
+        postsService.getAllPosts(0, 0);
+
+        assertThat(spyPostsRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void getAllPosts_returnAllPosts() {
+        spyPostsRepository.findAll_returnValue = List.of(
+                Posts.builder().id(1L).build(),
+                Posts.builder().id(2L).build(),
+                Posts.builder().id(3L).build(),
+                Posts.builder().id(4L).build()
+        );
+
+        List<PostsDto> result = postsService.getAllPosts(0, 4);
+
+        assertThat(result).containsExactly(
+                PostsDto.builder().id(1L).build(),
+                PostsDto.builder().id(2L).build(),
+                PostsDto.builder().id(3L).build(),
+                PostsDto.builder().id(4L).build()
+        );
     }
 }

@@ -11,4 +11,6 @@ public interface PostsService {
     List<PostsDto> getPostsOrderByPopular(int page, int size);
     PostsDto getRecentlyUnwrittenPosts(Long memberId);
     void increaseViews(Long postId);
+    PostsDto getPostsById(Long postId);
+    List<PostsDto> getAllPosts(int page, int size);
 }
