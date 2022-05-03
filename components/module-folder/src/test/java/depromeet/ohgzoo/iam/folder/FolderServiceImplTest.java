@@ -265,7 +265,7 @@ public class FolderServiceImplTest {
         spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1));
         spyFolderRepository.findById_returnValue = folder1;
 
-        FolderItemsGetResponse folderItemsGetResponse = folderService.getFolderItems(1L, 1L, PageRequest.of(1, 20));
+        FolderItemsGetResponse folderItemsGetResponse = folderService.getFolderItems(1L, 1L, PageRequest.of(0, 20));
 
         assertThat(folderItemsGetResponse.getTotalCount()).isEqualTo(1);
         assertThat(folderItemsGetResponse.getPosts().get(0).getContent()).isEqualTo("new post");
