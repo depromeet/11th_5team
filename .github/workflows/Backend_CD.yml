@@ -24,7 +24,12 @@ jobs:
       run: |
         chmod +x ./gradlew
         ./gradlew build
-        
+
+    - name: BootJar with Gradle
+      run: |
+        chmod +x ./gradlew
+        ./gradlew bootJar
+
     - name: Set up docker buildx
       id: buildx
       uses: docker/setup-buildx-action@v1
