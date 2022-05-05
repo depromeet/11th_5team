@@ -41,20 +41,23 @@ public class BatchConfig {
                 .build();
     }
 
+    @Bean
     @StepScope
-    private ItemWriter<RemotePosts> writePosts() {
+    public ItemWriter<RemotePosts> writePosts() {
         return posts -> {
             System.out.println("posts = " + posts);
         };
     }
 
+    @Bean
     @StepScope
-    private ItemProcessor<RemotePosts, RemotePosts> processPosts() {
+    public ItemProcessor<RemotePosts, RemotePosts> processPosts() {
         return posts -> posts;
     }
 
+    @Bean
     @StepScope
-    private ItemReader<RemotePosts> inquiryPosts() {
+    public ItemReader<RemotePosts> inquiryPosts() {
         ResultModel<List<RemotePosts>> postResult = postsClient.getPosts();
         return new ListItemReader<>(postResult.getData());
     }
