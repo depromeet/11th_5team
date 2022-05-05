@@ -22,7 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        whiteList.addAll(List.of("/css/**", "/*.ico", "/error", "/refresh", "/docs/**", "/oauth2/**", "/login/**"));
+        whiteList.addAll(List.of("/css/**", "/*.ico", "/error", "/refresh", "/docs/**", "/oauth2/**", "/login/**",
+                "/api/v1/posts/all"));
 
         registry.addInterceptor(new SecurityInterceptor(jwtService))
                 .order(1)
