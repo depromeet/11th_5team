@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.BaseEntity;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.AccessLevel;
@@ -21,7 +22,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Posts {
+public class Posts extends BaseEntity {
     @Id
     @GeneratedValue
     @Column
@@ -43,8 +44,6 @@ public class Posts {
     private boolean disclosure;
 
     private int views;
-
-    private LocalDateTime createdAt;
 
     @Builder
     public Posts(Long id, Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
