@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostExtensionServiceImpl implements PostExtensionService {
     private final ApplicationEventPublisher eventPublisher;
+    private final UUIDProvider uuidProvider;
 
     @Override
     public void createPost(Long memberId, CreatePostRequest request) {
@@ -16,6 +17,11 @@ public class PostExtensionServiceImpl implements PostExtensionService {
     }
 
     private PostCreateEvent mapToEvent(Long memberId, CreatePostRequest request) {
-        return new PostCreateEvent(this, memberId, request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.isDisclosure(), request.getFolderId());
+        String postId = getPostId();
+        return new PostCreateEvent(this, memberId, request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.isDisclosure(), request.getFolderId(), postId);
+    }
+
+    private String getPostId() {
+        return uuidProvider.randomUUID().toString();
     }
 }

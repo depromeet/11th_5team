@@ -7,21 +7,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PostExtensionServiceImplTest {
     private PostExtensionService postExtensionService;
     private SpyApplicationEventPublisher spyEventPublisher;
+    private StubUUIDProvider stubUUIDProvider;
 
     @BeforeEach
     void setUp() {
+        stubUUIDProvider = new StubUUIDProvider();
         spyEventPublisher = new SpyApplicationEventPublisher();
-        postExtensionService = new PostExtensionServiceImpl(spyEventPublisher);
+        postExtensionService = new PostExtensionServiceImpl(spyEventPublisher, stubUUIDProvider);
     }
 
     @Test
     void createPost_passesPostCreateEventToEventPublisher() {
+        UUID givenUUID = UUID.randomUUID();
+        stubUUIDProvider.randomUUID_returnValue = givenUUID;
+
         CreatePostRequest givenRequest = new CreatePostRequest(
                 FirstCategory.NO1,
                 SecondCategory.Idk,
@@ -41,7 +47,8 @@ class PostExtensionServiceImplTest {
                 "givenContent",
                 List.of("tag1", "tag2", "tag3"),
                 true,
-                1L
+                1L,
+                givenUUID.toString()
         );
 
         assertThat(spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
