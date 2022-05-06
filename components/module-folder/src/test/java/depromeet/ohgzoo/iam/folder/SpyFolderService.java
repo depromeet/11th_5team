@@ -10,7 +10,7 @@ public class SpyFolderService implements FolderService {
     public Long updateFolder_argumentMemberId;
     public Long updateFolder_argumentFolderId;
     public Long deleteFolder_argumentId;
-    public Long deleteFolderItem_argumentPostId;
+    public String deleteFolderItem_argumentPostId;
     public FolderResponse createFolder_returnValue;
     public FolderResponse updateFolder_returnValue;
     public FolderCreateRequest createFolder_argumentRequest;
@@ -19,6 +19,8 @@ public class SpyFolderService implements FolderService {
     public FolderItemMoveRequest moveFolderItem_argumentRequest;
     public FoldersGetResponse getFolders_returnValue;
     public FolderItemsGetResponse getFolderItems_returnValue;
+    public Long createFolderItem_argumentMemberId;
+    public Long createFolderItem_argumentFolderId;
 
 
     @Override
@@ -44,6 +46,8 @@ public class SpyFolderService implements FolderService {
 
     @Override
     public void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request) {
+        createFolderItem_argumentMemberId = memberId;
+        createFolderItem_argumentFolderId = folderId;
         createFolderItem_argumentRequest = request;
     }
 
@@ -63,7 +67,7 @@ public class SpyFolderService implements FolderService {
         return getFolders_returnValue;
     }
     @Override
-    public void deleteFolderItem(Long memberId, Long postId) {
+    public void deleteFolderItem(Long memberId, String postId) {
         deleteFolderItem_argumentPostId = postId;
     }
 }

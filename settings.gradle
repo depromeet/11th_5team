@@ -10,5 +10,7 @@ include ':components:support-feign'
 include ':components:support-jwt'
 include ':components:support-security'
 include ':components:support-jpa'
+include ':components:module-post-folder'
+include ':components:postEvent'
 
 

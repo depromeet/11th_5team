@@ -20,5 +20,5 @@ public interface FolderService {
 
     FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable);
 
-    void deleteFolderItem(Long memberId, Long postId);
+    void deleteFolderItem(Long memberId, String postId);
 }

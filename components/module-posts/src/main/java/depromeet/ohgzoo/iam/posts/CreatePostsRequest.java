@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreatePostsRequest {
+    private String postId;
     private FirstCategory firstCategory;
     private SecondCategory secondCategory;
     private String content;
@@ -20,7 +21,8 @@ public class CreatePostsRequest {
     private boolean disclosure;
 
     @Builder
-    public CreatePostsRequest(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure) {
+    public CreatePostsRequest(String postId, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure) {
+        this.postId = postId;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;

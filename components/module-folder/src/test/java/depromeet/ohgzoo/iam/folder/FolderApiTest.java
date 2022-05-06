@@ -173,7 +173,7 @@ class FolderApiTest {
                         .content("{\"postId\":1}"))
                 .andExpect(status().isOk());
 
-        assertThat(spyFolderService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo(1L);
+        assertThat(spyFolderService.moveFolderItem_argumentRequest.getFolderItemId()).isEqualTo("1");
     }
 
     @Test
@@ -207,8 +207,8 @@ class FolderApiTest {
     @Test
     void getFolderItems_returnsResponse() throws Exception {
         Folder folder = Folder.builder().id(1L).build();
-        FolderItem folderItem1 = FolderItem.builder().postId(1L).build();
-        FolderItem folderItem2 = FolderItem.builder().postId(2L).build();
+        FolderItem folderItem1 = FolderItem.builder().postId("1").build();
+        FolderItem folderItem2 = FolderItem.builder().postId("2").build();
         folderItem1.setFolder(folder);
         folderItem2.setFolder(folder);
         spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2, new ArrayList<>(Arrays.asList(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2))));
@@ -216,8 +216,8 @@ class FolderApiTest {
         mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
                         .header("AUTH_TOKEN", "givenToken"))
                 .andExpect(jsonPath("$.totalCount", equalTo(2)))
-                .andExpect(jsonPath("$['posts'][0].postId", equalTo(1)))
-                .andExpect(jsonPath("$['posts'][1].postId", equalTo(2)));
+                .andExpect(jsonPath("$['posts'][0].postId", equalTo("1")))
+                .andExpect(jsonPath("$['posts'][1].postId", equalTo("2")));
     }
 
     @Test
@@ -233,7 +233,7 @@ class FolderApiTest {
                 .header("AUTH_TOKEN", "givenToken")
         ).andExpect(status().isOk());
 
-        assertThat(spyFolderService.deleteFolderItem_argumentPostId).isEqualTo(1L);
+        assertThat(spyFolderService.deleteFolderItem_argumentPostId).isEqualTo("1");
     }
 
 }

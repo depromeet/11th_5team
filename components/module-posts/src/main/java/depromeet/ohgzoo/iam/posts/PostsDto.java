@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 public class PostsDto {
-    private Long id;
+    private String id;
     private FirstCategory firstCategory;
     private SecondCategory secondCategory;
     private String content;
@@ -24,7 +24,7 @@ public class PostsDto {
     private LocalDateTime createdAt;
 
     @Builder
-    public PostsDto(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
+    public PostsDto(String id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
