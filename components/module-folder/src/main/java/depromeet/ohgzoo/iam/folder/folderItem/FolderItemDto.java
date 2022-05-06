@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Builder
 public class FolderItemDto {
-    private Long postId;
+    private String postId;
     private FirstCategory firstCategory;
     private SecondCategory secondCategory;
     private List<String> tags;

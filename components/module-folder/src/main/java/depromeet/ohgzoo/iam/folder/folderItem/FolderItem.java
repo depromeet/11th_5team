@@ -50,12 +50,12 @@ public class FolderItem extends BaseEntity {
     private Folder folder;
 
     @Column(name = "post_id", unique = true)
-    private Long postId;
+    private String postId;
 
     private Long memberId;
 
     @Builder
-    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId, Long memberId) {
+    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, String postId, Long memberId) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
@@ -66,7 +66,7 @@ public class FolderItem extends BaseEntity {
         this.memberId = memberId;
     }
 
-    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long postId, Long memberId) {
+    public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, String postId, Long memberId) {
         this(null, firstCategory, secondCategory, content, tags, disclosure, postId, memberId);
     }
 

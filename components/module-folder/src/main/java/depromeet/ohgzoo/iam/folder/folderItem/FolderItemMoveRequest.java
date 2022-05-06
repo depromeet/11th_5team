@@ -12,9 +12,9 @@ import javax.validation.constraints.NotNull;
 public class FolderItemMoveRequest {
     @JsonProperty("postId")
     @NotNull
-    private Long folderItemId;
+    private String folderItemId;
 
-    public FolderItemMoveRequest(Long folderItemId) {
+    public FolderItemMoveRequest(String folderItemId) {
         this.folderItemId = folderItemId;
     }
 }

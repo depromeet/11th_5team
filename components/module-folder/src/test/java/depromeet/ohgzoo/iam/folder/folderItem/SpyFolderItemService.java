@@ -9,7 +9,7 @@ import java.util.List;
 public class SpyFolderItemService implements FolderItemService {
     public Long argument_memberId;
     public Long createFolderItem_argumentFolderId;
-    public Long deleteFolderItem_argumentPostId;
+    public String deleteFolderItem_argumentPostId;
     public FolderItemMoveRequest moveFolderItem_argumentRequest;
     public FolderItemCreateRequest createFolderItem_argumentRequest;
     public List<FolderItem> getFolderItem_returnValue;
@@ -44,7 +44,7 @@ public class SpyFolderItemService implements FolderItemService {
     }
 
     @Override
-    public void deleteFolderItem(Long memberId, Long postId) {
+    public void deleteFolderItem(Long memberId, String postId) {
         deleteFolderItem_argumentPostId = postId;
     }
 }

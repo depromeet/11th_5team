@@ -42,6 +42,12 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional
     public void deletePosts(List<String> postIds, Long memberId) {
+        List<Posts> all = postsRepository.findAll();
+        for (Posts posts : all) {
+            System.out.println("posts.getId() = " + posts.getId());
+        }
+
+
         for (String postId : postIds) {
             Posts post = findPostById(postId);
             if (!canAccess(post.getMemberId(), memberId)) throw new AccessDeniedException();

@@ -109,7 +109,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public void deleteFolderItem(Long memberId, Long postId) {
+    public void deleteFolderItem(Long memberId, String postId) {
         folderItemService.deleteFolderItem(memberId, postId);
     }
 }

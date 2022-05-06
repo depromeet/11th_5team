@@ -3,9 +3,9 @@ package depromeet.ohgzoo.iam.folder.folderItem;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class FolderItemServiceImpl implements FolderItemService {
     }
 
     @Override
-    public void deleteFolderItem(Long memberId, Long postId) {
+    public void deleteFolderItem(Long memberId, String postId) {
         FolderItem folderItem = folderItemRepository.findByPostId(postId)
                 .orElseThrow(NotExistsFolderItemException::new);
 

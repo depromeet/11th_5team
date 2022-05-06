@@ -57,9 +57,9 @@ public class Posts {
         this.createdAt = createdAt;
     }
 
-    public Posts(Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content,
+    public Posts(String postId, Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content,
                  List<String> tags, boolean disclosure) {
-        this(null, memberId, firstCategory, secondCategory, content, tags, disclosure, 0, LocalDateTime.now());
+        this(postId, memberId, firstCategory, secondCategory, content, tags, disclosure, 0, LocalDateTime.now());
     }
 
     public void update(UpdatePostsRequest request) {
