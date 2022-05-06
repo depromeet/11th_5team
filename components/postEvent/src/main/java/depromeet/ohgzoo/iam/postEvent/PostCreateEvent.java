@@ -17,6 +17,7 @@ public class PostCreateEvent extends ApplicationEvent {
     private List<String> tags = new ArrayList<>();
     private boolean disclosure;
     private Long folderId;
+    private String postId;
 
     public PostCreateEvent(Object source,
                            Long memberId,
@@ -25,7 +26,8 @@ public class PostCreateEvent extends ApplicationEvent {
                            String content,
                            List<String> tags,
                            boolean disclosure,
-                           Long folderId
+                           Long folderId,
+                           String postId
     ) {
         super(source);
 
@@ -36,5 +38,6 @@ public class PostCreateEvent extends ApplicationEvent {
         this.tags.addAll(tags);
         this.disclosure = disclosure;
         this.folderId = folderId;
+        this.postId = postId;
     }
 }

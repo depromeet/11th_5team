@@ -17,16 +17,21 @@ public class PostsServiceImpl implements PostsService {
 
     @Transactional
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
-        Posts post = Posts.builder().memberId(memberId).firstCategory(request.getFirstCategory())
-                .secondCategory(request.getSecondCategory()).content(request.getContent())
-                .tags(request.getTags()).disclosure(request.isDisclosure()).build();
+        Posts post = Posts.builder()
+                .id(request.getPostId())
+                .memberId(memberId)
+                .firstCategory(request.getFirstCategory())
+                .secondCategory(request.getSecondCategory())
+                .content(request.getContent())
+                .tags(request.getTags())
+                .disclosure(request.isDisclosure()).build();
         postsRepository.save(post);
         return new CreatePostsResult(post.getId());
     }
 
     @Override
     @Transactional
-    public void updatePosts(Long postId, UpdatePostsRequest request, Long memberId) {
+    public void updatePosts(String postId, UpdatePostsRequest request, Long memberId) {
         Posts post = findPostById(postId);
 
         if (!canAccess(post.getMemberId(), memberId)) throw new AccessDeniedException();
@@ -36,8 +41,8 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     @Transactional
-    public void deletePosts(List<Long> postIds, Long memberId) {
-        for (Long postId : postIds) {
+    public void deletePosts(List<String> postIds, Long memberId) {
+        for (String postId : postIds) {
             Posts post = findPostById(postId);
             if (!canAccess(post.getMemberId(), memberId)) throw new AccessDeniedException();
         }
@@ -83,7 +88,7 @@ public class PostsServiceImpl implements PostsService {
                 .stream()
                 .filter(posts -> SecondCategory.Unwritten.equals(posts.getSecondCategory()))
                 .filter(posts -> LocalDateTime.now().minusDays(7).isBefore(posts.getCreatedAt()))
-                .sorted(Comparator.comparingLong(Posts::getId).reversed())
+                .sorted(Comparator.comparing(Posts::getId).reversed())
                 .findFirst()
                 .orElseThrow(PostsNotFoundException::new);
 
@@ -92,12 +97,12 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     @Transactional
-    public void increaseViews(Long postId) {
+    public void increaseViews(String postId) {
         Posts post = findPostById(postId);
         post.increaseViews();
     }
 
-    private Posts findPostById(Long postId) {
+    private Posts findPostById(String postId) {
         return postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new);
     }
 
@@ -106,7 +111,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public PostsDto getPostsById(Long postId) {
+    public PostsDto getPostsById(String postId) {
         return new PostsDto(postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new));
     }
 

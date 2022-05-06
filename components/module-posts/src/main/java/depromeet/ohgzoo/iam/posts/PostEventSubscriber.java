@@ -16,6 +16,12 @@ public class PostEventSubscriber {
     }
 
     private CreatePostsRequest mapToRequest(PostCreateEvent event) {
-        return new CreatePostsRequest(event.getFirstCategory(), event.getSecondCategory(), event.getContent(), event.getTags(), event.isDisclosure());
+        return new CreatePostsRequest(
+                event.getPostId(),
+                event.getFirstCategory(),
+                event.getSecondCategory(),
+                event.getContent(),
+                event.getTags(),
+                event.isDisclosure());
     }
 }

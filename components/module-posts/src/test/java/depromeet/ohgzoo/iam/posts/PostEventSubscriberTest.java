@@ -29,7 +29,7 @@ class PostEventSubscriberTest {
                 "content",
                 List.of("tag1", "tag2", "tag3"),
                 true,
-                null);
+                null, null);
 
         postEventSubscriber.handlePostCreateEvent(givenEvent);
 

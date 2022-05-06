@@ -47,7 +47,7 @@ public class PostsApi {
 
     @PatchMapping("/{postid}")
     public void updatePosts(
-            @PathVariable("postid") Long postId,
+            @PathVariable("postid") String postId,
             @RequestBody UpdatePostsRequest request,
             @Login Long memberId) {
         postsService.updatePosts(postId, request, memberId);
@@ -55,19 +55,19 @@ public class PostsApi {
 
     @DeleteMapping
     public void deletePosts(
-            @RequestParam List<Long> postIds,
+            @RequestParam List<String> postIds,
             @Login Long memberId) {
         postsService.deletePosts(postIds, memberId);
     }
 
     @PatchMapping("/{postid}/views")
     public void increaseViews(
-            @PathVariable("postid") Long postId) {
+            @PathVariable("postid") String postId) {
         postsService.increaseViews(postId);
     }
 
     @GetMapping("/{postId}")
-    public PostsDto getPostsById(@PathVariable Long postId) {
+    public PostsDto getPostsById(@PathVariable String postId) {
         return postsService.getPostsById(postId);
     }
 

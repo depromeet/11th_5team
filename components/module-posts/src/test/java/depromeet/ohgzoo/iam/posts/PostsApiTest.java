@@ -82,7 +82,7 @@ class PostsApiTest {
     void getMyPosts_returnsPostsDtoList() throws Exception {
         spyPostsService.getPostsByMemberId_returnValue = List.of(
                 new PostsDto(
-                        1L,
+                        "1",
                         FirstCategory.NO1,
                         SecondCategory.NO1,
                         "content",
@@ -93,7 +93,7 @@ class PostsApiTest {
         mockMvc.perform(get("/api/v1/posts"))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
                 .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
@@ -136,7 +136,7 @@ class PostsApiTest {
     void getPostsByTag_returnsPostsDtoList() throws Exception {
         spyPostsService.getPostsByTag_returnValue = List.of(
                 new PostsDto(
-                        1L,
+                        "1",
                         FirstCategory.NO1,
                         SecondCategory.NO1,
                         "content",
@@ -148,7 +148,7 @@ class PostsApiTest {
                         .param("tag", ""))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
                 .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
@@ -181,7 +181,7 @@ class PostsApiTest {
     void getPostsOrderByPopular_returnsPostsDtoList() throws Exception {
         spyPostsService.getPostsOrderByPopular_returnValue = List.of(
                 new PostsDto(
-                        1L,
+                        "1",
                         FirstCategory.NO1,
                         SecondCategory.NO1,
                         "content",
@@ -192,7 +192,7 @@ class PostsApiTest {
         mockMvc.perform(get("/api/v1/posts/popular"))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
                 .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
@@ -231,7 +231,7 @@ class PostsApiTest {
     @Test
     void getRecentlyUnwrittenPosts_returnsPostsDto() throws Exception {
         spyPostsService.getRecentlyUnwrittenPosts_returnValue = new PostsDto(
-                1L,
+                "1",
                 FirstCategory.NO1,
                 SecondCategory.NO1,
                 "content",
@@ -239,7 +239,7 @@ class PostsApiTest {
                 LocalDateTime.of(2022, 4, 24, 12, 30, 30));
 
         mockMvc.perform(get("/api/v1/posts/temp"))
-                .andExpect(jsonPath("$.id", equalTo(1)))
+                .andExpect(jsonPath("$.id", equalTo("1")))
                 .andExpect(jsonPath("$.firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$.secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$.content", equalTo("content")))
@@ -261,6 +261,6 @@ class PostsApiTest {
         mockMvc.perform(patch("/api/v1/posts/{postid}/views", "1"))
                 .andExpect(status().isOk());
 
-        assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo(1L);
+        assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo("1");
     }
 }
