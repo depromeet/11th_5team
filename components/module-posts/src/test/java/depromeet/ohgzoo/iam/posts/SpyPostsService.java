@@ -19,21 +19,23 @@ public class SpyPostsService implements PostsService {
     public List<PostsDto> getPostsOrderByPopular_returnValue;
     public Long getRecentlyUnwrittenPosts_argumentMemberId;
     public PostsDto getRecentlyUnwrittenPosts_returnValue;
-    public Long increaseViews_argumentPostId;
-    public Long getPostsById_argumentId;
+    public String increaseViews_argumentPostId;
+    public String getPostsById_argumentId;
     public PostsDto getPostsById_returnValue;
     public int getAllPosts_argumentPage;
     public int getAllPosts_argumentSize;
     public List<PostsDto> getAllPosts_returnValue;
+    public Long createPosts_argumentMemberId;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
+        createPosts_argumentMemberId = memberId;
         createPosts_argumentRequest = request;
         return createPosts_returnValue;
     }
 
     @Override
-    public void updatePosts(Long postId, UpdatePostsRequest request, Long memberId) {
+    public void updatePosts(String postId, UpdatePostsRequest request, Long memberId) {
         updatePostsRequest_argumentRequest = request;
     }
 
@@ -68,12 +70,12 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public void increaseViews(Long postId) {
-        increaseViews_argumentPostId = 1L;
+    public void increaseViews(String postId) {
+        increaseViews_argumentPostId = postId;
     }
 
     @Override
-    public PostsDto getPostsById(Long postId) {
+    public PostsDto getPostsById(String postId) {
         getPostsById_argumentId = postId;
         return getPostsById_returnValue;
     }
@@ -86,7 +88,7 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public void deletePosts(List<Long> postIds, Long memberId) {
+    public void deletePosts(List<String> postIds, Long memberId) {
 
     }
 }

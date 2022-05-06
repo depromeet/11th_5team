@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FolderItemCreateRequest {
     @NotNull
-    private Long postId;
+    private String postId;
     @NotNull
     private FirstCategory firstCategory;
     @NotNull
@@ -25,7 +25,8 @@ public class FolderItemCreateRequest {
     @NotNull
     private Boolean disclosure;
 
-    public FolderItemCreateRequest(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
+    public FolderItemCreateRequest(String postId, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
+        this.postId = postId;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;

@@ -165,7 +165,7 @@ public class SpyFolderItemRepository implements FolderItemRepository {
     }
 
     @Override
-    public Optional<FolderItem> findByPostId(Long postId) {
+    public Optional<FolderItem> findByPostId(String postId) {
         return Optional.ofNullable(findById_returnValue);
     }
 

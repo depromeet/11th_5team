@@ -22,8 +22,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,24 +39,6 @@ class PostsApiTest {
         mockMvc = MockMvcBuilders.standaloneSetup(new PostsApi(spyPostsService))
                 .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
                 .build();
-    }
-
-    @Test
-    void createPosts_returnsCreatedHttpStatus() throws Exception {
-        mockMvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
-    void createPosts_returnsPostsId() throws Exception {
-        spyPostsService.createPosts_returnValue = new CreatePostsResult(1L);
-
-        mockMvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(jsonPath("$.postId", equalTo(1)));
     }
 
     @Test
@@ -93,28 +73,6 @@ class PostsApiTest {
     }
 
     @Test
-    void createPosts_passesCreateRequestToService() throws Exception {
-        CreatePostsRequest givenRequest = new CreatePostsRequest(
-                FirstCategory.NO1,
-                SecondCategory.Idk,
-                "givenContent",
-                List.of("tag1", "tag2", "tag3"),
-                true
-        );
-
-        mockMvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(givenRequest)))
-                .andDo(print());
-
-        assertThat(spyPostsService.createPosts_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.NO1);
-        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.Idk);
-        assertThat(spyPostsService.createPosts_argumentRequest.getContent()).isEqualTo("givenContent");
-        assertThat(spyPostsService.createPosts_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
-        assertThat(spyPostsService.createPosts_argumentRequest.isDisclosure()).isTrue();
-    }
-
-    @Test
     void getMyPosts_returnsOkHttpStatus() throws Exception {
         mockMvc.perform(get("/api/v1/posts"))
                 .andExpect(status().isOk());
@@ -124,7 +82,7 @@ class PostsApiTest {
     void getMyPosts_returnsPostsDtoList() throws Exception {
         spyPostsService.getPostsByMemberId_returnValue = List.of(
                 new PostsDto(
-                        1L,
+                        "1",
                         FirstCategory.NO1,
                         SecondCategory.NO1,
                         "content",
@@ -135,7 +93,7 @@ class PostsApiTest {
         mockMvc.perform(get("/api/v1/posts"))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
                 .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
@@ -178,7 +136,7 @@ class PostsApiTest {
     void getPostsByTag_returnsPostsDtoList() throws Exception {
         spyPostsService.getPostsByTag_returnValue = List.of(
                 new PostsDto(
-                        1L,
+                        "1",
                         FirstCategory.NO1,
                         SecondCategory.NO1,
                         "content",
@@ -190,7 +148,7 @@ class PostsApiTest {
                         .param("tag", ""))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
                 .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
@@ -223,7 +181,7 @@ class PostsApiTest {
     void getPostsOrderByPopular_returnsPostsDtoList() throws Exception {
         spyPostsService.getPostsOrderByPopular_returnValue = List.of(
                 new PostsDto(
-                        1L,
+                        "1",
                         FirstCategory.NO1,
                         SecondCategory.NO1,
                         "content",
@@ -234,7 +192,7 @@ class PostsApiTest {
         mockMvc.perform(get("/api/v1/posts/popular"))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", equalTo(1)))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
                 .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
@@ -273,7 +231,7 @@ class PostsApiTest {
     @Test
     void getRecentlyUnwrittenPosts_returnsPostsDto() throws Exception {
         spyPostsService.getRecentlyUnwrittenPosts_returnValue = new PostsDto(
-                1L,
+                "1",
                 FirstCategory.NO1,
                 SecondCategory.NO1,
                 "content",
@@ -281,7 +239,7 @@ class PostsApiTest {
                 LocalDateTime.of(2022, 4, 24, 12, 30, 30));
 
         mockMvc.perform(get("/api/v1/posts/temp"))
-                .andExpect(jsonPath("$.id", equalTo(1)))
+                .andExpect(jsonPath("$.id", equalTo("1")))
                 .andExpect(jsonPath("$.firstCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$.secondCategory", equalTo("NO1")))
                 .andExpect(jsonPath("$.content", equalTo("content")))
@@ -303,6 +261,6 @@ class PostsApiTest {
         mockMvc.perform(patch("/api/v1/posts/{postid}/views", "1"))
                 .andExpect(status().isOk());
 
-        assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo(1L);
+        assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo("1");
     }
 }

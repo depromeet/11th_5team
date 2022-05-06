@@ -154,7 +154,7 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolderItem_callsSaveInFolderItemRepository() {
-        folderItemService.createFolderItem(1L, aFolder().build(), new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, aFolder().build(), new FolderItemCreateRequest("1",FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
         FolderItem savedFolderItem = spyFolderItemRepository.save_argumentFolderItem;
         assertThat(savedFolderItem.getId()).isNull();
@@ -167,7 +167,7 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest("1", FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
         assertThat(existedFolder.getFolderItems().get(0).getContent()).isEqualTo("post content");
     }
@@ -178,7 +178,7 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest(FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest("1", FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
         assertThat(existedFolder.getCoverImg()).isEqualTo(angryImage);
     }
@@ -194,7 +194,7 @@ public class FolderServiceImplTest {
         spyFolderItemRepository.findById_returnValue = folderItem;
         spyFolderRepository.findById_returnValue = newFolder;
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem;
-        folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest(1L));
+        folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest("1"));
 
         assertThat(folderItem.getFolder().getId()).isEqualTo(2L);
     }
@@ -212,7 +212,7 @@ public class FolderServiceImplTest {
         spyFolderRepository.findById_returnValue = newFolder;
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem1;
 
-        folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest(2L));
+        folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest("2"));
         assertThat(newFolder.getCoverImg()).isEqualTo(angryImage);
     }
 
@@ -273,23 +273,23 @@ public class FolderServiceImplTest {
 
     @Test
     void deleteFolderItem_throwsExceptionWhenFolderItemIsNotExisted() {
-        Assertions.assertThatThrownBy(() -> folderItemService.deleteFolderItem(1L, 1L))
+        Assertions.assertThatThrownBy(() -> folderItemService.deleteFolderItem(1L, "1"))
                 .isInstanceOf(NotExistsFolderItemException.class);
     }
 
     @Test
     void deleteFolderItem_deleteFolderItemFromFolder() {
-        FolderItem folderItem1 = aFolderItem().id(1L).postId(1L).firstCategory(FirstCategory.ANGRY).build();
-        FolderItem folderItem2 = aFolderItem().id(2L).postId(2L).firstCategory(FirstCategory.UPSET).build();
+        FolderItem folderItem1 = aFolderItem().id(1L).postId("1").firstCategory(FirstCategory.ANGRY).build();
+        FolderItem folderItem2 = aFolderItem().id(2L).postId("2").firstCategory(FirstCategory.UPSET).build();
         Folder folder = aFolder().id(1L).build();
         folderItem1.setFolder(folder);
         folderItem2.setFolder(folder);
 
         spyFolderItemRepository.findById_returnValue = folderItem1;
-        folderItemService.deleteFolderItem(1L, 1L);
+        folderItemService.deleteFolderItem(1L, "1");
 
         assertThat(folder.getFolderItems().size()).isEqualTo(1);
-        assertThat(folder.getFolderItems().get(0).getPostId()).isEqualTo(2L);
+        assertThat(folder.getFolderItems().get(0).getPostId()).isEqualTo("2");
     }
 
 

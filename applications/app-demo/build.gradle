@@ -13,6 +13,7 @@ dependencies {
     implementation project(':components:module-member')
     implementation project(':components:module-folder')
     implementation project(':components:module-posts')
+    implementation project(':components:module-post-folder')
     implementation project(':components:support-jwt')
     implementation project(':components:support-jpa')
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
@@ -26,7 +27,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java'
 }
 
-ext{
+ext {
     snippetDir = file('build/generated-snippets')
 }
 

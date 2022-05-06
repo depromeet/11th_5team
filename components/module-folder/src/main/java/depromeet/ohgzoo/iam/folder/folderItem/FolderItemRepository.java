@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FolderItemRepository extends JpaRepository<FolderItem, Long> {
-    Optional<FolderItem> findByPostId(Long postId);
+    Optional<FolderItem> findByPostId(String postId);
 
     FolderItem findFirstByFolderOrderByCreatedAtDesc(Folder folder);
 

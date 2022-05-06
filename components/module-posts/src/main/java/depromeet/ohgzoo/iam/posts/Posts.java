@@ -12,7 +12,6 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,9 +22,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Posts {
     @Id
-    @GeneratedValue
     @Column
-    private Long id;
+    private String id;
 
     private Long memberId;
 
@@ -47,7 +45,7 @@ public class Posts {
     private LocalDateTime createdAt;
 
     @Builder
-    public Posts(Long id, Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
+    public Posts(String id, Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
         this.id = id;
         this.memberId = memberId;
         this.firstCategory = firstCategory;
@@ -59,13 +57,9 @@ public class Posts {
         this.createdAt = createdAt;
     }
 
-    public Posts(Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content,
+    public Posts(String postId, Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content,
                  List<String> tags, boolean disclosure) {
-        this(null, memberId, firstCategory, secondCategory, content, tags, disclosure, 0, LocalDateTime.now());
-    }
-
-    public void addViewNum() {
-        this.views += 1;
+        this(postId, memberId, firstCategory, secondCategory, content, tags, disclosure, 0, LocalDateTime.now());
     }
 
     public void update(UpdatePostsRequest request) {

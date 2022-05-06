@@ -18,7 +18,7 @@ public class SpyPostsRepository implements PostsRepository {
     public boolean findAll_wasCalled;
     public List<Posts> findAll_returnValue = Collections.emptyList();
     public Optional<Posts> findById;
-    public Long findById_argumentId;
+    public String findById_argumentId;
     public Posts findById_returnValue;
 
     @Override
@@ -38,7 +38,7 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public List<Posts> findAllById(Iterable<Long> longs) {
+    public List<Posts> findAllById(Iterable<String> longs) {
         return null;
     }
 
@@ -48,7 +48,7 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(String aLong) {
 
     }
 
@@ -58,7 +58,7 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(Iterable<? extends String> longs) {
 
     }
 
@@ -84,7 +84,7 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public Optional<Posts> findById(Long aLong) {
+    public Optional<Posts> findById(String aLong) {
         findById_argumentId = aLong;
 //        if (aLong.equals(0L)) {
 //            this.findById = Optional.empty();
@@ -96,7 +96,7 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(String aLong) {
         return false;
     }
 
@@ -121,7 +121,7 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public void deleteAllByIdInBatch(Iterable<Long> longs) {
+    public void deleteAllByIdInBatch(Iterable<String> longs) {
 
     }
 
@@ -131,12 +131,12 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public Posts getOne(Long aLong) {
+    public Posts getOne(String aLong) {
         return null;
     }
 
     @Override
-    public Posts getById(Long aLong) {
+    public Posts getById(String aLong) {
         return null;
     }
 
@@ -182,6 +182,6 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public void bulkDeletePosts(List<Long> postIds) {
+    public void bulkDeletePosts(List<String> postIds) {
     }
 }

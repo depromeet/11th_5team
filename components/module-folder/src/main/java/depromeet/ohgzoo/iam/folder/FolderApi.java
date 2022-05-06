@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import depromeet.ohgzoo.iam.jwt.Login;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.Pageable;
 
 import javax.validation.Valid;
 
@@ -69,7 +69,7 @@ public class FolderApi {
     }
 
     @DeleteMapping("/api/v1/folders/posts/{postId}")
-    public void deleteFolderItem(@Login Long memberId, @PathVariable Long postId) {
+    public void deleteFolderItem(@Login Long memberId, @PathVariable String postId) {
         folderService.deleteFolderItem(memberId, postId);
     }
 }
