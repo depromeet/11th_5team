@@ -27,7 +27,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java'
 }
 
-ext{
+ext {
     snippetDir = file('build/generated-snippets')
 }
 

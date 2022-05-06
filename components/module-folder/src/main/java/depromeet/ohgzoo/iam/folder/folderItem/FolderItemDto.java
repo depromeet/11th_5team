@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.Builder;
@@ -16,6 +17,7 @@ public class FolderItemDto {
     private SecondCategory secondCategory;
     private List<String> tags;
     private String content;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
     public static FolderItemDto of(FolderItem folderItem) {
