@@ -12,6 +12,10 @@ public class PostExtensionServiceImpl implements PostExtensionService {
 
     @Override
     public void createPost(Long memberId, CreatePostRequest request) {
-        eventPublisher.publishEvent(new PostCreateEvent(this, memberId, request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.isDisclosure(), request.getFolderId()));
+        eventPublisher.publishEvent(mapToEvent(memberId, request));
+    }
+
+    private PostCreateEvent mapToEvent(Long memberId, CreatePostRequest request) {
+        return new PostCreateEvent(this, memberId, request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.isDisclosure(), request.getFolderId());
     }
 }

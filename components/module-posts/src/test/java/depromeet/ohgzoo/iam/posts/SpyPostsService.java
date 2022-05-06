@@ -25,9 +25,11 @@ public class SpyPostsService implements PostsService {
     public int getAllPosts_argumentPage;
     public int getAllPosts_argumentSize;
     public List<PostsDto> getAllPosts_returnValue;
+    public Long createPosts_argumentMemberId;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
+        createPosts_argumentMemberId = memberId;
         createPosts_argumentRequest = request;
         return createPosts_returnValue;
     }

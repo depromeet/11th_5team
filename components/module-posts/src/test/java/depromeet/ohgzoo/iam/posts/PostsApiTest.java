@@ -22,8 +22,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,24 +39,6 @@ class PostsApiTest {
         mockMvc = MockMvcBuilders.standaloneSetup(new PostsApi(spyPostsService))
                 .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
                 .build();
-    }
-
-    @Test
-    void createPosts_returnsCreatedHttpStatus() throws Exception {
-        mockMvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
-    void createPosts_returnsPostsId() throws Exception {
-        spyPostsService.createPosts_returnValue = new CreatePostsResult(1L);
-
-        mockMvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(jsonPath("$.postId", equalTo(1)));
     }
 
     @Test
@@ -90,28 +70,6 @@ class PostsApiTest {
         mockMvc.perform(delete("/api/v1/posts")
                         .param("postIds", "1, 2, 3"))
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    void createPosts_passesCreateRequestToService() throws Exception {
-        CreatePostsRequest givenRequest = new CreatePostsRequest(
-                FirstCategory.NO1,
-                SecondCategory.Idk,
-                "givenContent",
-                List.of("tag1", "tag2", "tag3"),
-                true
-        );
-
-        mockMvc.perform(post("/api/v1/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(givenRequest)))
-                .andDo(print());
-
-        assertThat(spyPostsService.createPosts_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.NO1);
-        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.Idk);
-        assertThat(spyPostsService.createPosts_argumentRequest.getContent()).isEqualTo("givenContent");
-        assertThat(spyPostsService.createPosts_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
-        assertThat(spyPostsService.createPosts_argumentRequest.isDisclosure()).isTrue();
     }
 
     @Test
