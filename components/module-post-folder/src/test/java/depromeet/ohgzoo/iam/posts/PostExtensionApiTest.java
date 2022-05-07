@@ -103,7 +103,7 @@ class PostExtensionApiTest {
                 .param("postIds", "1,2,3")
                 .header("AUTH_TOKEN", "givenToken"));
 
-        assertThat(spyPostExtensionService.deletePosts_argumentPostsId).isEqualTo("1,2,3");
+        assertThat(spyPostExtensionService.deletePosts_argumentPostsId).isEqualTo(List.of("1", "2", "3"));
     }
 
 }
