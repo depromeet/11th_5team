@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -63,13 +62,6 @@ class PostsApiTest {
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getContent()).isEqualTo("content");
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getTags()).isEqualTo(List.of("tag"));
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getDisclosure()).isEqualTo(true);
-    }
-
-    @Test
-    void deletePosts_isOk() throws Exception {
-        mockMvc.perform(delete("/api/v1/posts")
-                        .param("postIds", "1, 2, 3"))
-                .andExpect(status().isOk());
     }
 
     @Test

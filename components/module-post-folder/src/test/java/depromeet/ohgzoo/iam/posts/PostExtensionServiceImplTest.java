@@ -3,6 +3,7 @@ package depromeet.ohgzoo.iam.posts;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
+import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,21 @@ class PostExtensionServiceImplTest {
                 givenUUID.toString()
         );
 
-        assertThat(spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
+        assertThat((PostCreateEvent) spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    void deletePosts_passesPostDeleteEventToEventPublisher() {
+        postExtensionService.deletePosts(1L, List.of("1", "2", "3"));
+
+        PostDeleteEvent expected = new PostDeleteEvent(
+                postExtensionService,
+                1L,
+                List.of("1", "2", "3")
+        );
+
+        assertThat((PostDeleteEvent) spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 }
