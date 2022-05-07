@@ -33,10 +33,11 @@ public class RedirectController {
         response.sendRedirect("http://localhost:3000/login/success");
     }
 
-    private Cookie getCookie(String authToken2, String auth) {
-        Cookie authToken = new Cookie(authToken2, auth);
-        authToken.setMaxAge(7 * 24 * 60 * 60);
-        authToken.setPath("/");
-        return authToken;
+    private Cookie getCookie(String key, String auth) {
+        Cookie cookie = new Cookie(key, auth);
+        cookie.setMaxAge(7 * 24 * 60 * 60);
+        cookie.setPath("/");
+        cookie.setDomain("localhost");
+        return cookie;
     }
 }
