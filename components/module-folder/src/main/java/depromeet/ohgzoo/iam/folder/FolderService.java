@@ -5,6 +5,8 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface FolderService {
     FolderResponse createFolder(Long memberId, FolderCreateRequest request);
 
@@ -20,5 +22,5 @@ public interface FolderService {
 
     FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable);
 
-    void deleteFolderItem(Long memberId, String postId);
+    void deleteFolderItems(Long memberId, List<String> postIds);
 }

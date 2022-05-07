@@ -5,12 +5,14 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public class SpyFolderService implements FolderService {
     public Long argument_memberId;
     public Long updateFolder_argumentMemberId;
     public Long updateFolder_argumentFolderId;
     public Long deleteFolder_argumentId;
-    public String deleteFolderItem_argumentPostId;
+    public List<String> deleteFolderItems_argumentPostIds;
     public FolderResponse createFolder_returnValue;
     public FolderResponse updateFolder_returnValue;
     public FolderCreateRequest createFolder_argumentRequest;
@@ -68,7 +70,7 @@ public class SpyFolderService implements FolderService {
     }
 
     @Override
-    public void deleteFolderItem(Long memberId, String postId) {
-        deleteFolderItem_argumentPostId = postId;
+    public void deleteFolderItems(Long memberId, List<String> postIds) {
+        deleteFolderItems_argumentPostIds = postIds;
     }
 }
