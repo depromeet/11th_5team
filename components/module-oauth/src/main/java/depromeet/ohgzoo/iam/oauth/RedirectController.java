@@ -35,7 +35,6 @@ public class RedirectController {
 
     private Cookie getCookie(String authToken2, String auth) {
         Cookie authToken = new Cookie(authToken2, auth);
-        authToken.setDomain("localhost");
         authToken.setPath("/");
         return authToken;
     }
