@@ -4,6 +4,7 @@ import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
+import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,5 +63,23 @@ class FolderEventSubscriberTest {
 
         assertThat(spyFolderService.createFolderItem_argumentMemberId).isEqualTo(1L);
         assertThat(spyFolderService.createFolderItem_argumentFolderId).isEqualTo(1L);
+    }
+
+    @Test
+    void handlePostDeleteEvent_passesMemberIdToService() {
+        PostDeleteEvent givenEvent = new PostDeleteEvent(this,
+                1L,
+                List.of());
+        folderEventSubscriber.handlePostDeleteEvent(givenEvent);
+        assertThat(spyFolderService.argument_memberId).isEqualTo(1L);
+    }
+
+    @Test
+    void handlePostDeleteEvent_passesPostIdsToService() {
+        PostDeleteEvent givenEvent = new PostDeleteEvent(this,
+                null,
+                List.of("1", "2", "3"));
+        folderEventSubscriber.handlePostDeleteEvent(givenEvent);
+        assertThat(spyFolderService.deleteFolderItems_argumentPostIds).isEqualTo(List.of("1", "2", "3"));
     }
 }

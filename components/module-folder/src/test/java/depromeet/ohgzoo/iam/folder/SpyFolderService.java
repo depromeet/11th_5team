@@ -71,6 +71,7 @@ public class SpyFolderService implements FolderService {
 
     @Override
     public void deleteFolderItems(Long memberId, List<String> postIds) {
+        argument_memberId = memberId;
         deleteFolderItems_argumentPostIds = postIds;
     }
 }
