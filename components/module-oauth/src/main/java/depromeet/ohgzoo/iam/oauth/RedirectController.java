@@ -35,6 +35,7 @@ public class RedirectController {
 
     private Cookie getCookie(String authToken2, String auth) {
         Cookie authToken = new Cookie(authToken2, auth);
+        authToken.setMaxAge(7 * 24 * 60 * 60);
         authToken.setPath("/");
         return authToken;
     }
