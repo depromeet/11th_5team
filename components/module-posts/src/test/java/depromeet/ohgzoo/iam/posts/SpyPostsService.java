@@ -79,9 +79,7 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public List<PostsDto> getAllPosts(int page, int size) {
-        getAllPosts_argumentPage = page;
-        getAllPosts_argumentSize = size;
+    public List<PostsDto> getAllPosts() {
         return getAllPosts_returnValue;
     }
 

@@ -12,5 +12,5 @@ public interface PostsService {
     PostsDto getRecentlyUnwrittenPosts(Long memberId);
     void increaseViews(Long postId);
     PostsDto getPostsById(Long postId);
-    List<PostsDto> getAllPosts(int page, int size);
+    List<PostsDto> getAllPosts();
 }
