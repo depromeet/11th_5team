@@ -6,6 +6,15 @@
 :toclevels: 2
 :sectlinks:
 
+
+== 1차 카테고리 조회
+
+operation::category-api-integration-test/first-category-list[snippets='http-request,http-response']
+
+== 2차 카테고리 조회
+
+operation::category-api-integration-test/second-category-list[snippets='http-request,http-response']
+
 == 카테고리 목록 조회
 
-operation::category-api-integration-test/status_is-ok[snippets='http-request,http-response']
+operation::category-api-integration-test/category-list[snippets='http-request,http-response']

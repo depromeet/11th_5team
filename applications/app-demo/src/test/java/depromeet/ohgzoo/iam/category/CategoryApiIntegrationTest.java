@@ -9,8 +9,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CategoryApiIntegrationTest extends IntegrationTest {
 
     @Test
-    public void status_isOk() throws Exception {
+    public void categoryList() throws Exception {
         mockMvc.perform(get("/api/v1/category"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void firstCategoryList() throws Exception {
+        mockMvc.perform(get("/api/v1/firstcategory"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void secondCategoryList() throws Exception {
+        mockMvc.perform(get("/api/v1/secondcategory"))
+                .andExpect(status().isOk());
+    }
+
 }
