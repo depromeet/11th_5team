@@ -154,7 +154,7 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolderItem_callsSaveInFolderItemRepository() {
-        folderItemService.createFolderItem(1L, aFolder().build(), new FolderItemCreateRequest("1",FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, aFolder().build(), new FolderItemCreateRequest("1", FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
         FolderItem savedFolderItem = spyFolderItemRepository.save_argumentFolderItem;
         assertThat(savedFolderItem.getId()).isNull();
@@ -273,7 +273,7 @@ public class FolderServiceImplTest {
 
     @Test
     void deleteFolderItem_throwsExceptionWhenFolderItemIsNotExisted() {
-        Assertions.assertThatThrownBy(() -> folderItemService.deleteFolderItem(1L, "1"))
+        Assertions.assertThatThrownBy(() -> folderItemService.deleteFolderItems(1L, List.of("1")))
                 .isInstanceOf(NotExistsFolderItemException.class);
     }
 
@@ -286,7 +286,7 @@ public class FolderServiceImplTest {
         folderItem2.setFolder(folder);
 
         spyFolderItemRepository.findById_returnValue = folderItem1;
-        folderItemService.deleteFolderItem(1L, "1");
+        folderItemService.deleteFolderItems(1L, List.of("1"));
 
         assertThat(folder.getFolderItems().size()).isEqualTo(1);
         assertThat(folder.getFolderItems().get(0).getPostId()).isEqualTo("2");

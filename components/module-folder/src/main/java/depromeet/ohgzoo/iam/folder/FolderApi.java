@@ -67,9 +67,4 @@ public class FolderApi {
     public FolderItemsGetResponse getFolderItems(@Login Long memberId, @PathVariable Long folderId, @PageableDefault(size = 20) Pageable pageable) {
         return folderService.getFolderItems(memberId, folderId, pageable);
     }
-
-    @DeleteMapping("/api/v1/folders/posts/{postId}")
-    public void deleteFolderItem(@Login Long memberId, @PathVariable String postId) {
-        folderService.deleteFolderItem(memberId, postId);
-    }
 }
