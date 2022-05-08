@@ -14,8 +14,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostExtensionApiTest {
@@ -74,6 +76,16 @@ class PostExtensionApiTest {
                 .header("AUTH_TOKEN", "givenToken"));
 
         assertThat(spyPostExtensionService.createPost_argumentMemberId).isEqualTo(1L);
+    }
+
+    @Test
+    void createPost_returnsPostId() throws Exception {
+        spyPostExtensionService.createPost_returnValue = new CreatePostResult("1");
+
+        mockMvc.perform(post("/api/v1/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(jsonPath("$.postId", equalTo("1")));
     }
 
     @Test

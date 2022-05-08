@@ -57,6 +57,25 @@ class PostExtensionServiceImplTest {
     }
 
     @Test
+    void createPost_returnsPostCreateResult() {
+        UUID givenUUID = UUID.randomUUID();
+        stubUUIDProvider.randomUUID_returnValue = givenUUID;
+
+        CreatePostRequest givenRequest = new CreatePostRequest(
+                FirstCategory.NO1,
+                SecondCategory.Idk,
+                "givenContent",
+                List.of("tag1", "tag2", "tag3"),
+                true,
+                1L
+        );
+
+        CreatePostResult result = postExtensionService.createPost(1L, givenRequest);
+
+        assertThat(result.getPostId()).isEqualTo(givenUUID.toString());
+    }
+
+    @Test
     void deletePosts_passesPostDeleteEventToEventPublisher() {
         postExtensionService.deletePosts(1L, List.of("1", "2", "3"));
 

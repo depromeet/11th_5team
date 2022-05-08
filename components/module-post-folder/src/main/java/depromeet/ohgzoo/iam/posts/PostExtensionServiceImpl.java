@@ -15,8 +15,10 @@ public class PostExtensionServiceImpl implements PostExtensionService {
     private final UUIDProvider uuidProvider;
 
     @Override
-    public void createPost(Long memberId, CreatePostRequest request) {
-        eventPublisher.publishEvent(mapToEvent(memberId, request));
+    public CreatePostResult createPost(Long memberId, CreatePostRequest request) {
+        PostCreateEvent event = mapToEvent(memberId, request);
+        eventPublisher.publishEvent(event);
+        return new CreatePostResult(event.getPostId());
     }
 
     @Override
