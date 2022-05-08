@@ -1,0 +1,11 @@
+= Category APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 카테고리 목록 조회
+
+operation::category-api-integration-test/status_is-ok[snippets='http-request,http-response']
