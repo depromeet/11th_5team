@@ -6,14 +6,12 @@ include ':components:module-member'
 include ':components:module-folder'
 include ':components:module-oauth'
 include ':components:module-search'
-include ':components:module-category'
 include ':components:support-feign'
 include ':components:support-jwt'
 include ':components:support-security'
 include ':components:support-jpa'
 include ':components:module-post-folder'
 include ':components:postEvent'
-include ':components:component-category'
-
+include ':components:module-category', ':components:category'
 
 
