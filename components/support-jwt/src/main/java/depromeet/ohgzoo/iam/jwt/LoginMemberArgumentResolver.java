@@ -28,7 +28,11 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        return Long.valueOf(getMemberId(request));
+        try {
+            return Long.valueOf(getMemberId(request));
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     private String getMemberId(HttpServletRequest request) {

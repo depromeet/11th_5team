@@ -14,12 +14,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 public class RemotePosts {
-    private Long id;
+    private String id;
+    private Long memberId;
     private String firstCategory;
     private String secondCategory;
     private String content;
     private List<String> tags;
-    private boolean disclosure;
     private int views;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
