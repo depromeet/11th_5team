@@ -1,14 +1,14 @@
 insert into posts
-(id, content, created_at, disclosure, first_category, member_id, second_category, tags, views)
-values ('1', 'content1', CURRENT_TIMESTAMP(), 1, 'UPSET', 1, 'ANGRY', 'tag1,tag2', 0);
+(id, content, created_at, updated_at, disclosure, first_category, member_id, second_category, tags, views)
+values ('1', 'content1', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'UPSET', 1, 'ANGRY', 'tag1,tag2', 0);
 
 insert into posts
-(id, content, created_at, disclosure, first_category, member_id, second_category, tags, views)
-values ('2', 'content2', CURRENT_TIMESTAMP(), 1, 'UPSET', 1, 'ANGRY', 'tag1,tag2', 0);
+(id, content, created_at, updated_at, disclosure, first_category, member_id, second_category, tags, views)
+values ('2', 'content2', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'UPSET', 1, 'ANGRY', 'tag1,tag2', 0);
 
 insert into posts
-(id, content, created_at, disclosure, first_category, member_id, second_category, tags, views)
-values ('3', 'content3', CURRENT_TIMESTAMP(), 1, 'UPSET', 1, 'Unwritten', 'tag1,tag2', 0);
+(id, content, created_at, updated_at, disclosure, first_category, member_id, second_category, tags, views)
+values ('3', 'content3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'UPSET', 1, 'Unwritten', 'tag1,tag2', 0);
 
 
 insert into folder

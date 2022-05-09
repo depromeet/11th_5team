@@ -122,11 +122,9 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostsDto> getAllPosts(int page, int size) {
+    public List<PostsDto> getAllPosts() {
         return postsRepository.findAll()
                 .stream()
-                .skip(page)
-                .limit(size)
                 .map(PostsDto::new)
                 .collect(Collectors.toList());
     }

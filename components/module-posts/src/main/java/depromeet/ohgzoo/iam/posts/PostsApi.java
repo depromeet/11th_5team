@@ -64,8 +64,7 @@ public class PostsApi {
     }
 
     @GetMapping("/all")
-    public List<PostsDto> getAllPosts(@RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "20") int size) {
-        return postsService.getAllPosts(page, size);
+    public List<PostsDto> getAllPosts() {
+        return postsService.getAllPosts();
     }
 }
