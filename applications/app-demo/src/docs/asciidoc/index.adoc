@@ -11,3 +11,4 @@
 - xref:posts.adoc[Posts APIs]
 - xref:folder.adoc[Folder APIs]
 - xref:search.adoc[Search APIs]
+- xref:category.adoc[Category APIs]

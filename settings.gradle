@@ -13,5 +13,7 @@ include ':components:support-security'
 include ':components:support-jpa'
 include ':components:module-post-folder'
 include ':components:postEvent'
+include ':components:component-category'
+
 
 
