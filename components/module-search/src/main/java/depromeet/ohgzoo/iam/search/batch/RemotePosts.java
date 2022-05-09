@@ -23,4 +23,15 @@ public class RemotePosts {
     private int views;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+
+    public RemotePosts(String id, Long memberId, String firstCategory, String secondCategory, String content, List<String> tags, int views, LocalDateTime createdAt) {
+        this.id = id;
+        this.memberId = memberId;
+        this.firstCategory = firstCategory;
+        this.secondCategory = secondCategory;
+        this.content = content;
+        this.tags = tags;
+        this.views = views;
+        this.createdAt = createdAt;
+    }
 }
