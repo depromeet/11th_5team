@@ -17,4 +17,9 @@ public class SearchApi {
     public SearchResult search(@RequestParam String keyword, @Login Long memberId) {
         return searchService.search(keyword, memberId);
     }
+
+    @GetMapping("tag")
+    public SearchResult searchByTag(@RequestParam String keyword, @Login Long memberId) {
+        return searchService.searchByTag(keyword, memberId);
+    }
 }

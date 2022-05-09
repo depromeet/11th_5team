@@ -9,3 +9,7 @@
 == 검색
 
 operation::search-integration-test/search[snippets='http-request,http-response']
+
+== Tag 로 검색
+
+operation::search-integration-test/search-by-tag[snippets='http-request,http-response']

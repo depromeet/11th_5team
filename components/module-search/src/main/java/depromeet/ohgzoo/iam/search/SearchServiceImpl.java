@@ -22,6 +22,17 @@ public class SearchServiceImpl implements SearchService {
         return SearchResult.of(filtered);
     }
 
+    @Override
+    public SearchResult searchByTag(String keyword, Long memberId) {
+        SearchModel[] filtered = searchRepository.findAll()
+                .stream()
+                .filter(entity -> entity.getTags().contains(keyword))
+                .map(entity -> mapToSearchModel(entity, memberId))
+                .toArray(SearchModel[]::new);
+
+        return SearchResult.of(filtered);
+    }
+
     private SearchModel mapToSearchModel(SearchEntity post, Long memberId) {
         return new SearchModel(
                 post.getId(),
