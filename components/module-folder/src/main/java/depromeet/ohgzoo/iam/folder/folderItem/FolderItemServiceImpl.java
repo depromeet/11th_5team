@@ -43,12 +43,13 @@ public class FolderItemServiceImpl implements FolderItemService {
     }
 
     @Override
-    public void deleteFolderItem(Long memberId, String postId) {
-        FolderItem folderItem = folderItemRepository.findByPostId(postId)
-                .orElseThrow(NotExistsFolderItemException::new);
-
-        folderItem.unsetFolder();
-        folderItemRepository.delete(folderItem);
+    public void deleteFolderItems(Long memberId, List<String> postIds) {
+        for (String postId : postIds) {
+            FolderItem folderItem = folderItemRepository.findByPostId(postId)
+                    .orElseThrow(NotExistsFolderItemException::new);
+            folderItem.unsetFolder();
+            folderItemRepository.delete(folderItem);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
+import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -23,5 +24,10 @@ public class PostEventSubscriber {
                 event.getContent(),
                 event.getTags(),
                 event.isDisclosure());
+    }
+
+    @EventListener
+    public void handlePostDeleteEvent(PostDeleteEvent event) {
+        postsService.deletePosts(event.getPostIds(), event.getMemberId());
     }
 }

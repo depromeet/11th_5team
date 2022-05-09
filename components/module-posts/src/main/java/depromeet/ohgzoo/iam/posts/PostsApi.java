@@ -2,7 +2,6 @@ package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.jwt.Login;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,13 +52,6 @@ public class PostsApi {
         postsService.updatePosts(postId, request, memberId);
     }
 
-    @DeleteMapping
-    public void deletePosts(
-            @RequestParam List<String> postIds,
-            @Login Long memberId) {
-        postsService.deletePosts(postIds, memberId);
-    }
-
     @PatchMapping("/{postid}/views")
     public void increaseViews(
             @PathVariable("postid") String postId) {
@@ -72,8 +64,7 @@ public class PostsApi {
     }
 
     @GetMapping("/all")
-    public List<PostsDto> getAllPosts(@RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "20") int size) {
-        return postsService.getAllPosts(page, size);
+    public List<PostsDto> getAllPosts() {
+        return postsService.getAllPosts();
     }
 }

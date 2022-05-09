@@ -13,7 +13,6 @@ public class CoverImageUrl {
                 return angryImage;
             case UPSET:
                 return upsetImage;
-
             case DEFAULT:
                 return defaultImage;
             default:

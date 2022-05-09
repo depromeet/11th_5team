@@ -247,7 +247,7 @@ class PostsServiceImplTest {
 
     @Test
     void getAllPosts__callsFindAllInRepository() {
-        postsService.getAllPosts(0, 0);
+        postsService.getAllPosts();
 
         assertThat(spyPostsRepository.findAll_wasCalled).isTrue();
     }
@@ -261,7 +261,7 @@ class PostsServiceImplTest {
                 Posts.builder().id("4").build()
         );
 
-        List<PostsDto> result = postsService.getAllPosts(0, 4);
+        List<PostsDto> result = postsService.getAllPosts();
 
         assertThat(result).containsExactly(
                 PostsDto.builder().id("1").build(),

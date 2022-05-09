@@ -1,5 +1,5 @@
 dependencies {
-    api project(':components:module-category')
+    api project(':components:category')
     implementation project(':components:support-jpa')
     implementation project(':components:support-jwt')
     implementation project(':components:postEvent')

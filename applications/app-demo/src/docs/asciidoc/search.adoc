@@ -1,0 +1,11 @@
+= Search APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 검색
+
+operation::search-integration-test/search[snippets='http-request,http-response']

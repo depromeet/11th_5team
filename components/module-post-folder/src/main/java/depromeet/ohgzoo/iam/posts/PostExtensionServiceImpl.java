@@ -1,9 +1,12 @@
 package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
+import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -12,8 +15,15 @@ public class PostExtensionServiceImpl implements PostExtensionService {
     private final UUIDProvider uuidProvider;
 
     @Override
-    public void createPost(Long memberId, CreatePostRequest request) {
-        eventPublisher.publishEvent(mapToEvent(memberId, request));
+    public CreatePostResult createPost(Long memberId, CreatePostRequest request) {
+        PostCreateEvent event = mapToEvent(memberId, request);
+        eventPublisher.publishEvent(event);
+        return new CreatePostResult(event.getPostId());
+    }
+
+    @Override
+    public void deletePosts(Long memberId, List<String> postIds) {
+        eventPublisher.publishEvent(new PostDeleteEvent(this, memberId, postIds));
     }
 
     private PostCreateEvent mapToEvent(Long memberId, CreatePostRequest request) {

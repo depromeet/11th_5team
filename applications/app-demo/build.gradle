@@ -14,8 +14,11 @@ dependencies {
     implementation project(':components:module-folder')
     implementation project(':components:module-posts')
     implementation project(':components:module-post-folder')
+    implementation project(':components:module-search')
     implementation project(':components:support-jwt')
     implementation project(':components:support-jpa')
+    implementation project(':components:module-category')
+
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 

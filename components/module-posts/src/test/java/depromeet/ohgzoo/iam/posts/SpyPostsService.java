@@ -26,6 +26,8 @@ public class SpyPostsService implements PostsService {
     public int getAllPosts_argumentSize;
     public List<PostsDto> getAllPosts_returnValue;
     public Long createPosts_argumentMemberId;
+    public Long deletePosts_argumentMemberId;
+    public List<String> deletePosts_argumentPostsId;
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -81,14 +83,13 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public List<PostsDto> getAllPosts(int page, int size) {
-        getAllPosts_argumentPage = page;
-        getAllPosts_argumentSize = size;
+    public List<PostsDto> getAllPosts() {
         return getAllPosts_returnValue;
     }
 
     @Override
     public void deletePosts(List<String> postIds, Long memberId) {
-
+        deletePosts_argumentMemberId = memberId;
+        deletePosts_argumentPostsId = postIds;
     }
 }
