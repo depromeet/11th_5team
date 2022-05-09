@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.search.batch.PostEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,8 +32,8 @@ class SearchServiceImplTest {
     @Test
     void search_returnsContainedKeywordSearchResult() {
         spyPostRepository.findAll_returnValue = List.of(
-                new PostEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0),
-                new PostEntity("2", 1L, "", "", "hello", Collections.emptyList(), 0)
+                new PostEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
+                new PostEntity("2", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
         );
 
         SearchResult result = sut.search("hi", null);
@@ -49,9 +50,9 @@ class SearchServiceImplTest {
     void search_returnsContainedKeywordSearchResult_whenLogin() {
 
         spyPostRepository.findAll_returnValue = List.of(
-                new PostEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0),
-                new PostEntity("2", 2L, "", "", "hi hi", Collections.emptyList(), 0),
-                new PostEntity("3", 1L, "", "", "hello", Collections.emptyList(), 0)
+                new PostEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
+                new PostEntity("2", 2L, "", "", "hi hi", Collections.emptyList(), 0, LocalDateTime.now()),
+                new PostEntity("3", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
         );
 
         SearchResult result = sut.search("hi", 1L);

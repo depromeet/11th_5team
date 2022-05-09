@@ -45,6 +45,7 @@ public class BatchConfig {
     @Bean
     @StepScope
     public ItemWriter<PostEntity> writePosts() {
+        /* update 된 애들만 저장할라 했는데, updatedAt을 안주네... 추후 수정 */
         return postRepository::saveAll;
     }
 
@@ -57,7 +58,8 @@ public class BatchConfig {
                 posts.getSecondCategory(),
                 posts.getContent(),
                 posts.getTags(),
-                posts.getViews());
+                posts.getViews(),
+                posts.getCreatedAt());
     }
 
     @Bean
