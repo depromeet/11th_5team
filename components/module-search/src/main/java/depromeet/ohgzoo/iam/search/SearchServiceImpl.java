@@ -1,19 +1,19 @@
 package depromeet.ohgzoo.iam.search;
 
 import depromeet.ohgzoo.iam.search.SearchResult.SearchModel;
-import depromeet.ohgzoo.iam.search.batch.PostEntity;
-import depromeet.ohgzoo.iam.search.batch.PostRepository;
+import depromeet.ohgzoo.iam.search.batch.SearchEntity;
+import depromeet.ohgzoo.iam.search.batch.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class SearchServiceImpl implements SearchService {
-    private final PostRepository postRepository;
+    private final SearchRepository searchRepository;
 
     @Override
     public SearchResult search(String keyword, Long memberId) {
-        SearchModel[] filtered = postRepository.findAll()
+        SearchModel[] filtered = searchRepository.findAll()
                 .stream()
                 .filter(entity -> entity.getContent().contains(keyword))
                 .map(entity -> mapToSearchModel(entity, memberId))
@@ -22,7 +22,7 @@ public class SearchServiceImpl implements SearchService {
         return SearchResult.of(filtered);
     }
 
-    private SearchModel mapToSearchModel(PostEntity post, Long memberId) {
+    private SearchModel mapToSearchModel(SearchEntity post, Long memberId) {
         return new SearchModel(
                 post.getId(),
                 post.getFirstCategory(),

@@ -1,7 +1,7 @@
 package depromeet.ohgzoo.iam.search;
 
 import depromeet.ohgzoo.iam.search.SearchResult.SearchModel;
-import depromeet.ohgzoo.iam.search.batch.PostEntity;
+import depromeet.ohgzoo.iam.search.batch.SearchEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SearchServiceImplTest {
 
     private SearchService sut;
-    private SpyPostRepository spyPostRepository;
+    private SpySearchRepository spyPostRepository;
 
     @BeforeEach
     void setUp() {
-        spyPostRepository = new SpyPostRepository();
+        spyPostRepository = new SpySearchRepository();
         sut = new SearchServiceImpl(spyPostRepository);
     }
 
@@ -32,8 +32,8 @@ class SearchServiceImplTest {
     @Test
     void search_returnsContainedKeywordSearchResult() {
         spyPostRepository.findAll_returnValue = List.of(
-                new PostEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
-                new PostEntity("2", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
+                new SearchEntity("2", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
         );
 
         SearchResult result = sut.search("hi", null);
@@ -50,9 +50,9 @@ class SearchServiceImplTest {
     void search_returnsContainedKeywordSearchResult_whenLogin() {
 
         spyPostRepository.findAll_returnValue = List.of(
-                new PostEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
-                new PostEntity("2", 2L, "", "", "hi hi", Collections.emptyList(), 0, LocalDateTime.now()),
-                new PostEntity("3", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
+                new SearchEntity("2", 2L, "", "", "hi hi", Collections.emptyList(), 0, LocalDateTime.now()),
+                new SearchEntity("3", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
         );
 
         SearchResult result = sut.search("hi", 1L);

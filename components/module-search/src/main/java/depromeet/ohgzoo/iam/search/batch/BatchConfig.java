@@ -23,7 +23,7 @@ public class BatchConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final PostsClient postsClient;
-    private final PostRepository postRepository;
+    private final SearchRepository searchRepository;
 
     @Bean
     public Job collectJob() {
@@ -35,7 +35,7 @@ public class BatchConfig {
     @Bean
     public Step collectPostsStep() {
         return stepBuilderFactory.get("inquiryPosts")
-                .<RemotePosts, PostEntity>chunk(3)
+                .<RemotePosts, SearchEntity>chunk(3)
                 .reader(inquiryPosts())
                 .processor(processPosts())
                 .writer(writePosts())
@@ -44,15 +44,15 @@ public class BatchConfig {
 
     @Bean
     @StepScope
-    public ItemWriter<PostEntity> writePosts() {
+    public ItemWriter<SearchEntity> writePosts() {
         /* update 된 애들만 저장할라 했는데, updatedAt을 안주네... 추후 수정 */
-        return postRepository::saveAll;
+        return searchRepository::saveAll;
     }
 
     @Bean
     @StepScope
-    public ItemProcessor<RemotePosts, PostEntity> processPosts() {
-        return posts -> new PostEntity(posts.getId(),
+    public ItemProcessor<RemotePosts, SearchEntity> processPosts() {
+        return posts -> new SearchEntity(posts.getId(),
                 posts.getMemberId(),
                 posts.getFirstCategory(),
                 posts.getSecondCategory(),

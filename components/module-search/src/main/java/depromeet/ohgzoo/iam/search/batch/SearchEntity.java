@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostEntity {
+public class SearchEntity {
     @Id
     private String id;
     private Long memberId;
@@ -29,7 +29,7 @@ public class PostEntity {
     private LocalDateTime createdAt;
 
     @Builder
-    public PostEntity(String id, Long memberId, String firstCategory, String secondCategory, String content, List<String> tags, int views, LocalDateTime createdAt) {
+    public SearchEntity(String id, Long memberId, String firstCategory, String secondCategory, String content, List<String> tags, int views, LocalDateTime createdAt) {
         this.id = id;
         this.memberId = memberId;
         this.firstCategory = firstCategory;

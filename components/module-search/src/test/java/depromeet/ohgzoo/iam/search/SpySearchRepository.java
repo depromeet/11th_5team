@@ -1,7 +1,7 @@
 package depromeet.ohgzoo.iam.search;
 
-import depromeet.ohgzoo.iam.search.batch.PostEntity;
-import depromeet.ohgzoo.iam.search.batch.PostRepository;
+import depromeet.ohgzoo.iam.search.batch.SearchEntity;
+import depromeet.ohgzoo.iam.search.batch.SearchRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,28 +13,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class SpyPostRepository implements PostRepository {
+public class SpySearchRepository implements SearchRepository {
     public boolean findAll_wasCalled;
-    public List<PostEntity> findAll_returnValue = Collections.emptyList();
+    public List<SearchEntity> findAll_returnValue = Collections.emptyList();
 
     @Override
-    public List<PostEntity> findAll() {
+    public List<SearchEntity> findAll() {
         findAll_wasCalled = true;
         return findAll_returnValue;
     }
 
     @Override
-    public List<PostEntity> findAll(Sort sort) {
+    public List<SearchEntity> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public Page<PostEntity> findAll(Pageable pageable) {
+    public Page<SearchEntity> findAll(Pageable pageable) {
         return null;
     }
 
     @Override
-    public List<PostEntity> findAllById(Iterable<String> strings) {
+    public List<SearchEntity> findAllById(Iterable<String> strings) {
         return null;
     }
 
@@ -49,7 +49,7 @@ public class SpyPostRepository implements PostRepository {
     }
 
     @Override
-    public void delete(PostEntity entity) {
+    public void delete(SearchEntity entity) {
 
     }
 
@@ -59,7 +59,7 @@ public class SpyPostRepository implements PostRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends PostEntity> entities) {
+    public void deleteAll(Iterable<? extends SearchEntity> entities) {
 
     }
 
@@ -69,17 +69,17 @@ public class SpyPostRepository implements PostRepository {
     }
 
     @Override
-    public <S extends PostEntity> S save(S entity) {
+    public <S extends SearchEntity> S save(S entity) {
         return null;
     }
 
     @Override
-    public <S extends PostEntity> List<S> saveAll(Iterable<S> entities) {
+    public <S extends SearchEntity> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<PostEntity> findById(String s) {
+    public Optional<SearchEntity> findById(String s) {
         return Optional.empty();
     }
 
@@ -94,17 +94,17 @@ public class SpyPostRepository implements PostRepository {
     }
 
     @Override
-    public <S extends PostEntity> S saveAndFlush(S entity) {
+    public <S extends SearchEntity> S saveAndFlush(S entity) {
         return null;
     }
 
     @Override
-    public <S extends PostEntity> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends SearchEntity> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<PostEntity> entities) {
+    public void deleteAllInBatch(Iterable<SearchEntity> entities) {
 
     }
 
@@ -119,47 +119,47 @@ public class SpyPostRepository implements PostRepository {
     }
 
     @Override
-    public PostEntity getOne(String s) {
+    public SearchEntity getOne(String s) {
         return null;
     }
 
     @Override
-    public PostEntity getById(String s) {
+    public SearchEntity getById(String s) {
         return null;
     }
 
     @Override
-    public <S extends PostEntity> Optional<S> findOne(Example<S> example) {
+    public <S extends SearchEntity> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
     @Override
-    public <S extends PostEntity> List<S> findAll(Example<S> example) {
+    public <S extends SearchEntity> List<S> findAll(Example<S> example) {
         return null;
     }
 
     @Override
-    public <S extends PostEntity> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends SearchEntity> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
     @Override
-    public <S extends PostEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends SearchEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends PostEntity> long count(Example<S> example) {
+    public <S extends SearchEntity> long count(Example<S> example) {
         return 0;
     }
 
     @Override
-    public <S extends PostEntity> boolean exists(Example<S> example) {
+    public <S extends SearchEntity> boolean exists(Example<S> example) {
         return false;
     }
 
     @Override
-    public <S extends PostEntity, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends SearchEntity, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }
