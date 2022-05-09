@@ -30,7 +30,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         try {
             return Long.valueOf(getMemberId(request));
-        } catch (NumberFormatException e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }
