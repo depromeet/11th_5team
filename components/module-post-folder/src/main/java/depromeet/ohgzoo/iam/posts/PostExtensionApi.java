@@ -21,14 +21,12 @@ public class PostExtensionApi {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPost(@Login Long memberId, @RequestBody CreatePostRequest request) {
-        postExtensionService.createPost(memberId, request);
+    public CreatePostResult createPost(@Login Long memberId, @RequestBody CreatePostRequest request) {
+        return postExtensionService.createPost(memberId, request);
     }
 
     @DeleteMapping
     public void deletePosts(@Login Long memberId, @RequestParam List<String> postIds) {
         postExtensionService.deletePosts(memberId, postIds);
     }
-
-
 }

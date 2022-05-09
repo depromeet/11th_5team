@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class CreatePostResult {
-    private Long postId;
+    private String postId;
 
-    public CreatePostResult(Long postId) {
+    public CreatePostResult(String postId) {
         this.postId = postId;
     }
 }
