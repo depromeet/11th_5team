@@ -4,7 +4,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-      use-new-id-generator-mappings: false
+      use-new-id-generator-mappings: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     url: ${DB_CONNECTION_STRING}
