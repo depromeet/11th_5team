@@ -67,4 +67,50 @@ class SearchServiceImplTest {
         assertThat(result.getPosts().get(1).getId()).isEqualTo("2");
         assertThat(result.getPosts().get(1).isMy()).isFalse();
     }
+
+    @Test
+    void searchByTag_callsFindAllInRepository() {
+        sut.searchByTag("keyword", null);
+
+        assertThat(spyPostRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void searchByTag_returnsContainedTagSearchResult() {
+        spyPostRepository.findAll_returnValue = List.of(
+                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0, LocalDateTime.now()),
+                new SearchEntity("2", 1L, "", "", "content2", List.of("hello"), 0, LocalDateTime.now())
+        );
+
+        SearchResult result = sut.searchByTag("hi", null);
+
+        assertThat(result.getPosts()).hasSize(1);
+
+        SearchModel actual = result.getPosts().get(0);
+        assertThat(actual.getTags()).contains("hi");
+        assertThat(actual.getId()).isEqualTo("1");
+        assertThat(actual.isMy()).isFalse();
+    }
+
+    @Test
+    void searchByTag_returnsContainedTagSearchResult_whenLogin() {
+
+        spyPostRepository.findAll_returnValue = List.of(
+                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0, LocalDateTime.now()),
+                new SearchEntity("2", 2L, "", "", "content2", List.of("hi", "hello"), 0, LocalDateTime.now()),
+                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0, LocalDateTime.now())
+        );
+
+        SearchResult result = sut.searchByTag("hi", 1L);
+
+        assertThat(result.getPosts()).hasSize(2);
+
+        assertThat(result.getPosts().get(0).getTags()).contains("hi");
+        assertThat(result.getPosts().get(0).getId()).isEqualTo("1");
+        assertThat(result.getPosts().get(0).isMy()).isTrue();
+
+        assertThat(result.getPosts().get(1).getTags()).contains("hi", "hello");
+        assertThat(result.getPosts().get(1).getId()).isEqualTo("2");
+        assertThat(result.getPosts().get(1).isMy()).isFalse();
+    }
 }
