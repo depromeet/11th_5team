@@ -23,6 +23,7 @@ public class BatchConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final PostsClient postsClient;
+    private final PostRepository postRepository;
 
     @Bean
     public Job collectJob() {
@@ -34,7 +35,7 @@ public class BatchConfig {
     @Bean
     public Step collectPostsStep() {
         return stepBuilderFactory.get("inquiryPosts")
-                .<RemotePosts, RemotePosts>chunk(3)
+                .<RemotePosts, PostEntity>chunk(3)
                 .reader(inquiryPosts())
                 .processor(processPosts())
                 .writer(writePosts())
@@ -43,16 +44,20 @@ public class BatchConfig {
 
     @Bean
     @StepScope
-    public ItemWriter<RemotePosts> writePosts() {
-        return posts -> {
-            System.out.println("posts = " + posts);
-        };
+    public ItemWriter<PostEntity> writePosts() {
+        return postRepository::saveAll;
     }
 
     @Bean
     @StepScope
-    public ItemProcessor<RemotePosts, RemotePosts> processPosts() {
-        return posts -> posts;
+    public ItemProcessor<RemotePosts, PostEntity> processPosts() {
+        return posts -> new PostEntity(posts.getId(),
+                posts.getMemberId(),
+                posts.getFirstCategory(),
+                posts.getSecondCategory(),
+                posts.getContent(),
+                posts.getTags(),
+                posts.getViews());
     }
 
     @Bean
