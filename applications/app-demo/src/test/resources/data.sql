@@ -1,3 +1,7 @@
+insert into member
+(member_id, identify_token, nickname, profile_img)
+values (1, 'profileImg', 'nickname', 'identifyToken');
+
 insert into posts
 (id, content, created_at, updated_at, disclosure, first_category, member_id, second_category, tags, views)
 values ('1', 'content1', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'SADNESS', 1, 'SADNESS', 'tag1,tag2', 0);
@@ -9,7 +13,6 @@ values ('2', 'content2', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'SADNESS',
 insert into posts
 (id, content, created_at, updated_at, disclosure, first_category, member_id, second_category, tags, views)
 values ('3', 'content3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'SADNESS', 1, 'Unwritten', 'tag1,tag2', 0);
-
 
 insert into folder
     (folder_id, created_at, updated_at, cover_img, member_id, name)
