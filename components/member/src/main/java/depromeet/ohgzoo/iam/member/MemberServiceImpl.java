@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.member;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,6 +12,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final JwtService jwtService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public boolean alreadyJoin(String identifyToken) {
@@ -22,7 +24,9 @@ public class MemberServiceImpl implements MemberService {
     public void join(MemberJoinRequest request) {
         Member member = new Member(request.getProfileImg(), request.getNickname(), request.getIdentifyToken());
 
-        memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+
+        eventPublisher.publishEvent(new MemberCreateEvent(this, savedMember.getId()));
     }
 
     @Override
