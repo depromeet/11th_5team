@@ -27,7 +27,8 @@ public class LoginApiIntegrationTest extends IntegrationTest {
 
     @Test
     void login() throws Exception {
-        mockMvc.perform(get("/oauth2/authorization/kakao"))
+        mockMvc.perform(get("/signIn")
+                        .param("code", "kakaoCode"))
                 .andExpect(status().isOk());
     }
 

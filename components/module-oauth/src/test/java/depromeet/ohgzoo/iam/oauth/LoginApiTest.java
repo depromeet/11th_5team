@@ -62,4 +62,30 @@ class LoginApiTest {
                 .andExpect(jsonPath("$.auth", equalTo("auth")))
                 .andExpect(jsonPath("$.refresh", equalTo("refresh")));
     }
+
+    @Test
+    void signIn_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/signIn"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void signIn_passesCodeToService() throws Exception {
+        mockMvc.perform(get("/signIn")
+                        .param("code", "givenCode"));
+
+        assertThat(spyOauthService.getToken_argumentCode).isEqualTo("givenCode");
+    }
+
+    @Test
+    void signIn_returnsAuthToken() throws Exception {
+        spyOauthService.getToken_returnValue = new AuthToken(
+                "auth", "refresh"
+        );
+
+        mockMvc.perform(get("/signIn")
+                        .param("code", ""))
+                .andExpect(jsonPath("$.auth", equalTo("auth")))
+                .andExpect(jsonPath("$.refresh", equalTo("refresh")));
+    }
 }

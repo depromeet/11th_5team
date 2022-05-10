@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.oauth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,5 +24,10 @@ public class LoginApi {
         String refreshHeader = request.getHeader(REFRESH_TOKEN);
 
         return oauthService.getRefreshToken(refreshHeader);
+    }
+
+    @GetMapping("/signIn")
+    public AuthToken signIn(@RequestParam String code) {
+        return oauthService.getToken(code);
     }
 }
