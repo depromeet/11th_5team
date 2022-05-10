@@ -40,7 +40,7 @@ public class PostsApi {
     }
 
     @GetMapping("/temp")
-    public PostsDto getRecentlyUnwrittenPosts(@Login Long memberId) {
+    public List<PostsDto> getRecentlyUnwrittenPosts(@Login Long memberId) {
         return postsService.getRecentlyUnwrittenPosts(memberId);
     }
 

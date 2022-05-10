@@ -68,6 +68,6 @@ public class FolderItemServiceImpl implements FolderItemService {
     @Override
     public void changeFolderCoverImage(Folder folder) {
         FolderItem folderItem = folderItemRepository.findFirstByFolderOrderByCreatedAtDesc(folder);
-        folder.changeCoverImg((folderItem == null) ? FirstCategory.DEFAULT : folderItem.getFirstCategory());
+        folder.changeCoverImg((folderItem == null) ? FirstCategory.SADNESS : folderItem.getFirstCategory());
     }
 }

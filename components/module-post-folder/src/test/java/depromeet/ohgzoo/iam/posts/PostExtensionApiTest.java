@@ -46,8 +46,8 @@ class PostExtensionApiTest {
     @Test
     void createPost_passesCreateRequestToService() throws Exception {
         CreatePostRequest givenRequest = new CreatePostRequest(
-                FirstCategory.NO1,
-                SecondCategory.Idk,
+                FirstCategory.SADNESS,
+                SecondCategory.DONTKNOW,
                 "givenContent",
                 List.of("tag1", "tag2", "tag3"),
                 true,
@@ -58,8 +58,8 @@ class PostExtensionApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest)));
 
-        assertThat(spyPostExtensionService.createPost_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.NO1);
-        assertThat(spyPostExtensionService.createPost_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.Idk);
+        assertThat(spyPostExtensionService.createPost_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.SADNESS);
+        assertThat(spyPostExtensionService.createPost_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.DONTKNOW);
         assertThat(spyPostExtensionService.createPost_argumentRequest.getContent()).isEqualTo("givenContent");
         assertThat(spyPostExtensionService.createPost_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
         assertThat(spyPostExtensionService.createPost_argumentRequest.isDisclosure()).isTrue();

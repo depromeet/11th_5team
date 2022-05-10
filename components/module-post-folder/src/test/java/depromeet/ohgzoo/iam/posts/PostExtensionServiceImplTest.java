@@ -30,8 +30,8 @@ class PostExtensionServiceImplTest {
         stubUUIDProvider.randomUUID_returnValue = givenUUID;
 
         CreatePostRequest givenRequest = new CreatePostRequest(
-                FirstCategory.NO1,
-                SecondCategory.Idk,
+                FirstCategory.SADNESS,
+                SecondCategory.DONTKNOW,
                 "givenContent",
                 List.of("tag1", "tag2", "tag3"),
                 true,
@@ -43,8 +43,8 @@ class PostExtensionServiceImplTest {
         PostCreateEvent expected = new PostCreateEvent(
                 postExtensionService,
                 1L,
-                FirstCategory.NO1,
-                SecondCategory.Idk,
+                FirstCategory.SADNESS,
+                SecondCategory.DONTKNOW,
                 "givenContent",
                 List.of("tag1", "tag2", "tag3"),
                 true,
@@ -62,8 +62,8 @@ class PostExtensionServiceImplTest {
         stubUUIDProvider.randomUUID_returnValue = givenUUID;
 
         CreatePostRequest givenRequest = new CreatePostRequest(
-                FirstCategory.NO1,
-                SecondCategory.Idk,
+                FirstCategory.SADNESS,
+                SecondCategory.DONTKNOW,
                 "givenContent",
                 List.of("tag1", "tag2", "tag3"),
                 true,

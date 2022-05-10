@@ -50,7 +50,7 @@ class PostsApiTest {
 
     @Test
     void updatePosts_passesRequestToService() throws Exception {
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.NO1)
+        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.SADNESS)
                 .content("content").tags(List.of("tag")).disclosure(true).build();
         String json = objectMapper.writeValueAsString(request);
 
@@ -58,7 +58,7 @@ class PostsApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
 
-        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.NO1);
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getContent()).isEqualTo("content");
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getTags()).isEqualTo(List.of("tag"));
         assertThat(spyPostsService.updatePostsRequest_argumentRequest.getDisclosure()).isEqualTo(true);
@@ -75,8 +75,8 @@ class PostsApiTest {
         spyPostsService.getPostsByMemberId_returnValue = List.of(
                 new PostsDto(
                         "1",
-                        FirstCategory.NO1,
-                        SecondCategory.NO1,
+                        FirstCategory.SADNESS,
+                        SecondCategory.SADNESS,
                         "content",
                         List.of("1", "2"), true, 1,
                         LocalDateTime.of(2022, 4, 24, 12, 30, 30))
@@ -86,8 +86,8 @@ class PostsApiTest {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", equalTo("1")))
-                .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$[0].secondCategory", equalTo("SADNESS")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
                 .andExpect(jsonPath("$[0].tags", contains("1", "2")))
                 .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
@@ -129,8 +129,8 @@ class PostsApiTest {
         spyPostsService.getPostsByTag_returnValue = List.of(
                 new PostsDto(
                         "1",
-                        FirstCategory.NO1,
-                        SecondCategory.NO1,
+                        FirstCategory.SADNESS,
+                        SecondCategory.SADNESS,
                         "content",
                         List.of("1", "2"), true, 1,
                         LocalDateTime.of(2022, 4, 24, 12, 30, 30))
@@ -141,8 +141,8 @@ class PostsApiTest {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", equalTo("1")))
-                .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$[0].secondCategory", equalTo("SADNESS")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
                 .andExpect(jsonPath("$[0].tags", contains("1", "2")))
                 .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
@@ -174,8 +174,8 @@ class PostsApiTest {
         spyPostsService.getPostsOrderByPopular_returnValue = List.of(
                 new PostsDto(
                         "1",
-                        FirstCategory.NO1,
-                        SecondCategory.NO1,
+                        FirstCategory.SADNESS,
+                        SecondCategory.SADNESS,
                         "content",
                         List.of("1", "2"), true, 1,
                         LocalDateTime.of(2022, 4, 24, 12, 30, 30))
@@ -185,8 +185,8 @@ class PostsApiTest {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", equalTo("1")))
-                .andExpect(jsonPath("$[0].firstCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$[0].secondCategory", equalTo("SADNESS")))
                 .andExpect(jsonPath("$[0].content", equalTo("content")))
                 .andExpect(jsonPath("$[0].tags", contains("1", "2")))
                 .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
@@ -222,23 +222,24 @@ class PostsApiTest {
 
     @Test
     void getRecentlyUnwrittenPosts_returnsPostsDto() throws Exception {
-        spyPostsService.getRecentlyUnwrittenPosts_returnValue = new PostsDto(
-                "1",
-                FirstCategory.NO1,
-                SecondCategory.NO1,
-                "content",
-                List.of("1", "2"), true, 1,
-                LocalDateTime.of(2022, 4, 24, 12, 30, 30));
+        spyPostsService.getRecentlyUnwrittenPosts_returnValue = List.of(
+                new PostsDto(
+                        "1",
+                        FirstCategory.SADNESS,
+                        SecondCategory.SADNESS,
+                        "content",
+                        List.of("1", "2"), true, 1,
+                        LocalDateTime.of(2022, 4, 24, 12, 30, 30)));
 
         mockMvc.perform(get("/api/v1/posts/temp"))
-                .andExpect(jsonPath("$.id", equalTo("1")))
-                .andExpect(jsonPath("$.firstCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$.secondCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$.content", equalTo("content")))
-                .andExpect(jsonPath("$.tags", contains("1", "2")))
-                .andExpect(jsonPath("$.disclosure", equalTo(true)))
-                .andExpect(jsonPath("$.views", equalTo(1)))
-                .andExpect(jsonPath("$.createdAt", equalTo("2022-04-24 12:30:30")))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
+                .andExpect(jsonPath("$[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$[0].secondCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$[0].content", equalTo("content")))
+                .andExpect(jsonPath("$[0].tags", contains("1", "2")))
+                .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
+                .andExpect(jsonPath("$[0].views", equalTo(1)))
+                .andExpect(jsonPath("$[0].createdAt", equalTo("2022-04-24 12:30:30")))
         ;
     }
 

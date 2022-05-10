@@ -10,8 +10,8 @@ public class FolderItemFixtures {
 
         return FolderItem.builder()
                 .id(1L)
-                .firstCategory(FirstCategory.ANGRY)
-                .secondCategory(SecondCategory.UPSET)
+                .firstCategory(FirstCategory.SADNESS)
+                .secondCategory(SecondCategory.SADNESS)
                 .content("post content")
                 .disclosure(false)
                 .postId("1")

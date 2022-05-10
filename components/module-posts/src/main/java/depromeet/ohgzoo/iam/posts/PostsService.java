@@ -9,7 +9,7 @@ public interface PostsService {
     List<PostsDto> getPostsByMemberId(Long memberId, int page, int size);
     List<PostsDto> getPostsByTag(String tag, int page, int size);
     List<PostsDto> getPostsOrderByPopular(int page, int size);
-    PostsDto getRecentlyUnwrittenPosts(Long memberId);
+    List<PostsDto> getRecentlyUnwrittenPosts(Long memberId);
     void increaseViews(String postId);
     PostsDto getPostsById(String postId);
     List<PostsDto> getAllPosts();

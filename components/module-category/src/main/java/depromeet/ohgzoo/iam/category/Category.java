@@ -8,7 +8,7 @@ import lombok.Getter;
 public class Category {
 
     private Integer categoryId;
-    private String cardgoryName;
+    private String categoryName;
     private String name;
     private String image;
 }

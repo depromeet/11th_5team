@@ -89,16 +89,14 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public PostsDto getRecentlyUnwrittenPosts(Long memberId) {
-        Posts first = postsRepository.findByMemberId(memberId)
+    public List<PostsDto> getRecentlyUnwrittenPosts(Long memberId) {
+        return postsRepository.findByMemberId(memberId)
                 .stream()
                 .filter(posts -> SecondCategory.Unwritten.equals(posts.getSecondCategory()))
                 .filter(posts -> LocalDateTime.now().minusDays(7).isBefore(posts.getCreatedAt()))
                 .sorted(Comparator.comparing(Posts::getId).reversed())
-                .findFirst()
-                .orElseThrow(PostsNotFoundException::new);
-
-        return new PostsDto(first);
+                .map(PostsDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override

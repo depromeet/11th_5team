@@ -44,11 +44,11 @@ class CategoryApiTest {
                 .andExpect(status().isOk());
 
         assertThat(spyCategoryService.categoryResponse.getNegative().size()).isEqualTo(1);
-        assertThat(spyCategoryService.categoryResponse.getNegative().get(0).getCardgoryName()).isEqualTo("ne1");
+        assertThat(spyCategoryService.categoryResponse.getNegative().get(0).getCategoryName()).isEqualTo("ne1");
         assertThat(spyCategoryService.categoryResponse.getPositive().size()).isEqualTo(1);
-        assertThat(spyCategoryService.categoryResponse.getPositive().get(0).getCardgoryName()).isEqualTo("p1");
+        assertThat(spyCategoryService.categoryResponse.getPositive().get(0).getCategoryName()).isEqualTo("p1");
         assertThat(spyCategoryService.categoryResponse.getNatural().size()).isEqualTo(1);
-        assertThat(spyCategoryService.categoryResponse.getNatural().get(0).getCardgoryName()).isEqualTo("na1");
+        assertThat(spyCategoryService.categoryResponse.getNatural().get(0).getCategoryName()).isEqualTo("na1");
     }
 
     @Test
@@ -57,7 +57,7 @@ class CategoryApiTest {
                 .andExpect(status().isOk());
 
         assertThat(spyCategoryService.firstCategory.size()).isEqualTo(1);
-        assertThat(spyCategoryService.firstCategory.get(0).getCardgoryName()).isEqualTo("first");
+        assertThat(spyCategoryService.firstCategory.get(0).getCategoryName()).isEqualTo("first");
     }
 
     @Test
@@ -66,6 +66,6 @@ class CategoryApiTest {
                 .andExpect(status().isOk());
 
         assertThat(spyCategoryService.secondCategory.size()).isEqualTo(1);
-        assertThat(spyCategoryService.secondCategory.get(0).getCardgoryName()).isEqualTo("second");
+        assertThat(spyCategoryService.secondCategory.get(0).getCategoryName()).isEqualTo("second");
     }
 }
