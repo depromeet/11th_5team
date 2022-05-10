@@ -2,16 +2,40 @@ package depromeet.ohgzoo.iam.category;
 
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private static final CategoryResponse categoryResponse = new CategoryResponse();
+    private static final CategoryResponse categoryResponse;
     private static final List<Category> firstCategoryList = new ArrayList<>();
     private static final List<Category> secondCategoryList = new ArrayList<>();
+
+    static {
+        firstCategoryList.addAll(Arrays.stream(FirstCategory.values())
+                .map(category -> new Category(category.getCategoryId(), category.name(), category.getName(), category.getImage()))
+                .collect(Collectors.toList()));
+
+        secondCategoryList.addAll(Arrays.stream(SecondCategory.values())
+                .filter(category -> !category.getType().equals(CategoryType.NONE))
+                .map(category -> new Category(category.getCategoryId(), category.name(), category.getName(), category.getImage()))
+                .collect(Collectors.toList()));
+
+        categoryResponse = new CategoryResponse(
+                getCategories(CategoryType.POSITIVE),
+                getCategories(CategoryType.NEGATIVE),
+                getCategories(CategoryType.NATURAL));
+    }
+
+    private static List<Category> getCategories(CategoryType categoryType) {
+        return Arrays.stream(SecondCategory.values())
+                .filter(category -> category.getType().equals(categoryType))
+                .map(category -> new Category(category.getCategoryId(), category.name(), category.getName(), category.getImage()))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public CategoryResponse categoryList() {
@@ -26,38 +50,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> secondCategoryList() {
         return secondCategoryList;
-    }
-
-    @PostConstruct
-    public void init() {
-        for (SecondCategory secondCategory : SecondCategory.values()) {
-            Category category = createCategory(secondCategory);
-
-            switch (secondCategory.getType()) {
-                case CategoryType.NEGATIVE:
-                    firstCategoryList.add(category);
-                    secondCategoryList.add(category);
-                    categoryResponse.getNegative().add(category);
-                    break;
-                case CategoryType.POSITIVE:
-                    secondCategoryList.add(category);
-                    categoryResponse.getPositive().add(category);
-                    break;
-                default:
-                    if (secondCategory.equals(SecondCategory.DONTKNOW)) firstCategoryList.add(category);
-                    secondCategoryList.add(category);
-                    categoryResponse.getNatural().add(category);
-                    break;
-            }
-        }
-    }
-
-    private Category createCategory(SecondCategory secondCategory) {
-        return new Category(
-                secondCategory.getCategoryId(),
-                secondCategory.name(),
-                secondCategory.getName(),
-                secondCategory.getImage());
     }
 
 }
