@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +62,7 @@ public class FolderServiceImpl implements FolderService {
         List<Folder> folders = folderRepository.findAllByMemberId(memberId);
         List<FolderItem> folderItems = folderItemService.getRecentFolderItems(memberId);
 
-        List<String> coverImages = Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage);
+        List<String> coverImages = List.of(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage);
         for (int i = 0; i < folderItems.size(); i++) {
             if (folderItems.get(i) != null)
                 coverImages.set(i, CoverImageUrl.returnCoverImage(folderItems.get(i).getFirstCategory()));
@@ -110,5 +109,11 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public void deleteFolderItems(Long memberId, List<String> postIds) {
         folderItemService.deleteFolderItems(memberId, postIds);
+    }
+
+    @Override
+    public void createDefaultFolder(Long memberId) {
+        Folder folder = new Folder(0L, "defaultFolder", "", memberId);
+        folderRepository.save(folder);
     }
 }

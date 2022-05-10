@@ -23,4 +23,6 @@ public interface FolderService {
     FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable);
 
     void deleteFolderItems(Long memberId, List<String> postIds);
+
+    void createDefaultFolder(Long memberId);
 }

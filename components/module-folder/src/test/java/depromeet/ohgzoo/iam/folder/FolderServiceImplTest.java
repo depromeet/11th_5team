@@ -68,7 +68,17 @@ public class FolderServiceImplTest {
         assertThat(result.getFolderName()).isEqualTo("givenFolderName");
     }
 
+    @Test
+    void createDefaultFolder_callsSaveInFolderRepository() {
+        folderService.createDefaultFolder(1L);
 
+        Folder savedFolder = spyFolderRepository.save_argumentFolder;
+        assertThat(savedFolder.getId()).isEqualTo(0L);
+        assertThat(savedFolder.getName()).isEqualTo("defaultFolder");
+        assertThat(savedFolder.getCoverImg()).isEqualTo("");
+        assertThat(savedFolder.getMemberId()).isEqualTo(1L);
+    }
+    
     @Test
     void deleteFolder_callsDeleteFromRepository() {
         folderService.deleteFolder(1L, 1L);
