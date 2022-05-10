@@ -2,23 +2,28 @@ package depromeet.ohgzoo.iam.category;
 
 import lombok.Getter;
 
+import static depromeet.ohgzoo.iam.category.ImageLoader.TEMP_IMAGE;
+
 @Getter
 public enum SecondCategory {
 
-    IRRITATION(CategoryType.NEGATIVE,1, "짜증나요", "image"),
-    DISAPPOINTMENT(CategoryType.NEGATIVE, 2, "실망했어요", "image"),
-    SADNESS(CategoryType.NEGATIVE, 3, "슬퍼요", "image"),
-    LETHARGY(CategoryType.NEGATIVE, 4, "무기력해요", "image"),
-    ANXIOUS(CategoryType.NEGATIVE, 5, "불안해요", "image"),
-    REGRET(CategoryType.NEGATIVE, 6, "후회해요", "image"),
-    DONTKNOW(CategoryType.NATURAL, 7, "모르겠어요", "image"),
+    JOY(CategoryType.POSITIVE,1, "기뻐요", TEMP_IMAGE),
+    PROUD(CategoryType.POSITIVE, 2, "뿌듯해요", TEMP_IMAGE),
+    RELIEF(CategoryType.POSITIVE, 3, "안도돼요", TEMP_IMAGE),
+    EASYGOING(CategoryType.POSITIVE, 4, "홀가분해요", TEMP_IMAGE),
+    CALMDOWN(CategoryType.POSITIVE, 5, "차분해요", TEMP_IMAGE),
 
-    JOY(CategoryType.POSITIVE,8, "기뻐요", "image"),
-    PROUD(CategoryType.POSITIVE, 9, "뿌듯해요", "image"),
-    EASYGOING(CategoryType.POSITIVE, 10, "홀가분해요", "image"),
-    RELIEF(CategoryType.POSITIVE, 11, "안도가돼요", "image"),
-    CALMDOWN(CategoryType.POSITIVE, 12, "차분해졌어요", "image"),
-    Unwritten(CategoryType.NATURAL, 13, "Unwritten", "image");
+    LETHARGY(CategoryType.NEGATIVE, 6, "무기력해요", TEMP_IMAGE),
+    DISAPPOINTMENT(CategoryType.NEGATIVE, 7, "실망했어요", TEMP_IMAGE),
+    SADNESS(CategoryType.NEGATIVE, 8, "슬퍼요", TEMP_IMAGE),
+    REGRET(CategoryType.NEGATIVE, 9, "후회해요", TEMP_IMAGE),
+    IRRITATION(CategoryType.NEGATIVE,10, "짜증나요", TEMP_IMAGE),
+    ANXIOUS(CategoryType.NEGATIVE, 11, "불안해요", TEMP_IMAGE),
+    DONTKNOW(CategoryType.NATURAL, 12, "모르겠어요", TEMP_IMAGE),
+    Unwritten(CategoryType.NATURAL, 13, "Unwritten", TEMP_IMAGE);
+
+
+
 
     private String type;
     private Integer categoryId;
