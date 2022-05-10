@@ -1,15 +1,20 @@
 package depromeet.ohgzoo.iam.category;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@NoArgsConstructor
 @Getter
 public class CategoryResponse {
 
-    private ArrayList<Category> positive = new ArrayList<>();
-    private ArrayList<Category> negative = new ArrayList<>();
-    private ArrayList<Category> natural = new ArrayList<>();
+    private List<Category> positive = new ArrayList<>();
+    private List<Category> negative = new ArrayList<>();
+    private List<Category> natural = new ArrayList<>();
+
+    public CategoryResponse(List<Category> positive, List<Category> negative, List<Category> natural) {
+        this.positive.addAll(positive);
+        this.negative.addAll(negative);
+        this.natural.addAll(natural);
+    }
 }

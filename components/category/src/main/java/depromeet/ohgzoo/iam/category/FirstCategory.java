@@ -12,7 +12,7 @@ public enum FirstCategory {
     ANXIOUS(SecondCategory.ANXIOUS),
     DONTKNOW(SecondCategory.DONTKNOW);
 
-    private String type;
+    private CategoryType type;
     private Integer categoryId;
     private String name;
     private String image;

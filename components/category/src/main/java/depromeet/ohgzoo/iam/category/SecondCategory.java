@@ -20,17 +20,17 @@ public enum SecondCategory {
     IRRITATION(CategoryType.NEGATIVE,10, "짜증나요", TEMP_IMAGE),
     ANXIOUS(CategoryType.NEGATIVE, 11, "불안해요", TEMP_IMAGE),
     DONTKNOW(CategoryType.NATURAL, 12, "모르겠어요", TEMP_IMAGE),
-    Unwritten(CategoryType.NATURAL, 13, "Unwritten", TEMP_IMAGE);
+    Unwritten(CategoryType.NONE, 13, "Unwritten", TEMP_IMAGE);
 
 
 
 
-    private String type;
+    private CategoryType type;
     private Integer categoryId;
     private String name;
     private String image;
 
-    SecondCategory(String type, Integer categoryId, String name, String image) {
+    SecondCategory(CategoryType type, Integer categoryId, String name, String image) {
         this.type = type;
         this.categoryId = categoryId;
         this.name = name;
