@@ -27,7 +27,8 @@ public class LoginApiIntegrationTest extends IntegrationTest {
 
     @Test
     void login() throws Exception {
-        mockMvc.perform(get("/oauth2/authorization/kakao"))
+        mockMvc.perform(get("/signIn")
+                        .param("code", "kakaoCode"))
                 .andExpect(status().isOk());
     }
 
@@ -35,12 +36,5 @@ public class LoginApiIntegrationTest extends IntegrationTest {
     void refresh() throws Exception {
         mockMvc.perform(get("/refresh"))
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    void redirectCallback() throws Exception {
-        mockMvc.perform(get("/login/oauth2/code/kakao")
-                        .param("code", "token"))
-                .andExpect(status().is3xxRedirection());
     }
 }
