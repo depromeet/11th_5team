@@ -206,12 +206,6 @@ class PostsServiceImplTest {
     }
 
     @Test
-    void getRecentlyUnwrittenPosts_throwsPostsNotFoundException_whenRecentlyUnwrittenPostsIsEmpty() {
-        Assertions.assertThatThrownBy(() -> postsService.getRecentlyUnwrittenPosts(1L))
-                .isInstanceOf(PostsNotFoundException.class);
-    }
-
-    @Test
     void getRecentlyUnwrittenPosts_returnsPagingPosts() {
         LocalDateTime now = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
 
@@ -225,10 +219,10 @@ class PostsServiceImplTest {
                 Posts.builder().id("4").secondCategory(SecondCategory.Unwritten).createdAt(before8Day).build()
         );
 
-        PostsDto result = postsService.getRecentlyUnwrittenPosts(1L);
+        List<PostsDto> result = postsService.getRecentlyUnwrittenPosts(1L);
 
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(PostsDto.builder().id("3").secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build());
+        assertThat(result).containsExactly(
+                PostsDto.builder().id("3").secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build());
     }
 
     @Test

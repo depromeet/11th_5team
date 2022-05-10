@@ -222,23 +222,24 @@ class PostsApiTest {
 
     @Test
     void getRecentlyUnwrittenPosts_returnsPostsDto() throws Exception {
-        spyPostsService.getRecentlyUnwrittenPosts_returnValue = new PostsDto(
-                "1",
-                FirstCategory.SADNESS,
-                SecondCategory.SADNESS,
-                "content",
-                List.of("1", "2"), true, 1,
-                LocalDateTime.of(2022, 4, 24, 12, 30, 30));
+        spyPostsService.getRecentlyUnwrittenPosts_returnValue = List.of(
+                new PostsDto(
+                        "1",
+                        FirstCategory.SADNESS,
+                        SecondCategory.SADNESS,
+                        "content",
+                        List.of("1", "2"), true, 1,
+                        LocalDateTime.of(2022, 4, 24, 12, 30, 30)));
 
         mockMvc.perform(get("/api/v1/posts/temp"))
-                .andExpect(jsonPath("$.id", equalTo("1")))
-                .andExpect(jsonPath("$.firstCategory", equalTo("SADNESS")))
-                .andExpect(jsonPath("$.secondCategory", equalTo("SADNESS")))
-                .andExpect(jsonPath("$.content", equalTo("content")))
-                .andExpect(jsonPath("$.tags", contains("1", "2")))
-                .andExpect(jsonPath("$.disclosure", equalTo(true)))
-                .andExpect(jsonPath("$.views", equalTo(1)))
-                .andExpect(jsonPath("$.createdAt", equalTo("2022-04-24 12:30:30")))
+                .andExpect(jsonPath("$[0].id", equalTo("1")))
+                .andExpect(jsonPath("$[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$[0].secondCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$[0].content", equalTo("content")))
+                .andExpect(jsonPath("$[0].tags", contains("1", "2")))
+                .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
+                .andExpect(jsonPath("$[0].views", equalTo(1)))
+                .andExpect(jsonPath("$[0].createdAt", equalTo("2022-04-24 12:30:30")))
         ;
     }
 
