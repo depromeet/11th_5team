@@ -27,8 +27,8 @@ class FolderEventSubscriberTest {
     void handlePostCreateEvent_passesRequestToService() {
         PostCreateEvent givenEvent = new PostCreateEvent(this,
                 null,
-                FirstCategory.ANGRY,
-                SecondCategory.UPSET,
+                FirstCategory.SADNESS,
+                SecondCategory.SADNESS,
                 "content",
                 List.of("tag1", "tag2", "tag3"),
                 true,
@@ -39,8 +39,8 @@ class FolderEventSubscriberTest {
 
         FolderItemCreateRequest expected = spyFolderService.createFolderItem_argumentRequest;
 
-        assertThat(expected.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
-        assertThat(expected.getSecondCategory()).isEqualTo(SecondCategory.UPSET);
+        assertThat(expected.getFirstCategory()).isEqualTo(FirstCategory.SADNESS);
+        assertThat(expected.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
         assertThat(expected.getPostId()).isEqualTo("post Id");
         assertThat(expected.getContent()).isEqualTo("content");
         assertThat(expected.getTags()).containsExactly("tag1", "tag2", "tag3");

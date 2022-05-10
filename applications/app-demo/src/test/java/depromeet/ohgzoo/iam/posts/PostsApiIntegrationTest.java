@@ -36,7 +36,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
     void createPosts() throws Exception {
         mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstCategory\":\"NO1\",\"secondCategory\":\"Unwritten\",\"content\":\"content\",\"tags\":[\"1\",\"2\"],\"disclosure\":false, \"folderId\": 1}"))
+                        .content("{\"firstCategory\":\"SADNESS\",\"secondCategory\":\"Unwritten\",\"content\":\"content\",\"tags\":[\"1\",\"2\"],\"disclosure\":false, \"folderId\": 1}"))
                 .andExpect(status().isCreated());
     }
 
@@ -70,7 +70,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
         Posts posts = aPost().content("test").memberId(1L).build();
         postsRepository.save(posts);
 
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.NO1)
+        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.SADNESS)
                 .content("content").tags(List.of("tag1", "tag2")).disclosure(false).build();
         String json = objectMapper.writeValueAsString(request);
 

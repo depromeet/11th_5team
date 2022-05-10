@@ -25,8 +25,8 @@ class PostEventSubscriberTest {
     void handlePostCreateEvent_passesCreateRequestToService() {
         PostCreateEvent givenEvent = new PostCreateEvent(this,
                 1L,
-                FirstCategory.ANGRY,
-                SecondCategory.UPSET,
+                FirstCategory.SADNESS,
+                SecondCategory.SADNESS,
                 "content",
                 List.of("tag1", "tag2", "tag3"),
                 true,
@@ -35,8 +35,8 @@ class PostEventSubscriberTest {
         postEventSubscriber.handlePostCreateEvent(givenEvent);
 
         assertThat(spyPostsService.createPosts_argumentMemberId).isEqualTo(1L);
-        assertThat(spyPostsService.createPosts_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.ANGRY);
-        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.UPSET);
+        assertThat(spyPostsService.createPosts_argumentRequest.getFirstCategory()).isEqualTo(FirstCategory.SADNESS);
+        assertThat(spyPostsService.createPosts_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
         assertThat(spyPostsService.createPosts_argumentRequest.getContent()).isEqualTo("content");
         assertThat(spyPostsService.createPosts_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
         assertThat(spyPostsService.createPosts_argumentRequest.isDisclosure()).isTrue();

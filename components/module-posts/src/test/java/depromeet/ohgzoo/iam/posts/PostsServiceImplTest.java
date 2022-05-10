@@ -29,16 +29,16 @@ class PostsServiceImplTest {
         CreatePostsRequest request =
                 CreatePostsRequest.builder()
                         .postId("postId")
-                        .firstCategory(FirstCategory.NO1)
-                        .secondCategory(SecondCategory.Idk).content("blah blah")
+                        .firstCategory(FirstCategory.SADNESS)
+                        .secondCategory(SecondCategory.DONTKNOW).content("blah blah")
                         .tags(Arrays.asList("tag1", "tag2")).disclosure(false).build();
 
         postsService.createPosts(memberId, request);
 
         assertThat(spyPostsRepository.save_entity.getId()).isEqualTo("postId");
         assertThat(spyPostsRepository.save_entity.getMemberId()).isEqualTo(1L);
-        assertThat(spyPostsRepository.save_entity.getFirstCategory()).isEqualTo(FirstCategory.NO1);
-        assertThat(spyPostsRepository.save_entity.getSecondCategory()).isEqualTo(SecondCategory.Idk);
+        assertThat(spyPostsRepository.save_entity.getFirstCategory()).isEqualTo(FirstCategory.SADNESS);
+        assertThat(spyPostsRepository.save_entity.getSecondCategory()).isEqualTo(SecondCategory.DONTKNOW);
         assertThat(spyPostsRepository.save_entity.getContent()).isEqualTo("blah blah");
         assertThat(spyPostsRepository.save_entity.getTags()).isEqualTo(Arrays.asList("tag1", "tag2"));
         assertThat(spyPostsRepository.save_entity.isDisclosure()).isFalse();
@@ -78,8 +78,8 @@ class PostsServiceImplTest {
     void createPosts_returnCreatePostsResponse() {
         Long memberId = 1L;
         CreatePostsRequest request =
-                CreatePostsRequest.builder().firstCategory(FirstCategory.NO1)
-                        .secondCategory(SecondCategory.Idk).content("blah blah")
+                CreatePostsRequest.builder().firstCategory(FirstCategory.SADNESS)
+                        .secondCategory(SecondCategory.DONTKNOW).content("blah blah")
                         .tags(Arrays.asList("tag1", "tag2")).disclosure(false).build();
 
         CreatePostsResult result = postsService.createPosts(memberId, request);
@@ -219,8 +219,8 @@ class PostsServiceImplTest {
         LocalDateTime before8Day = now.minusDays(7).minusNanos(1);
 
         spyPostsRepository.findByMemberId_returnValue = List.of(
-                Posts.builder().id("1").secondCategory(SecondCategory.NO1).build(),
-                Posts.builder().id("2").secondCategory(SecondCategory.Idk).build(),
+                Posts.builder().id("1").secondCategory(SecondCategory.SADNESS).build(),
+                Posts.builder().id("2").secondCategory(SecondCategory.DONTKNOW).build(),
                 Posts.builder().id("3").secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build(),
                 Posts.builder().id("4").secondCategory(SecondCategory.Unwritten).createdAt(before8Day).build()
         );

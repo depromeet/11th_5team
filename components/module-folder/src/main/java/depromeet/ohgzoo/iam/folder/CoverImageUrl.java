@@ -8,15 +8,6 @@ public class CoverImageUrl {
     static final String defaultImage = "https://firebasestorage.googleapis.com/v0/b/cardna-29f5b.appspot.com/o/20220330_073908_966740019233_720x720.jpg?alt=media";
 
     public static String returnCoverImage(FirstCategory firstCategory) {
-        switch (firstCategory) {
-            case ANGRY:
-                return angryImage;
-            case UPSET:
-                return upsetImage;
-            case DEFAULT:
-                return defaultImage;
-            default:
-                return "";
-        }
+        return firstCategory.getImage();
     }
 }

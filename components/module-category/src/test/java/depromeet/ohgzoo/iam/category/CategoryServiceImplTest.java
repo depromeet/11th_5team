@@ -22,7 +22,7 @@ class CategoryServiceImplTest {
 
         assertThat(response.getNegative().size()).isEqualTo(6);
         assertThat(response.getPositive().size()).isEqualTo(5);
-        assertThat(response.getNatural().size()).isEqualTo(6);
+        assertThat(response.getNatural().size()).isEqualTo(2);
     }
 
     @Test
@@ -36,6 +36,6 @@ class CategoryServiceImplTest {
     public void secondCategoryList_returnsCategoryResponse() throws Exception {
         List<Category> categories = categoryService.secondCategoryList();
 
-        assertThat(categories.size()).isEqualTo(17);
+        assertThat(categories.size()).isEqualTo(13);
     }
 }

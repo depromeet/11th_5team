@@ -18,13 +18,7 @@ public enum SecondCategory {
     EASYGOING(CategoryType.POSITIVE, 10, "홀가분해요", "image"),
     RELIEF(CategoryType.POSITIVE, 11, "안도가돼요", "image"),
     CALMDOWN(CategoryType.POSITIVE, 12, "차분해졌어요", "image"),
-    Unwritten(CategoryType.NATURAL, 13, "Unwritten", "image"),
-
-    // 기존에 존재하던 값인데 다 수정하면 일단 테스트가 깨져서 통일해야 될 것 같아요.
-    NO1(CategoryType.NATURAL, -1, "NO1", "image"),
-    Idk(CategoryType.NATURAL, -1, "Idk", "image"),
-    UPSET(CategoryType.NATURAL, -1, "화났어요", "image"),
-    ANGRY(CategoryType.NATURAL, -1, "화났어요", "image");
+    Unwritten(CategoryType.NATURAL, 13, "Unwritten", "image");
 
     private String type;
     private Integer categoryId;

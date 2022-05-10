@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static depromeet.ohgzoo.iam.folder.CoverImageUrl.angryImage;
 import static depromeet.ohgzoo.iam.folder.FolderFixtures.aFolder;
 import static depromeet.ohgzoo.iam.folder.folderItem.FolderItemFixtures.aFolderItem;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -154,7 +153,7 @@ public class FolderServiceImplTest {
 
     @Test
     void createFolderItem_callsSaveInFolderItemRepository() {
-        folderItemService.createFolderItem(1L, aFolder().build(), new FolderItemCreateRequest("1", FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, aFolder().build(), new FolderItemCreateRequest("1", FirstCategory.SADNESS, SecondCategory.ANXIOUS, "post content", null, false));
 
         FolderItem savedFolderItem = spyFolderItemRepository.save_argumentFolderItem;
         assertThat(savedFolderItem.getId()).isNull();
@@ -167,7 +166,7 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest("1", FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
+        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest("1", FirstCategory.SADNESS, SecondCategory.ANXIOUS, "post content", null, false));
 
         assertThat(existedFolder.getFolderItems().get(0).getContent()).isEqualTo("post content");
     }
@@ -178,9 +177,11 @@ public class FolderServiceImplTest {
                 .id(1L)
                 .build();
         spyFolderRepository.findById_returnValue = existedFolder;
-        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest("1", FirstCategory.ANGRY, SecondCategory.ANXIOUS, "post content", null, false));
 
-        assertThat(existedFolder.getCoverImg()).isEqualTo(angryImage);
+        FirstCategory givenCategory = FirstCategory.SADNESS;
+        folderItemService.createFolderItem(1L, existedFolder, new FolderItemCreateRequest("1", givenCategory, SecondCategory.ANXIOUS, "post content", null, false));
+
+        assertThat(existedFolder.getCoverImg()).isEqualTo(givenCategory.getImage());
     }
 
     @Test
@@ -201,8 +202,9 @@ public class FolderServiceImplTest {
 
     @Test
     void moveFolderItem_ChangesFolderCoverImage() {
-        FolderItem folderItem1 = aFolderItem().id(2L).firstCategory(FirstCategory.ANGRY).build();
-        FolderItem folderItem2 = aFolderItem().id(1L).firstCategory(FirstCategory.UPSET).build();
+        FolderItem folderItem1 = aFolderItem().id(2L).firstCategory(FirstCategory.SADNESS).build();
+        FirstCategory givenCategory = FirstCategory.ANXIOUS;
+        FolderItem folderItem2 = aFolderItem().id(1L).firstCategory(givenCategory).build();
         Folder oldFolder = aFolder().id(1L).build();
         folderItem1.setFolder(oldFolder);
         Folder newFolder = aFolder().build();
@@ -213,7 +215,7 @@ public class FolderServiceImplTest {
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem1;
 
         folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest("2"));
-        assertThat(newFolder.getCoverImg()).isEqualTo(angryImage);
+        assertThat(newFolder.getCoverImg()).isEqualTo(givenCategory.getImage());
     }
 
     @Test
@@ -279,8 +281,8 @@ public class FolderServiceImplTest {
 
     @Test
     void deleteFolderItem_deleteFolderItemFromFolder() {
-        FolderItem folderItem1 = aFolderItem().id(1L).postId("1").firstCategory(FirstCategory.ANGRY).build();
-        FolderItem folderItem2 = aFolderItem().id(2L).postId("2").firstCategory(FirstCategory.UPSET).build();
+        FolderItem folderItem1 = aFolderItem().id(1L).postId("1").firstCategory(FirstCategory.SADNESS).build();
+        FolderItem folderItem2 = aFolderItem().id(2L).postId("2").firstCategory(FirstCategory.SADNESS).build();
         Folder folder = aFolder().id(1L).build();
         folderItem1.setFolder(folder);
         folderItem2.setFolder(folder);
