@@ -47,13 +47,15 @@ public class FolderApi {
     }
 
     @PostMapping("/api/v1/folders/posts/{folderId}")
-    public void addFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemCreateRequest request, BindingResult errors) {
+    public void addFolderItem(@Login Long memberId, @PathVariable Long folderId,
+                              @Valid @RequestBody FolderItemCreateRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.createFolderItem(memberId, folderId, request);
     }
 
     @PatchMapping("/api/v1/folders/posts/{folderId}")
-    public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId, @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors) {
+    public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId,
+                               @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.moveFolderItem(memberId, folderId, request);
     }
@@ -64,7 +66,8 @@ public class FolderApi {
     }
 
     @GetMapping("/api/v1/folders/posts/{folderId}")
-    public FolderItemsGetResponse getFolderItems(@Login Long memberId, @PathVariable Long folderId, @PageableDefault(size = 20) Pageable pageable) {
+    public FolderItemsGetResponse getFolderItems(@Login Long memberId, @PathVariable Long folderId,
+                                                 @PageableDefault(size = 20) Pageable pageable) {
         return folderService.getFolderItems(memberId, folderId, pageable);
     }
 }

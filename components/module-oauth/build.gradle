@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(':components:module-member')
+    implementation project(':components:member')
     implementation project(':components:support-feign')
     implementation project(':components:support-jwt')
 }

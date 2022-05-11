@@ -11,12 +11,14 @@ class MemberServiceImplTest {
     private MemberServiceImpl memberService;
     private SpyMemberRepository spyMemberRepository;
     private SpyJwtService spyJwtService;
+    private SpyApplicationEventPublisher spyEventPublisher;
 
     @BeforeEach
     void setUp() {
+        spyEventPublisher = new SpyApplicationEventPublisher();
         spyJwtService = new SpyJwtService();
         spyMemberRepository = new SpyMemberRepository();
-        memberService = new MemberServiceImpl(spyMemberRepository, spyJwtService);
+        memberService = new MemberServiceImpl(spyMemberRepository, spyJwtService, spyEventPublisher);
     }
 
     @Test
@@ -50,6 +52,20 @@ class MemberServiceImplTest {
         assertThat(spyMemberRepository.save_argumentMember.getIdentifyToken()).isEqualTo("identifyToken");
         assertThat(spyMemberRepository.save_argumentMember.getProfileImg()).isEqualTo("profileImg");
         assertThat(spyMemberRepository.save_argumentMember.getNickname()).isEqualTo("nickname");
+    }
+
+    @Test
+    void join_passesMemberCreateEventToEventPublisher() {
+        MemberJoinRequest request = new MemberJoinRequest(null, null, null);
+        spyMemberRepository.save_returnValue = Member.builder()
+                .id(1L)
+                .build();
+
+        memberService.join(request);
+
+        MemberCreateEvent expected = new MemberCreateEvent(memberService, 1L);
+        assertThat(spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test

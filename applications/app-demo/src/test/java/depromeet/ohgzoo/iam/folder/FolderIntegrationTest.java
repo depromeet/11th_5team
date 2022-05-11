@@ -25,7 +25,7 @@ public class FolderIntegrationTest extends IntegrationTest {
 
     @Test
     void deleteFolder() throws Exception {
-        mockMvc.perform(delete("/api/v1/folders/1"))
+        mockMvc.perform(delete("/api/v1/folders/2"))
                 .andExpect(status().isOk());
     }
 

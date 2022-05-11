@@ -1,4 +1,4 @@
 dependencies {
-    implementation project(':components:member')
+    implementation project(':components:support-jpa')
     implementation project(':components:support-jwt')
 }

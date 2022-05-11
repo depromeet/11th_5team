@@ -68,6 +68,15 @@ public class FolderServiceImplTest {
         assertThat(result.getFolderName()).isEqualTo("givenFolderName");
     }
 
+    @Test
+    void createDefaultFolder_callsSaveInFolderRepository() {
+        folderService.createDefaultFolder(1L);
+
+        Folder savedFolder = spyFolderRepository.save_argumentFolder;
+        assertThat(savedFolder.getName()).isEqualTo("미분류 폴더");
+        assertThat(savedFolder.isDefault()).isEqualTo(true);
+        assertThat(savedFolder.getMemberId()).isEqualTo(1L);
+    }
 
     @Test
     void deleteFolder_callsDeleteFromRepository() {
@@ -78,12 +87,25 @@ public class FolderServiceImplTest {
 
     @Test
     void deleteFolder_throwsException_whenMemberIdIsNotEqualsFolder() {
-        spyFolderRepository.save_returnValue = aFolder()
+        spyFolderRepository.findById_returnValue = aFolder()
                 .memberId(1L)
                 .build();
 
         Assertions.assertThatThrownBy(() -> folderService.deleteFolder(2L, 1L))
                 .isInstanceOf(InvalidUserException.class);
+    }
+
+    @Test
+    void deleteFolder_throwsException_whenFolderIsDefaultFolder() {
+        spyFolderRepository.findById_returnValue = aFolder()
+                .memberId(1L)
+                .id(1L)
+                .name("미분류 폴더")
+                .isDefault(true)
+                .build();
+
+        Assertions.assertThatThrownBy(() -> folderService.deleteFolder(1L, 1L))
+                .isInstanceOf(ProtectedFolderException.class);
     }
 
 
@@ -280,19 +302,14 @@ public class FolderServiceImplTest {
     }
 
     @Test
-    void deleteFolderItem_deleteFolderItemFromFolder() {
+    void deleteFolderItem_callsDeleteFromRepository() {
         FolderItem folderItem1 = aFolderItem().id(1L).postId("1").firstCategory(FirstCategory.SADNESS).build();
-        FolderItem folderItem2 = aFolderItem().id(2L).postId("2").firstCategory(FirstCategory.SADNESS).build();
         Folder folder = aFolder().id(1L).build();
         folderItem1.setFolder(folder);
-        folderItem2.setFolder(folder);
 
         spyFolderItemRepository.findById_returnValue = folderItem1;
         folderItemService.deleteFolderItems(1L, List.of("1"));
 
-        assertThat(folder.getFolderItems().size()).isEqualTo(1);
-        assertThat(folder.getFolderItems().get(0).getPostId()).isEqualTo("2");
+        assertThat(spyFolderItemRepository.deleteFolderItem_argumentPostId).isEqualTo("1");
     }
-
-
 }

@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.member.MemberCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,10 @@ public class FolderEventSubscriber {
     @EventListener
     public void handlePostDeleteEvent(PostDeleteEvent event) {
         folderService.deleteFolderItems(event.getMemberId(), event.getPostIds());
+    }
+
+    @EventListener
+    public void handleMemberCreateEvent(MemberCreateEvent event) {
+        folderService.createDefaultFolder(event.getMemberId());
     }
 }

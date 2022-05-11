@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Folder extends BaseEntity {
 
     @Id
@@ -34,19 +34,26 @@ public class Folder extends BaseEntity {
 
     private Long memberId;
 
+    private boolean isDefault;
+
     @OneToMany(mappedBy = "folder", cascade = CascadeType.REMOVE)
     private List<FolderItem> folderItems = new ArrayList<>();
 
     @Builder
-    public Folder(Long id, String name, String coverImg, Long memberId) {
+    public Folder(Long id, String name, String coverImg, Long memberId, boolean isDefault) {
         this.id = id;
         this.name = name;
         this.coverImg = coverImg;
         this.memberId = memberId;
+        this.isDefault = isDefault;
     }
 
     Folder(String name, String coverImg, Long memberId) {
-        this(null, name, coverImg, memberId);
+        this(null, name, coverImg, memberId, false);
+    }
+
+    Folder(String name, String coverImg, Long memberId, boolean isDefault) {
+        this(null, name, coverImg, memberId, isDefault);
     }
 
     public void updateName(String name) {

@@ -47,7 +47,6 @@ public class FolderItemServiceImpl implements FolderItemService {
         for (String postId : postIds) {
             FolderItem folderItem = folderItemRepository.findByPostId(postId)
                     .orElseThrow(NotExistsFolderItemException::new);
-            folderItem.unsetFolder();
             folderItemRepository.delete(folderItem);
         }
     }
