@@ -35,7 +35,18 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResult searchByCategory(String keyword, Long memberId) {
-        return null;
+        SearchModel[] filtered = searchRepository.findAll()
+                .stream()
+                .filter(entity -> containsCategory(keyword, entity))
+                .map(entity -> mapToSearchModel(entity, memberId))
+                .toArray(SearchModel[]::new);
+
+        return SearchResult.of(filtered);
+    }
+
+    private boolean containsCategory(String keyword, SearchEntity entity) {
+        return entity.getFirstCategory().contains(keyword)
+                || entity.getSecondCategory().contains(keyword);
     }
 
     private SearchModel mapToSearchModel(SearchEntity post, Long memberId) {
