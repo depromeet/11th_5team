@@ -33,6 +33,11 @@ public class SearchServiceImpl implements SearchService {
         return SearchResult.of(filtered);
     }
 
+    @Override
+    public SearchResult searchByCategory(String keyword, Long memberId) {
+        return null;
+    }
+
     private SearchModel mapToSearchModel(SearchEntity post, Long memberId) {
         return new SearchModel(
                 post.getId(),
