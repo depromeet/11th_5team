@@ -1,5 +1,5 @@
 insert into member
-(member_id, identify_token, nickname, profile_img)
+    (member_id, identify_token, nickname, profile_img)
 values (1, 'profileImg', 'nickname', 'identifyToken');
 
 insert into posts
@@ -15,12 +15,12 @@ insert into posts
 values ('3', 'content3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'SADNESS', 1, 'Unwritten', 'tag1,tag2', 0);
 
 insert into folder
-    (folder_id, created_at, updated_at, cover_img, member_id, name)
-values (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'cover image', 1, 'folder name');
+(folder_id, created_at, updated_at, cover_img, is_default, member_id, name)
+values (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0, 'cover image', 1, 'folder name');
 
 insert into folder
-    (folder_id, created_at, updated_at, cover_img, member_id, name)
-values (2, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'cover image2', 1, 'folder name2');
+(folder_id, created_at, updated_at, cover_img, is_default, member_id, name)
+values (2, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0, 'cover image2', 1, 'folder name2');
 
 insert into folder_item
 (folder_item_id, created_at, updated_at, content, disclosure, first_category, member_id, post_id, second_category, tags,
