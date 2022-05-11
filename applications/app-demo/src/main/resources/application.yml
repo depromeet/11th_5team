@@ -31,7 +31,7 @@ spring:
         msg: '글이 존재하지 않습니다. '
         type: depromeet.ohgzoo.iam.posts.PostsNotFoundException
       accessDenied:
-        code: 403
+        code: 401
         msg: '접근 권한이 없습니다. '
         type: depromeet.ohgzoo.iam.posts.AccessDeniedException
       InvalidUser:
@@ -39,7 +39,7 @@ spring:
         msg: '권한이 없는 유저입니다. '
         type: depromeet.ohgzoo.iam.folder.InvalidUserException
       folderNotExists:
-        code: 401
+        code: 400
         msg: '폴더가 존재하지 않습니다. '
         type: depromeet.ohgzoo.iam.folder.NotExistsFolderException
       InValid:
@@ -51,6 +51,10 @@ spring:
         msg: '중복된 폴더 이름입니다. '
         type: depromeet.ohgzoo.iam.folder.ExistedNameException
       folderItemNotExists:
-        code: 403
+        code: 400
         msg: '폴더에 해당 글이 존재하지 않습니다. '
         type: depromeet.ohgzoo.iam.folder.folderItem.NotExistsFolderItemException
+      folderCannotDelete:
+        code: 403
+        msg: '삭제할 수 없는 폴더입니다. '
+        type: depromeet.ohgzoo.iam.folder.ProtectedFolderException
