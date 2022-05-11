@@ -40,7 +40,7 @@ public class FolderServiceImpl implements FolderService {
 
         Folder folder = folderRepository.findById(folderId).orElseThrow(NotExistsFolderException::new);
         if (folder.getMemberId() != memberId) throw new InvalidUserException();
-        if (folder.getName().equals("미분류 폴더") && folder.getId() == 1L) throw new ProtectedFolderException();
+        if (folder.isDefault() == true) throw new ProtectedFolderException();
 
         folderRepository.deleteById(folderId);
     }
@@ -115,7 +115,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void createDefaultFolder(Long memberId) {
-        Folder folder = new Folder(1L, "미분류 폴더", "", memberId);
+        Folder folder = new Folder("미분류 폴더", CoverImageUrl.defaultImage, memberId, true);
         folderRepository.save(folder);
     }
 }
