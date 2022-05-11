@@ -302,19 +302,14 @@ public class FolderServiceImplTest {
     }
 
     @Test
-    void deleteFolderItem_deleteFolderItemFromFolder() {
+    void deleteFolderItem_callsDeleteFromRepository() {
         FolderItem folderItem1 = aFolderItem().id(1L).postId("1").firstCategory(FirstCategory.SADNESS).build();
-        FolderItem folderItem2 = aFolderItem().id(2L).postId("2").firstCategory(FirstCategory.SADNESS).build();
         Folder folder = aFolder().id(1L).build();
         folderItem1.setFolder(folder);
-        folderItem2.setFolder(folder);
 
         spyFolderItemRepository.findById_returnValue = folderItem1;
         folderItemService.deleteFolderItems(1L, List.of("1"));
 
-        assertThat(folder.getFolderItems().size()).isEqualTo(1);
-        assertThat(folder.getFolderItems().get(0).getPostId()).isEqualTo("2");
+        assertThat(spyFolderItemRepository.deleteFolderItem_argumentPostId).isEqualTo("1");
     }
-
-
 }

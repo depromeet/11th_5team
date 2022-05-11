@@ -14,9 +14,11 @@ import java.util.function.Function;
 public class SpyFolderItemRepository implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
     public Long latestFolderItems_argumentMemberId;
+    public String deleteFolderItem_argumentPostId;
     public FolderItem findById_returnValue;
     public FolderItem latestFolderItem_returnValue;
     public List<FolderItem> latestFolderItems_returnValue;
+
 
     @Override
     public List<FolderItem> findAll() {
@@ -166,6 +168,7 @@ public class SpyFolderItemRepository implements FolderItemRepository {
 
     @Override
     public Optional<FolderItem> findByPostId(String postId) {
+        deleteFolderItem_argumentPostId = postId;
         return Optional.ofNullable(findById_returnValue);
     }
 
