@@ -23,6 +23,7 @@ public class LoginApiIntegrationTest extends IntegrationTest {
     @BeforeEach
     void setUp() {
         given(oauthService.getToken(any())).willReturn(new AuthToken("auth token", "refresh token"));
+        given(oauthService.getRefreshToken(any())).willReturn(new AuthToken("auth token", "refresh token"));
     }
 
     @Test

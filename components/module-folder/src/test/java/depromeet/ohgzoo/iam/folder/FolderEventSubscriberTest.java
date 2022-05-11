@@ -3,6 +3,7 @@ package depromeet.ohgzoo.iam.folder;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.member.MemberCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,5 +82,13 @@ class FolderEventSubscriberTest {
                 List.of("1", "2", "3"));
         folderEventSubscriber.handlePostDeleteEvent(givenEvent);
         assertThat(spyFolderService.deleteFolderItems_argumentPostIds).isEqualTo(List.of("1", "2", "3"));
+    }
+
+    @Test
+    void handleMemberCreateEvent_passesMemberIdToService() {
+        MemberCreateEvent givenEvent = new MemberCreateEvent(this,
+                1L);
+        folderEventSubscriber.handleMemberCreateEvent(givenEvent);
+        assertThat(spyFolderService.argument_memberId).isEqualTo(1L);
     }
 }

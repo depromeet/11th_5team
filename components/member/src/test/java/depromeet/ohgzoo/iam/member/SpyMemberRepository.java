@@ -16,6 +16,7 @@ public class SpyMemberRepository implements MemberRepository {
     public Member save_argumentMember;
     public Long findById_argumentId;
     public Member findById_returnValue = Member.builder().build();
+    public Member save_returnValue = Member.builder().build();
 
     @Override
     public Optional<Member> findByIdentifyToken(String identifyToken) {
@@ -76,7 +77,7 @@ public class SpyMemberRepository implements MemberRepository {
     @Override
     public <S extends Member> S save(S entity) {
         save_argumentMember = entity;
-        return null;
+        return (S) save_returnValue;
     }
 
     @Override

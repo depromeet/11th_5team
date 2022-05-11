@@ -1,7 +1,7 @@
 dependencies {
     implementation project(':components:support-jpa')
     implementation project(':components:support-jwt')
-    implementation project(':components:module-member')
+    implementation project(':components:member')
     implementation project(':components:postEvent')
     api project(':components:category')
 }

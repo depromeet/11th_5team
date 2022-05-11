@@ -113,4 +113,45 @@ class SearchServiceImplTest {
         assertThat(result.getPosts().get(1).getId()).isEqualTo("2");
         assertThat(result.getPosts().get(1).isMy()).isFalse();
     }
+
+    @Test
+    void searchByCategory_callsFindAllInRepository() {
+        sut.searchByCategory("keyword", null);
+
+        assertThat(spyPostRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void searchByCategory_returnsSearchResult_containsFirstCategory() {
+        spyPostRepository.findAll_returnValue = List.of(
+                new SearchEntity("1", 1L, "hi", "", "content1", List.of("tag1"), 0, LocalDateTime.now()),
+                new SearchEntity("2", 1L, "", "", "content2", List.of("tag2"), 0, LocalDateTime.now())
+        );
+
+        SearchResult result = sut.searchByCategory("hi", null);
+
+        assertThat(result.getPosts()).hasSize(1);
+
+        SearchModel actual = result.getPosts().get(0);
+        assertThat(actual.getFirstCategory()).isEqualTo("hi");
+        assertThat(actual.getId()).isEqualTo("1");
+        assertThat(actual.isMy()).isFalse();
+    }
+
+    @Test
+    void searchByCategory_returnsSearchResult_containsSecondCategory() {
+        spyPostRepository.findAll_returnValue = List.of(
+                new SearchEntity("1", 1L, "", "", "content1", List.of("tag1"), 0, LocalDateTime.now()),
+                new SearchEntity("2", 1L, "", "hi", "content2", List.of("tag2"), 0, LocalDateTime.now())
+        );
+
+        SearchResult result = sut.searchByCategory("hi", null);
+
+        assertThat(result.getPosts()).hasSize(1);
+
+        SearchModel actual = result.getPosts().get(0);
+        assertThat(actual.getSecondCategory()).isEqualTo("hi");
+        assertThat(actual.getId()).isEqualTo("2");
+        assertThat(actual.isMy()).isFalse();
+    }
 }

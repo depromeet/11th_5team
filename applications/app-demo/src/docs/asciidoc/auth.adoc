@@ -10,10 +10,6 @@
 
 operation::login-api-integration-test/login[snippets='curl-request,http-request,http-response']
 
-== Oauth2 callback
-
-operation::login-api-integration-test/redirect-callback[snippets='curl-request,http-request,http-response']
-
 
 == 토큰 갱신
 

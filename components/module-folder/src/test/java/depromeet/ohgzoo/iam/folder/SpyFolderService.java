@@ -74,4 +74,9 @@ public class SpyFolderService implements FolderService {
         argument_memberId = memberId;
         deleteFolderItems_argumentPostIds = postIds;
     }
+
+    @Override
+    public void createDefaultFolder(Long memberId) {
+        argument_memberId = memberId;
+    }
 }
