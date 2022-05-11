@@ -22,4 +22,9 @@ public class SearchApi {
     public SearchResult searchByTag(@RequestParam String keyword, @Login Long memberId) {
         return searchService.searchByTag(keyword, memberId);
     }
+
+    @GetMapping("category")
+    public SearchResult searchByCategory(@RequestParam String keyword, @Login Long memberId) {
+        return searchService.searchByCategory(keyword, memberId);
+    }
 }

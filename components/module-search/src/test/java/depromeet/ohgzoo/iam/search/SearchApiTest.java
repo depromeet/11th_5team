@@ -157,4 +157,68 @@ class SearchApiTest {
 
         assertThat(spySearchService.searchByTag_argumentMemberId).isNull();
     }
+
+    @Test
+    void searchByCategory_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/search/category")
+                        .param("keyword", ""))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void searchByCategory_returnsSearchResult() throws Exception {
+        spySearchService.searchByCategory_returnValue = new SearchResult.SearchModel(
+                "id",
+                "NO1",
+                "NO1",
+                "content",
+                List.of("1", "2"),
+                1,
+                LocalDateTime.of(2022,4, 24 ,12,30,30),
+                true
+        );
+
+        mockMvc.perform(get("/api/v1/search/category")
+                        .param("keyword", ""))
+                .andExpect(jsonPath("$.posts").isArray())
+                .andExpect(jsonPath("$.posts", hasSize(1)))
+                .andExpect(jsonPath("$.posts[0].id", equalTo("id")))
+                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
+                .andExpect(jsonPath("$.posts[0].tags", contains("1", "2")))
+                .andExpect(jsonPath("$.posts[0].views", equalTo(1)))
+                .andExpect(jsonPath("$.posts[0].createdAt", equalTo("2022-04-24 12:30:30")))
+                .andExpect(jsonPath("$.posts[0].my", equalTo(true)))
+        ;
+    }
+
+    @Test
+    void searchByCategory_passesKeywordToService() throws Exception {
+        mockMvc.perform(get("/api/v1/search/category")
+                .param("keyword", "test"));
+
+        assertThat(spySearchService.searchByCategory_argumentKeyword).isEqualTo("test");
+    }
+
+    @Test
+    void searchByCategory_passesMemberIdToService_whenLogined() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+
+        mockMvc.perform(get("/api/v1/search/category")
+                .param("keyword", ""));
+
+        assertThat(spySearchService.searchByCategory_argumentMemberId).isEqualTo(1L);
+    }
+
+    @Test
+    void searchByCategory_passesNullToService_whenNotLogined() throws Exception {
+        spyJwtService.getSubject_returnValue = null;
+
+        mockMvc.perform(get("/api/v1/search/category")
+                .param("keyword", ""));
+
+        assertThat(spySearchService.searchByCategory_argumentMemberId).isNull();
+    }
+
 }

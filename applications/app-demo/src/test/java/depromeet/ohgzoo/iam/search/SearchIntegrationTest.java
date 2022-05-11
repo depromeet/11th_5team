@@ -57,4 +57,11 @@ public class SearchIntegrationTest extends IntegrationTest {
                         .param("keyword", "tag1"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void searchByCategory() throws Exception {
+        mockMvc.perform(get("/api/v1/search/category")
+                        .param("keyword", "first"))
+                .andExpect(status().isOk());
+    }
 }
