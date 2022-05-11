@@ -74,7 +74,7 @@ public class FolderServiceImplTest {
 
         Folder savedFolder = spyFolderRepository.save_argumentFolder;
         assertThat(savedFolder.getId()).isEqualTo(1L);
-        assertThat(savedFolder.getName()).isEqualTo("defaultFolder");
+        assertThat(savedFolder.getName()).isEqualTo("미분류 폴더");
         assertThat(savedFolder.getCoverImg()).isEqualTo("");
         assertThat(savedFolder.getMemberId()).isEqualTo(1L);
     }
@@ -101,7 +101,7 @@ public class FolderServiceImplTest {
         spyFolderRepository.findById_returnValue = aFolder()
                 .memberId(1L)
                 .id(1L)
-                .name("defaultFolder")
+                .name("미분류 폴더")
                 .build();
 
         Assertions.assertThatThrownBy(() -> folderService.deleteFolder(1L, 1L))
