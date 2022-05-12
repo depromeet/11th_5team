@@ -16,6 +16,7 @@ import java.util.function.Function;
 public class SpySearchRepository implements SearchRepository {
     public boolean findAll_wasCalled;
     public List<SearchEntity> findAll_returnValue = Collections.emptyList();
+    public Iterable<SearchEntity> saveAll_argumentList;
 
     @Override
     public List<SearchEntity> findAll() {
@@ -75,6 +76,7 @@ public class SpySearchRepository implements SearchRepository {
 
     @Override
     public <S extends SearchEntity> List<S> saveAll(Iterable<S> entities) {
+        saveAll_argumentList = (Iterable<SearchEntity>) entities;
         return null;
     }
 
