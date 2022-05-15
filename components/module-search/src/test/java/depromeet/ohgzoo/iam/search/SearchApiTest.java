@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.search;
 
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import depromeet.ohgzoo.iam.jwt.SpyJwtService;
+import depromeet.ohgzoo.iam.search.SearchResult.SearchModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,14 +42,14 @@ class SearchApiTest {
 
     @Test
     void search_returnsSearchResult() throws Exception {
-        spySearchService.search_returnValue = new SearchResult.SearchModel(
+        spySearchService.search_returnValue = new SearchModel(
                 "id",
                 "NO1",
                 "NO1",
                 "content",
                 List.of("1", "2"),
                 1,
-                LocalDateTime.of(2022,4, 24 ,12,30,30),
+                LocalDateTime.of(2022, 4, 24, 12, 30, 30),
                 true
         );
 
@@ -104,16 +105,16 @@ class SearchApiTest {
 
     @Test
     void searchByTag_returnsSearchResult() throws Exception {
-        spySearchService.searchByTag_returnValue = new SearchResult.SearchModel(
+        spySearchService.searchByTag_returnValue = List.of(new SearchModel(
                 "id",
                 "NO1",
                 "NO1",
                 "content",
                 List.of("1", "2"),
                 1,
-                LocalDateTime.of(2022,4, 24 ,12,30,30),
+                LocalDateTime.of(2022, 4, 24, 12, 30, 30),
                 true
-        );
+        ));
 
         mockMvc.perform(get("/api/v1/search/tag")
                         .param("keyword", ""))
@@ -128,6 +129,16 @@ class SearchApiTest {
                 .andExpect(jsonPath("$.posts[0].createdAt", equalTo("2022-04-24 12:30:30")))
                 .andExpect(jsonPath("$.posts[0].my", equalTo(true)))
         ;
+    }
+
+    @Test
+    void searchByTag_passesOrderToService() throws Exception {
+        mockMvc.perform(get("/api/v1/search/tag")
+                .param("keyword", "")
+                .param("order", "test"))
+        ;
+
+        assertThat(spySearchService.searchByTag_argumentOrder).isEqualTo("test");
     }
 
     @Test
@@ -167,14 +178,14 @@ class SearchApiTest {
 
     @Test
     void searchByCategory_returnsSearchResult() throws Exception {
-        spySearchService.searchByCategory_returnValue = new SearchResult.SearchModel(
+        spySearchService.searchByCategory_returnValue = new SearchModel(
                 "id",
                 "NO1",
                 "NO1",
                 "content",
                 List.of("1", "2"),
                 1,
-                LocalDateTime.of(2022,4, 24 ,12,30,30),
+                LocalDateTime.of(2022, 4, 24, 12, 30, 30),
                 true
         );
 

@@ -6,6 +6,8 @@ import depromeet.ohgzoo.iam.search.batch.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+
 @RequiredArgsConstructor
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -23,14 +25,23 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public SearchResult searchByTag(String keyword, Long memberId) {
+    public SearchResult searchByTag(String keyword, Long memberId, String order) {
         SearchModel[] filtered = searchRepository.findAll()
                 .stream()
                 .filter(entity -> entity.getTags().contains(keyword))
                 .map(entity -> mapToSearchModel(entity, memberId))
+                .sorted(getOrderer(order))
                 .toArray(SearchModel[]::new);
 
         return SearchResult.of(filtered);
+    }
+
+    private Comparator<SearchModel> getOrderer(String order) {
+        if ("new".equals(order)) {
+            return Comparator.comparing(SearchModel::getCreatedAt).reversed();
+        } else {
+            return Comparator.comparing(SearchModel::getViews).reversed();
+        }
     }
 
     @Override

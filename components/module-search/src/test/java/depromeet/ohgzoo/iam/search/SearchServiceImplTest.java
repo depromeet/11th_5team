@@ -70,26 +70,43 @@ class SearchServiceImplTest {
 
     @Test
     void searchByTag_callsFindAllInRepository() {
-        sut.searchByTag("keyword", null);
+        sut.searchByTag("keyword", null, null);
 
         assertThat(spyPostRepository.findAll_wasCalled).isTrue();
     }
 
     @Test
-    void searchByTag_returnsContainedTagSearchResult() {
+    void searchByTag_returnsContainedTagSearchResult_orderByViews() {
         spyPostRepository.findAll_returnValue = List.of(
                 new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0, LocalDateTime.now()),
-                new SearchEntity("2", 1L, "", "", "content2", List.of("hello"), 0, LocalDateTime.now())
+                new SearchEntity("2", 1L, "", "", "content2", List.of("hi"), 1, LocalDateTime.now()),
+                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0, LocalDateTime.now())
         );
 
-        SearchResult result = sut.searchByTag("hi", null);
+        SearchResult result = sut.searchByTag("hi", null, null);
 
-        assertThat(result.getPosts()).hasSize(1);
+        assertThat(result.getPosts()).hasSize(2);
+        assertThat(result.getPosts().get(0).getId()).isEqualTo("2");
+        assertThat(result.getPosts().get(0).getViews()).isEqualTo(1);
+        assertThat(result.getPosts().get(1).getId()).isEqualTo("1");
+        assertThat(result.getPosts().get(1).getViews()).isEqualTo(0);
+    }
 
-        SearchModel actual = result.getPosts().get(0);
-        assertThat(actual.getTags()).contains("hi");
-        assertThat(actual.getId()).isEqualTo("1");
-        assertThat(actual.isMy()).isFalse();
+    @Test
+    void searchByTag_returnsContainedTagSearchResult_orderByCreatedAt() {
+        LocalDateTime givenNow = LocalDateTime.now();
+        spyPostRepository.findAll_returnValue = List.of(
+                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0, givenNow.minusDays(1)),
+                new SearchEntity("2", 1L, "", "", "content2", List.of("hi"), 0, givenNow)
+        );
+
+        SearchResult result = sut.searchByTag("hi", null, "new");
+
+        assertThat(result.getPosts()).hasSize(2);
+        assertThat(result.getPosts().get(0).getId()).isEqualTo("2");
+        assertThat(result.getPosts().get(0).getCreatedAt()).isEqualTo(givenNow);
+        assertThat(result.getPosts().get(1).getId()).isEqualTo("1");
+        assertThat(result.getPosts().get(1).getCreatedAt()).isEqualTo(givenNow.minusDays(1));
     }
 
     @Test
@@ -101,7 +118,7 @@ class SearchServiceImplTest {
                 new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0, LocalDateTime.now())
         );
 
-        SearchResult result = sut.searchByTag("hi", 1L);
+        SearchResult result = sut.searchByTag("hi", 1L, null );
 
         assertThat(result.getPosts()).hasSize(2);
 
