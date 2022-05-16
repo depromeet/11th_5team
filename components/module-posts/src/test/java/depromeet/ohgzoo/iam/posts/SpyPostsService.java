@@ -1,5 +1,8 @@
 package depromeet.ohgzoo.iam.posts;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public class SpyPostsService implements PostsService {
@@ -28,6 +31,13 @@ public class SpyPostsService implements PostsService {
     public Long createPosts_argumentMemberId;
     public Long deletePosts_argumentMemberId;
     public List<String> deletePosts_argumentPostsId;
+    public List<CategoryResponse> categories_returnValue;
+    public Long categories_argumentMemberId;
+    public Long getCategoryItems_argumentMemberId;
+    public Integer getCategoryItems_argumentCategoryId;
+    public Pageable getCategoryItems_argumentPageable;
+    public CategoryItemsResponse getCategoryItems_returnValue;
+
 
     @Override
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -85,6 +95,21 @@ public class SpyPostsService implements PostsService {
     @Override
     public List<PostsDto> getAllPosts() {
         return getAllPosts_returnValue;
+    }
+
+    @Override
+    public List<CategoryResponse> getCategories(Long memberId) {
+        this.categories_argumentMemberId = memberId;
+        return this.categories_returnValue;
+    }
+
+    @Override
+    public CategoryItemsResponse getCategoryItems(Long memberId, Integer categoryId, Pageable pageable) {
+        this.getCategoryItems_argumentMemberId = memberId;
+        this.getCategoryItems_argumentCategoryId = categoryId;
+        this.getCategoryItems_argumentPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+
+        return this.getCategoryItems_returnValue;
     }
 
     @Override

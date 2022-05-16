@@ -6,8 +6,10 @@ import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import depromeet.ohgzoo.iam.jwt.SpyJwtService;
+import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -16,11 +18,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +37,7 @@ class PostsApiTest {
         spyJwtService = new SpyJwtService();
         spyPostsService = new SpyPostsService();
         mockMvc = MockMvcBuilders.standaloneSetup(new PostsApi(spyPostsService))
-                .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService))
+                .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService), new PageableHandlerMethodArgumentResolver())
                 .build();
     }
 
@@ -255,5 +256,70 @@ class PostsApiTest {
                 .andExpect(status().isOk());
 
         assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo("1");
+    }
+
+    @Test
+    public void getCategories_isOk() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/categories"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getCategories_passesMemberIdToService() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+        mockMvc.perform(get("/api/v1/posts/categories"));
+
+        assertThat(spyPostsService.categories_argumentMemberId).isEqualTo(1L);
+    }
+
+    @Test
+    public void getCategories_returnsCategoryGetResponse() throws Exception {
+        spyPostsService.categories_returnValue = List.of(new CategoryResponse(1, SecondCategory.ANXIOUS));
+
+        mockMvc.perform(get("/api/v1/posts/categories"))
+                .andExpect(jsonPath("$[0].count", equalTo(1)))
+                .andExpect(jsonPath("$[0].categoryId", equalTo(11)))
+                .andExpect(jsonPath("$[0].name", equalTo("불안해요")))
+                .andExpect(jsonPath("$[0].image", equalTo("https://firebasestorage.googleapis.com/v0/b/cardna-29f5b.appspot.com/o/20220317_172729_412500527401_720x720.png?alt=media")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getCategoryItems_isOk() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/categories/1")
+                        .param("page", "1")
+                        .param("size", "20"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getCategoryItems_passesMemberIdToService() throws Exception {
+        spyJwtService.getSubject_returnValue = "1";
+        mockMvc.perform(get("/api/v1/posts/categories/1")
+                .param("page", "1")
+                .param("size", "20"));
+        assertThat(spyPostsService.getCategoryItems_argumentMemberId).isEqualTo(1L);
+    }
+
+    @Test
+    public void getCategoryItems_returnsCategoryGetResponse() throws Exception {
+        spyPostsService.getCategoryItems_returnValue = new CategoryItemsResponse(1, List.of(CategoryItemDTO.builder()
+                .postId("postId")
+                .firstCategory(FirstCategory.DONTKNOW)
+                .secondCategory(SecondCategory.ANXIOUS)
+                .tags(List.of("tag"))
+                .content("content")
+                .createdDate(LocalDateTime.of(2022, 5, 16, 17, 9, 30)).build()));
+
+
+        mockMvc.perform(get("/api/v1/posts/categories/1"))
+                .andExpect(jsonPath("$.totalCount", equalTo(1)))
+                .andExpect(jsonPath("$.posts[0].postId", equalTo("postId")))
+                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("DONTKNOW")))
+                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("ANXIOUS")))
+                .andExpect(jsonPath("$.posts[0].tags[0]", equalTo("tag")))
+                .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
+                .andExpect(jsonPath("$.posts[0].createdDate", equalTo("2022-05-16 17:09:30")))
+                .andDo(print());
     }
 }

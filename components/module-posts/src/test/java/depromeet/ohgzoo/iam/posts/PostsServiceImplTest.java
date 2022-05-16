@@ -2,9 +2,11 @@ package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
-import org.assertj.core.api.Assertions;
+import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -263,5 +265,47 @@ class PostsServiceImplTest {
                 PostsDto.builder().id("3").build(),
                 PostsDto.builder().id("4").build()
         );
+    }
+
+    @Test
+    @DisplayName("Test name")
+    public void getCategories_returnsCategoryResponse() throws Exception {
+        spyPostsRepository.findByMemberId_returnValue = List.of(
+                Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).build(),
+                Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).build(),
+                Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).build(),
+                Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).build()
+        );
+
+        List<CategoryResponse> result = postsService.getCategories(1L);
+        assertThat(result.size()).isEqualTo(4);
+        assertThat(result).contains(new CategoryResponse(3, SecondCategory.DONTKNOW));
+        assertThat(result).contains(new CategoryResponse(2, SecondCategory.JOY));
+        assertThat(result).contains(new CategoryResponse(2, SecondCategory.SADNESS));
+        assertThat(result).contains(new CategoryResponse(1, SecondCategory.ANXIOUS));
+    }
+
+    @Test
+    @DisplayName("Test name")
+    public void getCategoryItems_returnsCategoryItemsResponse() throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now1 = LocalDateTime.now();
+        LocalDateTime now2 = LocalDateTime.now();
+        LocalDateTime now3 = LocalDateTime.now();
+
+        spyPostsRepository.findByMemberId_returnValue = List.of(
+                Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).createdAt(now).build(),
+                Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).createdAt(now1).build(),
+                Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).createdAt(now2).build(),
+                Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now3).build()
+        );
+
+        CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(1, 20));
+
+        assertThat(result.getTotalCount()).isEqualTo(3);
+        assertThat(result.getPosts()).contains(CategoryItemDTO.builder().postId("2").firstCategory(FirstCategory.ANXIOUS)
+                .secondCategory(SecondCategory.DONTKNOW).createdDate(now1).build());
+        assertThat(result.getPosts()).contains(CategoryItemDTO.builder().postId("1").firstCategory(FirstCategory.DONTKNOW)
+                .secondCategory(SecondCategory.SADNESS).createdDate(now).build());
     }
 }

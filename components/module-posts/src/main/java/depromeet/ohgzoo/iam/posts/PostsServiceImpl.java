@@ -1,13 +1,19 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
+import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,5 +131,69 @@ public class PostsServiceImpl implements PostsService {
                 .stream()
                 .map(PostsDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CategoryResponse> getCategories(Long memberId) {
+        List<Posts> postsList = postsRepository.findByMemberId(memberId);
+        EnumMap<SecondCategory, Integer> enumMap = new EnumMap<>(SecondCategory.class);
+
+        for (Posts posts : postsList) {
+            addFirstCategory(enumMap, posts.getFirstCategory());
+            addSecondCategory(enumMap, posts.getSecondCategory());
+        }
+
+        return enumMap.keySet().stream().map(getSecondToCategoryResponseFunction(enumMap))
+                .collect(Collectors.toList());
+    }
+
+    private Function<SecondCategory, CategoryResponse> getSecondToCategoryResponseFunction(EnumMap<SecondCategory, Integer> enumMap) {
+        return secondCategory -> new CategoryResponse(enumMap.get(secondCategory), secondCategory);
+    }
+
+    private void addFirstCategory(EnumMap<SecondCategory, Integer> enumMap, FirstCategory firstCategory) {
+        addSecondCategory(enumMap, firstCategory.getSecondCategory());
+    }
+
+    private void addSecondCategory(EnumMap<SecondCategory, Integer> enumMap, SecondCategory secondCategory) {
+        enumMap.put(secondCategory, enumMap.getOrDefault(secondCategory, 0) + 1);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CategoryItemsResponse getCategoryItems(Long memberId, Integer categoryId, Pageable pageable) {
+        List<Posts> posts = postsRepository.findByMemberId(memberId).stream()
+                .filter(getEqualCategoryIdPredicate(categoryId))
+                .collect(Collectors.toList());
+
+        List<CategoryItemDTO> categoryItemDTOList = posts.stream()
+                .sorted(getCreatedDateReverseComparator())
+                .skip(pageable.getPageNumber())
+                .limit(pageable.getPageSize())
+                .map(getPostsToCategoryItemDTOFunction())
+                .collect(Collectors.toList());
+
+        return new CategoryItemsResponse(posts.size(), categoryItemDTOList);
+    }
+
+    private Predicate<Posts> getEqualCategoryIdPredicate(Integer categoryId) {
+        return p -> p.getFirstCategory().getCategoryId().equals(categoryId) ||
+                p.getSecondCategory().getCategoryId().equals(categoryId);
+    }
+
+    private Comparator<Posts> getCreatedDateReverseComparator() {
+        return Comparator.comparing(Posts::getCreatedAt).reversed();
+    }
+
+    private Function<Posts, CategoryItemDTO> getPostsToCategoryItemDTOFunction() {
+        return p -> CategoryItemDTO.builder()
+                .postId(p.getId())
+                .firstCategory(p.getFirstCategory())
+                .secondCategory(p.getSecondCategory())
+                .tags(p.getTags())
+                .content(p.getContent())
+                .createdDate(p.getCreatedAt())
+                .build();
     }
 }
