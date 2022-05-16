@@ -16,7 +16,7 @@ values ('3', 'content3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 'SADNESS',
 
 insert into folder
 (folder_id, created_at, updated_at, cover_img, is_default, member_id, name)
-values (3, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'default cover', 1, 1, '미분류 폴더');
+values (3, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'default cover', 1, 1, '미분류');
 
 insert into folder
 (folder_id, created_at, updated_at, cover_img, is_default, member_id, name)

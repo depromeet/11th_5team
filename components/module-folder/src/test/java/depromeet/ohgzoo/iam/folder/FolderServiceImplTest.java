@@ -73,7 +73,7 @@ public class FolderServiceImplTest {
         folderService.createDefaultFolder(1L);
 
         Folder savedFolder = spyFolderRepository.save_argumentFolder;
-        assertThat(savedFolder.getName()).isEqualTo("미분류 폴더");
+        assertThat(savedFolder.getName()).isEqualTo("미분류");
         assertThat(savedFolder.isDefault()).isEqualTo(true);
         assertThat(savedFolder.getMemberId()).isEqualTo(1L);
     }
@@ -100,7 +100,7 @@ public class FolderServiceImplTest {
         spyFolderRepository.findById_returnValue = aFolder()
                 .memberId(1L)
                 .id(1L)
-                .name("미분류 폴더")
+                .name("미분류")
                 .isDefault(true)
                 .build();
 

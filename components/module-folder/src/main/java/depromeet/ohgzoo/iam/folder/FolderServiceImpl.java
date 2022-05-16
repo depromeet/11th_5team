@@ -115,7 +115,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void createDefaultFolder(Long memberId) {
-        Folder folder = new Folder("미분류 폴더", CoverImageUrl.defaultImage, memberId, true);
+        Folder folder = new Folder("미분류", CoverImageUrl.defaultImage, memberId, true);
         folderRepository.save(folder);
     }
 
