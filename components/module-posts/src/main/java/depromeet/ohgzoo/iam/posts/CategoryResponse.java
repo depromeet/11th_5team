@@ -10,7 +10,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class CategoryResponse {
 
-    Integer count;
+    int count;
     Integer categoryId;
     String name;
     String image;

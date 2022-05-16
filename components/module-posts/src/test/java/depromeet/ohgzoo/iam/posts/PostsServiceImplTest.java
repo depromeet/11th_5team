@@ -4,7 +4,6 @@ import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 
@@ -268,7 +267,6 @@ class PostsServiceImplTest {
     }
 
     @Test
-    @DisplayName("Test name")
     public void getCategories_returnsCategoryResponse() throws Exception {
         spyPostsRepository.findByMemberId_returnValue = List.of(
                 Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).build(),
@@ -278,34 +276,45 @@ class PostsServiceImplTest {
         );
 
         List<CategoryResponse> result = postsService.getCategories(1L);
-        assertThat(result.size()).isEqualTo(4);
-        assertThat(result).contains(new CategoryResponse(3, SecondCategory.DONTKNOW));
-        assertThat(result).contains(new CategoryResponse(2, SecondCategory.JOY));
-        assertThat(result).contains(new CategoryResponse(2, SecondCategory.SADNESS));
-        assertThat(result).contains(new CategoryResponse(1, SecondCategory.ANXIOUS));
+
+        assertThat(result).hasSize(4);
+
+        assertThat(result).contains(
+                new CategoryResponse(3, SecondCategory.DONTKNOW),
+                new CategoryResponse(2, SecondCategory.JOY),
+                new CategoryResponse(2, SecondCategory.SADNESS),
+                new CategoryResponse(1, SecondCategory.ANXIOUS));
     }
 
     @Test
-    @DisplayName("Test name")
     public void getCategoryItems_returnsCategoryItemsResponse() throws Exception {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime now1 = LocalDateTime.now();
-        LocalDateTime now2 = LocalDateTime.now();
-        LocalDateTime now3 = LocalDateTime.now();
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
 
         spyPostsRepository.findByMemberId_returnValue = List.of(
                 Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).createdAt(now).build(),
-                Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).createdAt(now1).build(),
-                Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).createdAt(now2).build(),
-                Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now3).build()
+                Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).createdAt(tomorrow).build(),
+                Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).createdAt(yesterday).build(),
+                Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now).build()
         );
 
-        CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(1, 20));
+        CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(0, 20));
 
         assertThat(result.getTotalCount()).isEqualTo(3);
-        assertThat(result.getPosts()).contains(CategoryItemDTO.builder().postId("2").firstCategory(FirstCategory.ANXIOUS)
-                .secondCategory(SecondCategory.DONTKNOW).createdDate(now1).build());
-        assertThat(result.getPosts()).contains(CategoryItemDTO.builder().postId("1").firstCategory(FirstCategory.DONTKNOW)
-                .secondCategory(SecondCategory.SADNESS).createdDate(now).build());
+
+        assertThat(result.getPosts()).contains(
+                CategoryItemDTO.builder()
+                        .postId("2")
+                        .firstCategory(FirstCategory.ANXIOUS)
+                        .secondCategory(SecondCategory.DONTKNOW)
+                        .createdDate(tomorrow)
+                        .build(),
+                CategoryItemDTO.builder()
+                        .postId("1")
+                        .firstCategory(FirstCategory.DONTKNOW)
+                        .secondCategory(SecondCategory.SADNESS)
+                        .createdDate(now)
+                        .build());
     }
 }

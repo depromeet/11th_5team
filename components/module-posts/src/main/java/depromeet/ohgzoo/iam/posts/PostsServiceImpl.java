@@ -144,7 +144,9 @@ public class PostsServiceImpl implements PostsService {
             addSecondCategory(enumMap, posts.getSecondCategory());
         }
 
-        return enumMap.keySet().stream().map(getSecondToCategoryResponseFunction(enumMap))
+        return enumMap.keySet()
+                .stream()
+                .map(getSecondToCategoryResponseFunction(enumMap))
                 .collect(Collectors.toList());
     }
 
@@ -163,7 +165,8 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional(readOnly = true)
     public CategoryItemsResponse getCategoryItems(Long memberId, Integer categoryId, Pageable pageable) {
-        List<Posts> posts = postsRepository.findByMemberId(memberId).stream()
+        List<Posts> posts = postsRepository.findByMemberId(memberId)
+                .stream()
                 .filter(getEqualCategoryIdPredicate(categoryId))
                 .collect(Collectors.toList());
 

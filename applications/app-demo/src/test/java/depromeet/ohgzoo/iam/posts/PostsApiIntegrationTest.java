@@ -14,15 +14,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static depromeet.ohgzoo.iam.posts.PostFixtures.aPost;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 public class PostsApiIntegrationTest extends IntegrationTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
-    Posts post1;
-    Posts post2;
     @Autowired
     private PostsRepository postsRepository;
 
