@@ -16,6 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -118,4 +119,17 @@ class PostExtensionApiTest {
         assertThat(spyPostExtensionService.deletePosts_argumentPostsId).isEqualTo(List.of("1", "2", "3"));
     }
 
+    @Test
+    public void increaseViews_isOk() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/1/views"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void increaseViews_passesPostIdToService() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/{postid}/views", "1"))
+                .andExpect(status().isOk());
+
+        assertThat(spyPostExtensionService.increaseViews_argumentPostId).isEqualTo("1");
+    }
 }

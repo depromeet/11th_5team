@@ -312,4 +312,13 @@ public class FolderServiceImplTest {
 
         assertThat(spyFolderItemRepository.deleteFolderItem_argumentPostId).isEqualTo("1");
     }
+
+    @Test
+    public void increaseViews() {
+        spyFolderItemRepository.findById_returnValue = aFolderItem().views(0).build();
+
+        folderItemService.increaseViews("1");
+
+        assertThat(spyFolderItemRepository.findById_returnValue.getViews()).isEqualTo(1);
+    }
 }

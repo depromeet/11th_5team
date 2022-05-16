@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
+import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,6 +87,16 @@ class PostExtensionServiceImplTest {
         );
 
         assertThat((PostDeleteEvent) spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    void increaseViews_passesIncreaseViewEventToEventPublisher() {
+        postExtensionService.increaseViews("1");
+
+        IncreaseViewEvent expected = new IncreaseViewEvent(postExtensionService, "1");
+
+        assertThat((IncreaseViewEvent) spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 }

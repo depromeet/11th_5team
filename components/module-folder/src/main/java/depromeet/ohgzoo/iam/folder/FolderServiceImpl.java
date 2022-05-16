@@ -118,4 +118,9 @@ public class FolderServiceImpl implements FolderService {
         Folder folder = new Folder("미분류 폴더", CoverImageUrl.defaultImage, memberId, true);
         folderRepository.save(folder);
     }
+
+    @Override
+    public void increaseViews(String postId) {
+        folderItemService.increaseViews(postId);
+    }
 }

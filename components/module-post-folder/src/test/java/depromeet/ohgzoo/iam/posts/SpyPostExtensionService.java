@@ -8,6 +8,7 @@ public class SpyPostExtensionService implements PostExtensionService {
     public Long createPost_argumentMemberId;
     public Long deletePosts_argumentMemberId;
     public CreatePostResult createPost_returnValue;
+    public String increaseViews_argumentPostId;
 
     @Override
     public CreatePostResult createPost(Long memberId, CreatePostRequest request) {
@@ -21,4 +22,10 @@ public class SpyPostExtensionService implements PostExtensionService {
         deletePosts_argumentMemberId = memberId;
         deletePosts_argumentPostsId = postIds;
     }
+
+    @Override
+    public void increaseViews(String postId) {
+        increaseViews_argumentPostId = postId;
+    }
+
 }

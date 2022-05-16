@@ -25,4 +25,6 @@ public interface FolderService {
     void deleteFolderItems(Long memberId, List<String> postIds);
 
     void createDefaultFolder(Long memberId);
+
+    void increaseViews(String postId);
 }
