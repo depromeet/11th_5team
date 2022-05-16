@@ -19,6 +19,7 @@ public class FolderItemDto {
     private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
+    private int views;
 
     public static FolderItemDto of(FolderItem folderItem) {
         return FolderItemDto.builder()
@@ -28,6 +29,7 @@ public class FolderItemDto {
                 .tags(folderItem.getTags())
                 .content(folderItem.getContent())
                 .createdDate(folderItem.getCreatedAt())
+                .views(folderItem.getViews())
                 .build();
     }
 }

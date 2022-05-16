@@ -28,15 +28,18 @@ values (2, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'cover image2', 0, 1, 'fold
 
 insert into folder_item
 (folder_item_id, created_at, updated_at, content, disclosure, first_category, member_id, post_id, second_category, tags,
- folder_id)
-values ('1', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNESS', 1, '1', 'SADNESS', 'tag1,tag2', 1);
+ views, folder_id)
+values ('1', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNESS', 1, '1', 'SADNESS', 'tag1,tag2', 12,
+        1);
 
 insert into folder_item
 (folder_item_id, created_at, updated_at, content, disclosure, first_category, member_id, post_id, second_category, tags,
- folder_id)
-values ('2', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNESS', 1, '2', 'SADNESS', 'tag1,tag2', 1);
+ views, folder_id)
+values ('2', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNESS', 1, '2', 'SADNESS', 'tag1,tag2', 21,
+        1);
 
 insert into folder_item
 (folder_item_id, created_at, updated_at, content, disclosure, first_category, member_id, post_id, second_category, tags,
- folder_id)
-values ('3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNESS', 1, '3', 'SADNESS', 'tag1,tag2', 1);
+ views, folder_id)
+values ('3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNESS', 1, '3', 'SADNESS', 'tag1,tag2', 3,
+        1);

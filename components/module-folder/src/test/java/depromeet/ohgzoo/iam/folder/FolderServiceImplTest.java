@@ -283,7 +283,7 @@ public class FolderServiceImplTest {
     @Test
     void getFolderItems_returnsFolderItems() {
         Folder folder1 = aFolder().id(1L).build();
-        FolderItem folderItem = aFolderItem().content("new post").build();
+        FolderItem folderItem = aFolderItem().content("new post").views(12).build();
         folderItem.setFolder(folder1);
 
         spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1));
@@ -292,6 +292,7 @@ public class FolderServiceImplTest {
         FolderItemsGetResponse folderItemsGetResponse = folderService.getFolderItems(1L, 1L, PageRequest.of(0, 20));
 
         assertThat(folderItemsGetResponse.getTotalCount()).isEqualTo(1);
+        assertThat(folderItemsGetResponse.getPosts().get(0).getViews()).isEqualTo(12);
         assertThat(folderItemsGetResponse.getPosts().get(0).getContent()).isEqualTo("new post");
     }
 
