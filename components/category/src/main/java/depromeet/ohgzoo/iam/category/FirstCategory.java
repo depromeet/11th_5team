@@ -14,14 +14,14 @@ public enum FirstCategory {
 
     private CategoryType type;
     private Integer categoryId;
-    private String name;
+    private String description;
     private String image;
     private SecondCategory secondCategory;
 
     FirstCategory(SecondCategory category) {
         this.type = category.getType();
         this.categoryId = category.getCategoryId();
-        this.name = category.getName();
+        this.description = category.getDescription();
         this.image = category.getImage();
         this.secondCategory = category;
     }

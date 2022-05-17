@@ -281,7 +281,7 @@ class PostsApiTest {
         mockMvc.perform(get("/api/v1/posts/categories"))
                 .andExpect(jsonPath("$[0].count", equalTo(1)))
                 .andExpect(jsonPath("$[0].categoryId", equalTo(11)))
-                .andExpect(jsonPath("$[0].name", equalTo("불안해요")))
+                .andExpect(jsonPath("$[0].description", equalTo("불안해요")))
                 .andExpect(jsonPath("$[0].image", equalTo("https://firebasestorage.googleapis.com/v0/b/cardna-29f5b.appspot.com/o/20220317_172729_412500527401_720x720.png?alt=media")))
                 .andDo(print());
     }

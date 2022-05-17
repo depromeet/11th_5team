@@ -27,13 +27,13 @@ public enum SecondCategory {
 
     private CategoryType type;
     private Integer categoryId;
-    private String name;
+    private String description;
     private String image;
 
-    SecondCategory(CategoryType type, Integer categoryId, String name, String image) {
+    SecondCategory(CategoryType type, Integer categoryId, String description, String image) {
         this.type = type;
         this.categoryId = categoryId;
-        this.name = name;
+        this.description = description;
         this.image = image;
     }
 }

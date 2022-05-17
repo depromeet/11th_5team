@@ -9,6 +9,6 @@ public class Category {
 
     private Integer categoryId;
     private String categoryName;
-    private String name;
+    private String description;
     private String image;
 }
