@@ -1,6 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
-import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.CategoryService;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -20,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostsServiceImpl implements PostsService {
     private final PostsRepository postsRepository;
+    private final CategoryService categoryService;
 
     @Transactional
     public CreatePostsResult createPosts(Long memberId, CreatePostsRequest request) {
@@ -137,29 +137,17 @@ public class PostsServiceImpl implements PostsService {
     @Transactional(readOnly = true)
     public List<CategoryResponse> getCategories(Long memberId) {
         List<Posts> postsList = postsRepository.findByMemberId(memberId);
-        EnumMap<SecondCategory, Integer> enumMap = new EnumMap<>(SecondCategory.class);
+        List<SecondCategory> categories = categoryService.secondCategoryList();
 
-        for (Posts posts : postsList) {
-            addFirstCategory(enumMap, posts.getFirstCategory());
-            addSecondCategory(enumMap, posts.getSecondCategory());
-        }
-
-        return enumMap.keySet()
-                .stream()
-                .map(getSecondToCategoryResponseFunction(enumMap))
+        return categories.stream()
+                .map(category -> new CategoryResponse(getCategoryContainsCount(postsList, category), category))
                 .collect(Collectors.toList());
     }
 
-    private Function<SecondCategory, CategoryResponse> getSecondToCategoryResponseFunction(EnumMap<SecondCategory, Integer> enumMap) {
-        return secondCategory -> new CategoryResponse(enumMap.get(secondCategory), secondCategory);
-    }
-
-    private void addFirstCategory(EnumMap<SecondCategory, Integer> enumMap, FirstCategory firstCategory) {
-        addSecondCategory(enumMap, firstCategory.getSecondCategory());
-    }
-
-    private void addSecondCategory(EnumMap<SecondCategory, Integer> enumMap, SecondCategory secondCategory) {
-        enumMap.put(secondCategory, enumMap.getOrDefault(secondCategory, 0) + 1);
+    private int getCategoryContainsCount(List<Posts> postsList, SecondCategory category) {
+        return (int) postsList.stream()
+                .filter(posts -> posts.containsCategory(category))
+                .count();
     }
 
     @Override

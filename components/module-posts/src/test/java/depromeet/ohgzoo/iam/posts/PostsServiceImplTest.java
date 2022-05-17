@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.CategoryService;
+import depromeet.ohgzoo.iam.category.CategoryServiceImpl;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
@@ -17,11 +19,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class PostsServiceImplTest {
     private SpyPostsRepository spyPostsRepository;
     private PostsServiceImpl postsService;
+    private CategoryService categoryService;
 
     @BeforeEach
     void setUp() {
+        categoryService = new CategoryServiceImpl();
         spyPostsRepository = new SpyPostsRepository();
-        postsService = new PostsServiceImpl(spyPostsRepository);
+        postsService = new PostsServiceImpl(spyPostsRepository, categoryService);
     }
 
     @Test
@@ -277,13 +281,20 @@ class PostsServiceImplTest {
 
         List<CategoryResponse> result = postsService.getCategories(1L);
 
-        assertThat(result).hasSize(4);
+        assertThat(result).hasSize(12);
 
-        assertThat(result).contains(
-                new CategoryResponse(3, SecondCategory.DONTKNOW),
-                new CategoryResponse(2, SecondCategory.JOY),
-                new CategoryResponse(2, SecondCategory.SADNESS),
-                new CategoryResponse(1, SecondCategory.ANXIOUS));
+        assertThat(result.get(0)).isEqualTo(new CategoryResponse(2, SecondCategory.JOY));
+        assertThat(result.get(1)).isEqualTo(new CategoryResponse(0, SecondCategory.PROUD));
+        assertThat(result.get(2)).isEqualTo(new CategoryResponse(0, SecondCategory.RELIEF));
+        assertThat(result.get(3)).isEqualTo(new CategoryResponse(0, SecondCategory.EASYGOING));
+        assertThat(result.get(4)).isEqualTo(new CategoryResponse(0, SecondCategory.CALMDOWN));
+        assertThat(result.get(5)).isEqualTo(new CategoryResponse(0, SecondCategory.LETHARGY));
+        assertThat(result.get(6)).isEqualTo(new CategoryResponse(0, SecondCategory.DISAPPOINTMENT));
+        assertThat(result.get(7)).isEqualTo(new CategoryResponse(2, SecondCategory.SADNESS));
+        assertThat(result.get(8)).isEqualTo(new CategoryResponse(0, SecondCategory.REGRET));
+        assertThat(result.get(9)).isEqualTo(new CategoryResponse(0, SecondCategory.IRRITATION));
+        assertThat(result.get(10)).isEqualTo(new CategoryResponse(1, SecondCategory.ANXIOUS));
+        assertThat(result.get(11)).isEqualTo(new CategoryResponse(3, SecondCategory.DONTKNOW));
     }
 
     @Test
