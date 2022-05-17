@@ -7,7 +7,6 @@ configurations {
 }
 
 dependencies {
-    implementation project(':components:module-demo')
     implementation project(':components:module-oauth')
     implementation project(':components:support-security')
     implementation project(':components:module-member')
