@@ -18,4 +18,6 @@ public interface FolderItemService {
     Page<FolderItem> getFolderItemsByFolder(Long memberId, Folder folder, Pageable pageable);
 
     void deleteFolderItems(Long memberId, List<String> postIds);
+
+    void increaseViews(String postId);
 }

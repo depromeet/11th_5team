@@ -45,6 +45,8 @@ public class FolderItem extends BaseEntity {
 
     private Boolean disclosure;
 
+    private int views;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id")
     private Folder folder;
@@ -55,19 +57,20 @@ public class FolderItem extends BaseEntity {
     private Long memberId;
 
     @Builder
-    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, String postId, Long memberId) {
+    public FolderItem(Long id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, int views, String postId, Long memberId) {
         this.id = id;
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;
         this.tags = tags;
         this.disclosure = disclosure;
+        this.views = views;
         this.postId = postId;
         this.memberId = memberId;
     }
 
     public FolderItem(FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, String postId, Long memberId) {
-        this(null, firstCategory, secondCategory, content, tags, disclosure, postId, memberId);
+        this(null, firstCategory, secondCategory, content, tags, disclosure, 0, postId, memberId);
     }
 
     public void setFolder(Folder folder) {
@@ -75,13 +78,13 @@ public class FolderItem extends BaseEntity {
         folder.getFolderItems().add(this);
     }
 
-    public void unsetFolder() {
-        this.folder.getFolderItems().remove(this);
-    }
-
     public void changeFolder(Folder oldFolder, Folder newFolder) {
         this.folder = newFolder;
         oldFolder.getFolderItems().remove(this);
         newFolder.getFolderItems().add(this);
+    }
+
+    public void increaseViews() {
+        views++;
     }
 }

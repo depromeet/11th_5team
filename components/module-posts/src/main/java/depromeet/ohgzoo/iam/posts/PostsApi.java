@@ -52,12 +52,6 @@ public class PostsApi {
         postsService.updatePosts(postId, request, memberId);
     }
 
-    @PatchMapping("/{postid}/views")
-    public void increaseViews(
-            @PathVariable("postid") String postId) {
-        postsService.increaseViews(postId);
-    }
-
     @GetMapping("/{postId}")
     public PostsDto getPostsById(@PathVariable String postId) {
         return postsService.getPostsById(postId);

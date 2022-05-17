@@ -23,6 +23,7 @@ public class SpyFolderService implements FolderService {
     public FolderItemsGetResponse getFolderItems_returnValue;
     public Long createFolderItem_argumentMemberId;
     public Long createFolderItem_argumentFolderId;
+    public String increaseViews_argumentPostId;
 
 
     @Override
@@ -78,5 +79,10 @@ public class SpyFolderService implements FolderService {
     @Override
     public void createDefaultFolder(Long memberId) {
         argument_memberId = memberId;
+    }
+
+    @Override
+    public void increaseViews(String postId) {
+        increaseViews_argumentPostId = postId;
     }
 }
