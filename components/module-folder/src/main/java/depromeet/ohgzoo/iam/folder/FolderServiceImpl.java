@@ -104,7 +104,7 @@ public class FolderServiceImpl implements FolderService {
                 .limit(pageable.getPageSize())
                 .collect(Collectors.toList());
 
-        return new FolderItemsGetResponse(folder.getFolderItems().size(), folderItems.stream()
+        return new FolderItemsGetResponse(folder.getFolderItems().size(), folder.getName(), folderItems.stream()
                 .map(FolderItemDto::of).collect(Collectors.toList()));
     }
 
@@ -115,7 +115,12 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void createDefaultFolder(Long memberId) {
-        Folder folder = new Folder("미분류 폴더", CoverImageUrl.defaultImage, memberId, true);
+        Folder folder = new Folder("미분류", CoverImageUrl.defaultImage, memberId, true);
         folderRepository.save(folder);
+    }
+
+    @Override
+    public void increaseViews(String postId) {
+        folderItemService.increaseViews(postId);
     }
 }

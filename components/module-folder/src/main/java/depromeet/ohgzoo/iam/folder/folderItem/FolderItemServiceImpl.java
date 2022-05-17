@@ -69,4 +69,11 @@ public class FolderItemServiceImpl implements FolderItemService {
         FolderItem folderItem = folderItemRepository.findFirstByFolderOrderByCreatedAtDesc(folder);
         folder.changeCoverImg((folderItem == null) ? FirstCategory.SADNESS : folderItem.getFirstCategory());
     }
+
+    @Override
+    public void increaseViews(String postId) {
+        FolderItem folderItem = folderItemRepository.findByPostId(postId)
+                .orElseThrow(NotExistsFolderItemException::new);
+        folderItem.increaseViews();
+    }
 }

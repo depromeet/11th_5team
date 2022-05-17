@@ -247,20 +247,6 @@ class PostsApiTest {
     }
 
     @Test
-    public void increaseViews_isOk() throws Exception {
-        mockMvc.perform(patch("/api/v1/posts/1/views"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void increaseViews_passesPostIdToService() throws Exception {
-        mockMvc.perform(patch("/api/v1/posts/{postid}/views", "1"))
-                .andExpect(status().isOk());
-
-        assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo("1");
-    }
-
-    @Test
     public void getCategories_isOk() throws Exception {
         mockMvc.perform(get("/api/v1/posts/categories"))
                 .andExpect(status().isOk());

@@ -13,6 +13,7 @@ public class SpyFolderItemService implements FolderItemService {
     public FolderItemMoveRequest moveFolderItem_argumentRequest;
     public FolderItemCreateRequest createFolderItem_argumentRequest;
     public List<FolderItem> getFolderItem_returnValue;
+    public String increaseViews_argumentPostId;
 
 
     @Override
@@ -46,5 +47,10 @@ public class SpyFolderItemService implements FolderItemService {
     @Override
     public void deleteFolderItems(Long memberId, List<String> postIds) {
         deleteFolderItems_argumentPostIds = postIds;
+    }
+
+    @Override
+    public void increaseViews(String postId) {
+        increaseViews_argumentPostId = postId;
     }
 }

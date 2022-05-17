@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
+import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,5 +52,12 @@ class PostEventSubscriberTest {
 
         assertThat(spyPostsService.deletePosts_argumentMemberId).isEqualTo(1L);
         assertThat(spyPostsService.deletePosts_argumentPostsId).isEqualTo(List.of("1", "2", "3"));
+    }
+
+    @Test
+    void handleIncreaseViewEvent_passesPostIdToService() {
+        IncreaseViewEvent givenEvent = new IncreaseViewEvent(this, "1");
+        postEventSubscriber.handleIncreaseViewEvent(givenEvent);
+        assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo("1");
     }
 }
