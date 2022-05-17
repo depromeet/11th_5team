@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.member.MemberCreateEvent;
+import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,10 @@ public class FolderEventSubscriber {
     @EventListener
     public void handleMemberCreateEvent(MemberCreateEvent event) {
         folderService.createDefaultFolder(event.getMemberId());
+    }
+
+    @EventListener
+    public void handleIncreaseViewEvent(IncreaseViewEvent event) {
+        folderService.increaseViews(event.getPostId());
     }
 }

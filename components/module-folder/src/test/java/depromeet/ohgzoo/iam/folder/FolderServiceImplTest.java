@@ -73,7 +73,7 @@ public class FolderServiceImplTest {
         folderService.createDefaultFolder(1L);
 
         Folder savedFolder = spyFolderRepository.save_argumentFolder;
-        assertThat(savedFolder.getName()).isEqualTo("미분류 폴더");
+        assertThat(savedFolder.getName()).isEqualTo("미분류");
         assertThat(savedFolder.isDefault()).isEqualTo(true);
         assertThat(savedFolder.getMemberId()).isEqualTo(1L);
     }
@@ -100,7 +100,7 @@ public class FolderServiceImplTest {
         spyFolderRepository.findById_returnValue = aFolder()
                 .memberId(1L)
                 .id(1L)
-                .name("미분류 폴더")
+                .name("미분류")
                 .isDefault(true)
                 .build();
 
@@ -283,7 +283,7 @@ public class FolderServiceImplTest {
     @Test
     void getFolderItems_returnsFolderItems() {
         Folder folder1 = aFolder().id(1L).build();
-        FolderItem folderItem = aFolderItem().content("new post").build();
+        FolderItem folderItem = aFolderItem().content("new post").views(12).build();
         folderItem.setFolder(folder1);
 
         spyFolderRepository.findAllByMemberId_returnValue = new ArrayList<>(Arrays.asList(folder1));
@@ -292,6 +292,7 @@ public class FolderServiceImplTest {
         FolderItemsGetResponse folderItemsGetResponse = folderService.getFolderItems(1L, 1L, PageRequest.of(0, 20));
 
         assertThat(folderItemsGetResponse.getTotalCount()).isEqualTo(1);
+        assertThat(folderItemsGetResponse.getPosts().get(0).getViews()).isEqualTo(12);
         assertThat(folderItemsGetResponse.getPosts().get(0).getContent()).isEqualTo("new post");
     }
 
@@ -311,5 +312,14 @@ public class FolderServiceImplTest {
         folderItemService.deleteFolderItems(1L, List.of("1"));
 
         assertThat(spyFolderItemRepository.deleteFolderItem_argumentPostId).isEqualTo("1");
+    }
+
+    @Test
+    public void increaseViews() {
+        spyFolderItemRepository.findById_returnValue = aFolderItem().views(0).build();
+
+        folderItemService.increaseViews("1");
+
+        assertThat(spyFolderItemRepository.findById_returnValue.getViews()).isEqualTo(1);
     }
 }

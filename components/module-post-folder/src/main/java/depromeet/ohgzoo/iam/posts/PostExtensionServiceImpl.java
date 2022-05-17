@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ public class PostExtensionServiceImpl implements PostExtensionService {
     @Override
     public void deletePosts(Long memberId, List<String> postIds) {
         eventPublisher.publishEvent(new PostDeleteEvent(this, memberId, postIds));
+    }
+
+    @Override
+    public void increaseViews(String postId) {
+        eventPublisher.publishEvent(new IncreaseViewEvent(this, postId));
     }
 
     private PostCreateEvent mapToEvent(Long memberId, CreatePostRequest request) {
