@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,12 +16,14 @@ import java.util.Objects;
 @NoArgsConstructor
 public class CategoryItemsResponse {
 
-    private int totalCount;
-    private List<CategoryItemDTO> posts;
+    private List<CategoryItemDTO> posts = new ArrayList<>();
 
-    public CategoryItemsResponse(int totalCount, List<CategoryItemDTO> posts) {
-        this.totalCount = totalCount;
-        this.posts = posts;
+    public CategoryItemsResponse(List<CategoryItemDTO> posts) {
+        this.posts.addAll(posts);
+    }
+
+    public int getTotalCount() {
+        return this.posts.size();
     }
 
     @Getter

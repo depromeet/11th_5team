@@ -305,7 +305,7 @@ class PostsApiTest {
 
     @Test
     public void getCategoryItems_returnsCategoryGetResponse() throws Exception {
-        spyPostsService.getCategoryItems_returnValue = new CategoryItemsResponse(1, List.of(CategoryItemDTO.builder()
+        spyPostsService.getCategoryItems_returnValue = new CategoryItemsResponse(List.of(CategoryItemDTO.builder()
                 .postId("postId")
                 .firstCategory(FirstCategory.DONTKNOW)
                 .secondCategory(SecondCategory.ANXIOUS)

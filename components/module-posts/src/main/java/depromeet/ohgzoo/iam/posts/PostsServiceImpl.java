@@ -165,7 +165,7 @@ public class PostsServiceImpl implements PostsService {
                 .map(getPostsToCategoryItemDTOFunction())
                 .collect(Collectors.toList());
 
-        return new CategoryItemsResponse(posts.size(), categoryItemDTOList);
+        return new CategoryItemsResponse(categoryItemDTOList);
     }
 
     private Predicate<Posts> getEqualCategoryIdPredicate(Integer categoryId) {
