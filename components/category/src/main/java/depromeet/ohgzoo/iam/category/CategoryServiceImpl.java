@@ -11,17 +11,14 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private static final CategoryResponse categoryResponse;
-    private static final List<Category> firstCategoryList = new ArrayList<>();
-    private static final List<Category> secondCategoryList = new ArrayList<>();
+    private static final List<FirstCategory> firstCategoryList = new ArrayList<>();
+    private static final List<SecondCategory> secondCategoryList = new ArrayList<>();
 
     static {
         firstCategoryList.addAll(Arrays.stream(FirstCategory.values())
-                .map(category -> new Category(category.getCategoryId(), category.name(), category.getName(), category.getImage()))
                 .collect(Collectors.toList()));
-
         secondCategoryList.addAll(Arrays.stream(SecondCategory.values())
                 .filter(category -> !category.getType().equals(CategoryType.NONE))
-                .map(category -> new Category(category.getCategoryId(), category.name(), category.getName(), category.getImage()))
                 .collect(Collectors.toList()));
 
         categoryResponse = new CategoryResponse(
@@ -33,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     private static List<Category> getCategories(CategoryType categoryType) {
         return Arrays.stream(SecondCategory.values())
                 .filter(category -> category.getType().equals(categoryType))
-                .map(category -> new Category(category.getCategoryId(), category.name(), category.getName(), category.getImage()))
+                .map(category -> new Category(category.getCategoryId(), category.name(), category.getDescription(), category.getImage()))
                 .collect(Collectors.toList());
     }
 
@@ -43,12 +40,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> firstCategoryList() {
+    public List<FirstCategory> firstCategoryList() {
         return firstCategoryList;
     }
 
     @Override
-    public List<Category> secondCategoryList() {
+    public List<SecondCategory> secondCategoryList() {
         return secondCategoryList;
     }
 

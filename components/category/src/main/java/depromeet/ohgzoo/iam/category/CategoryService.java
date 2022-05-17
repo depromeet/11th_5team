@@ -6,7 +6,7 @@ public interface CategoryService {
 
     CategoryResponse categoryList();
 
-    List<Category> firstCategoryList();
+    List<FirstCategory> firstCategoryList();
 
-    List<Category> secondCategoryList();
+    List<SecondCategory> secondCategoryList();
 }

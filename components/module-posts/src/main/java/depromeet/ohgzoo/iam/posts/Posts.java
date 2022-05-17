@@ -71,4 +71,9 @@ public class Posts extends BaseEntity {
     public void increaseViews() {
         views++;
     }
+
+    public boolean containsCategory(SecondCategory category) {
+        return this.firstCategory.getCategoryId().equals(category.getCategoryId())
+                || this.secondCategory.getCategoryId().equals(category.getCategoryId());
+    }
 }
