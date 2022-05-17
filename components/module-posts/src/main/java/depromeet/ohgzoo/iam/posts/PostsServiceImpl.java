@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -153,9 +153,14 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional(readOnly = true)
     public CategoryItemsResponse getCategoryItems(Long memberId, Integer categoryId, Pageable pageable) {
+        SecondCategory category = Arrays.stream(SecondCategory.values())
+                .filter(c -> c.getCategoryId().equals(categoryId))
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+
         List<Posts> posts = postsRepository.findByMemberId(memberId)
                 .stream()
-                .filter(getEqualCategoryIdPredicate(categoryId))
+                .filter(p -> p.containsCategory(category))
                 .collect(Collectors.toList());
 
         List<CategoryItemDTO> categoryItemDTOList = posts.stream()
@@ -166,11 +171,6 @@ public class PostsServiceImpl implements PostsService {
                 .collect(Collectors.toList());
 
         return new CategoryItemsResponse(categoryItemDTOList);
-    }
-
-    private Predicate<Posts> getEqualCategoryIdPredicate(Integer categoryId) {
-        return p -> p.getFirstCategory().getCategoryId().equals(categoryId) ||
-                p.getSecondCategory().getCategoryId().equals(categoryId);
     }
 
     private Comparator<Posts> getCreatedDateReverseComparator() {
