@@ -10,9 +10,13 @@
 
 operation::search-integration-test/search[snippets='http-request,http-response']
 
-== Tag 로 검색
+== Tag 로 검색 (인기순)
 
 operation::search-integration-test/search-by-tag[snippets='http-request,http-response']
+
+== Tag 로 검색 (최신순)
+
+operation::search-integration-test/search-by-tag_order-by-created-at[snippets='http-request,http-response']
 
 == Category 로 검색
 

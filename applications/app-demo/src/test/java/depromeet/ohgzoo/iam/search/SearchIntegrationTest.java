@@ -59,6 +59,14 @@ public class SearchIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void searchByTag_orderByCreatedAt() throws Exception {
+        mockMvc.perform(get("/api/v1/search/tag")
+                        .param("keyword", "tag1")
+                        .param("order", "new"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void searchByCategory() throws Exception {
         mockMvc.perform(get("/api/v1/search/category")
                         .param("keyword", "first"))
