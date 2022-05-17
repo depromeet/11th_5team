@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface PostsService {
@@ -13,4 +15,8 @@ public interface PostsService {
     void increaseViews(String postId);
     PostsDto getPostsById(String postId);
     List<PostsDto> getAllPosts();
+
+    List<CategoryResponse> getCategories(Long memberId);
+
+    CategoryItemsResponse getCategoryItems(Long memberId, Integer categoryId, Pageable pageable);
 }
