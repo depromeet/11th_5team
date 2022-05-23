@@ -45,3 +45,11 @@ operation::posts-api-integration-test/get-posts-by-id[snippets='http-request,htt
 == 전체 Post 조회
 
 operation::posts-api-integration-test/get-all-posts[snippets='http-request,http-response']
+
+== 카레고리별 리스트 조회
+
+operation::posts-api-integration-test/get-categories[snippets='http-request,http-response']
+
+== 카레고리별 글 리스트 조회
+
+operation::posts-api-integration-test/get-category-items[snippets='http-request,http-response']

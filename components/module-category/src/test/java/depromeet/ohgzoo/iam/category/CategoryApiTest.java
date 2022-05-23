@@ -43,24 +43,24 @@ class CategoryApiTest {
         mockMvc.perform(get("/api/v1/category"))
                 .andExpect(jsonPath("$.positive").isArray())
                 .andExpect(jsonPath("$.positive", hasSize(5)))
-                .andExpect(jsonPath("$.positive[0].name", equalTo("기뻐요")))
-                .andExpect(jsonPath("$.positive[1].name", equalTo("뿌듯해요")))
-                .andExpect(jsonPath("$.positive[2].name", equalTo("안도돼요")))
-                .andExpect(jsonPath("$.positive[3].name", equalTo("홀가분해요")))
-                .andExpect(jsonPath("$.positive[4].name", equalTo("차분해요")))
+                .andExpect(jsonPath("$.positive[0].description", equalTo("기뻐요")))
+                .andExpect(jsonPath("$.positive[1].description", equalTo("뿌듯해요")))
+                .andExpect(jsonPath("$.positive[2].description", equalTo("안도돼요")))
+                .andExpect(jsonPath("$.positive[3].description", equalTo("홀가분해요")))
+                .andExpect(jsonPath("$.positive[4].description", equalTo("차분해요")))
 
                 .andExpect(jsonPath("$.negative").isArray())
                 .andExpect(jsonPath("$.negative", hasSize(6)))
-                .andExpect(jsonPath("$.negative[0].name", equalTo("무기력해요")))
-                .andExpect(jsonPath("$.negative[1].name", equalTo("실망했어요")))
-                .andExpect(jsonPath("$.negative[2].name", equalTo("슬퍼요")))
-                .andExpect(jsonPath("$.negative[3].name", equalTo("후회해요")))
-                .andExpect(jsonPath("$.negative[4].name", equalTo("짜증나요")))
-                .andExpect(jsonPath("$.negative[5].name", equalTo("불안해요")))
+                .andExpect(jsonPath("$.negative[0].description", equalTo("무기력해요")))
+                .andExpect(jsonPath("$.negative[1].description", equalTo("실망했어요")))
+                .andExpect(jsonPath("$.negative[2].description", equalTo("슬퍼요")))
+                .andExpect(jsonPath("$.negative[3].description", equalTo("후회해요")))
+                .andExpect(jsonPath("$.negative[4].description", equalTo("짜증나요")))
+                .andExpect(jsonPath("$.negative[5].description", equalTo("불안해요")))
 
                 .andExpect(jsonPath("$.natural").isArray())
                 .andExpect(jsonPath("$.natural", hasSize(1)))
-                .andExpect(jsonPath("$.natural[0].name", equalTo("모르겠어요")))
+                .andExpect(jsonPath("$.natural[0].description", equalTo("모르겠어요")))
         ;
     }
 
@@ -69,13 +69,13 @@ class CategoryApiTest {
         mockMvc.perform(get("/api/v1/firstcategory"))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(7)))
-                .andExpect(jsonPath("$[0].name", equalTo("무기력해요")))
-                .andExpect(jsonPath("$[1].name", equalTo("실망했어요")))
-                .andExpect(jsonPath("$[2].name", equalTo("슬퍼요")))
-                .andExpect(jsonPath("$[3].name", equalTo("후회해요")))
-                .andExpect(jsonPath("$[4].name", equalTo("짜증나요")))
-                .andExpect(jsonPath("$[5].name", equalTo("불안해요")))
-                .andExpect(jsonPath("$[6].name", equalTo("모르겠어요")));
+                .andExpect(jsonPath("$[0].description", equalTo("무기력해요")))
+                .andExpect(jsonPath("$[1].description", equalTo("실망했어요")))
+                .andExpect(jsonPath("$[2].description", equalTo("슬퍼요")))
+                .andExpect(jsonPath("$[3].description", equalTo("후회해요")))
+                .andExpect(jsonPath("$[4].description", equalTo("짜증나요")))
+                .andExpect(jsonPath("$[5].description", equalTo("불안해요")))
+                .andExpect(jsonPath("$[6].description", equalTo("모르겠어요")));
     }
 
     @Test
@@ -83,17 +83,17 @@ class CategoryApiTest {
         mockMvc.perform(get("/api/v1/secondcategory"))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(12)))
-                .andExpect(jsonPath("$[0].name", equalTo("기뻐요")))
-                .andExpect(jsonPath("$[1].name", equalTo("뿌듯해요")))
-                .andExpect(jsonPath("$[2].name", equalTo("안도돼요")))
-                .andExpect(jsonPath("$[3].name", equalTo("홀가분해요")))
-                .andExpect(jsonPath("$[4].name", equalTo("차분해요")))
-                .andExpect(jsonPath("$[5].name", equalTo("무기력해요")))
-                .andExpect(jsonPath("$[6].name", equalTo("실망했어요")))
-                .andExpect(jsonPath("$[7].name", equalTo("슬퍼요")))
-                .andExpect(jsonPath("$[8].name", equalTo("후회해요")))
-                .andExpect(jsonPath("$[9].name", equalTo("짜증나요")))
-                .andExpect(jsonPath("$[10].name", equalTo("불안해요")))
-                .andExpect(jsonPath("$[11].name", equalTo("모르겠어요")));
+                .andExpect(jsonPath("$[0].description", equalTo("기뻐요")))
+                .andExpect(jsonPath("$[1].description", equalTo("뿌듯해요")))
+                .andExpect(jsonPath("$[2].description", equalTo("안도돼요")))
+                .andExpect(jsonPath("$[3].description", equalTo("홀가분해요")))
+                .andExpect(jsonPath("$[4].description", equalTo("차분해요")))
+                .andExpect(jsonPath("$[5].description", equalTo("무기력해요")))
+                .andExpect(jsonPath("$[6].description", equalTo("실망했어요")))
+                .andExpect(jsonPath("$[7].description", equalTo("슬퍼요")))
+                .andExpect(jsonPath("$[8].description", equalTo("후회해요")))
+                .andExpect(jsonPath("$[9].description", equalTo("짜증나요")))
+                .andExpect(jsonPath("$[10].description", equalTo("불안해요")))
+                .andExpect(jsonPath("$[11].description", equalTo("모르겠어요")));
     }
 }

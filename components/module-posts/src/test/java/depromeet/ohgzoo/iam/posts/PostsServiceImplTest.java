@@ -1,10 +1,13 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.category.CategoryService;
+import depromeet.ohgzoo.iam.category.CategoryServiceImpl;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
-import org.assertj.core.api.Assertions;
+import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -16,11 +19,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class PostsServiceImplTest {
     private SpyPostsRepository spyPostsRepository;
     private PostsServiceImpl postsService;
+    private CategoryService categoryService;
 
     @BeforeEach
     void setUp() {
+        categoryService = new CategoryServiceImpl();
         spyPostsRepository = new SpyPostsRepository();
-        postsService = new PostsServiceImpl(spyPostsRepository);
+        postsService = new PostsServiceImpl(spyPostsRepository, categoryService);
     }
 
     @Test
@@ -263,5 +268,64 @@ class PostsServiceImplTest {
                 PostsDto.builder().id("3").build(),
                 PostsDto.builder().id("4").build()
         );
+    }
+
+    @Test
+    public void getCategories_returnsCategoryResponse() throws Exception {
+        spyPostsRepository.findByMemberId_returnValue = List.of(
+                Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).build(),
+                Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).build(),
+                Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).build(),
+                Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).build()
+        );
+
+        List<CategoryResponse> result = postsService.getCategories(1L);
+
+        assertThat(result).hasSize(12);
+
+        assertThat(result.get(0)).isEqualTo(new CategoryResponse(2, SecondCategory.JOY));
+        assertThat(result.get(1)).isEqualTo(new CategoryResponse(0, SecondCategory.PROUD));
+        assertThat(result.get(2)).isEqualTo(new CategoryResponse(0, SecondCategory.RELIEF));
+        assertThat(result.get(3)).isEqualTo(new CategoryResponse(0, SecondCategory.EASYGOING));
+        assertThat(result.get(4)).isEqualTo(new CategoryResponse(0, SecondCategory.CALMDOWN));
+        assertThat(result.get(5)).isEqualTo(new CategoryResponse(0, SecondCategory.LETHARGY));
+        assertThat(result.get(6)).isEqualTo(new CategoryResponse(0, SecondCategory.DISAPPOINTMENT));
+        assertThat(result.get(7)).isEqualTo(new CategoryResponse(2, SecondCategory.SADNESS));
+        assertThat(result.get(8)).isEqualTo(new CategoryResponse(0, SecondCategory.REGRET));
+        assertThat(result.get(9)).isEqualTo(new CategoryResponse(0, SecondCategory.IRRITATION));
+        assertThat(result.get(10)).isEqualTo(new CategoryResponse(1, SecondCategory.ANXIOUS));
+        assertThat(result.get(11)).isEqualTo(new CategoryResponse(3, SecondCategory.DONTKNOW));
+    }
+
+    @Test
+    public void getCategoryItems_returnsCategoryItemsResponse() throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
+
+        spyPostsRepository.findByMemberId_returnValue = List.of(
+                Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).createdAt(now).build(),
+                Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).createdAt(tomorrow).build(),
+                Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).createdAt(yesterday).build(),
+                Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now).build()
+        );
+
+        CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(0, 20));
+
+        assertThat(result.getTotalCount()).isEqualTo(3);
+
+        assertThat(result.getPosts()).contains(
+                CategoryItemDTO.builder()
+                        .postId("2")
+                        .firstCategory(FirstCategory.ANXIOUS)
+                        .secondCategory(SecondCategory.DONTKNOW)
+                        .createdDate(tomorrow)
+                        .build(),
+                CategoryItemDTO.builder()
+                        .postId("1")
+                        .firstCategory(FirstCategory.DONTKNOW)
+                        .secondCategory(SecondCategory.SADNESS)
+                        .createdDate(now)
+                        .build());
     }
 }

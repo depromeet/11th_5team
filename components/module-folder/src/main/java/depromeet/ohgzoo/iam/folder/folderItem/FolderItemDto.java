@@ -18,7 +18,8 @@ public class FolderItemDto {
     private List<String> tags;
     private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
+    private int views;
 
     public static FolderItemDto of(FolderItem folderItem) {
         return FolderItemDto.builder()
@@ -27,7 +28,8 @@ public class FolderItemDto {
                 .secondCategory(folderItem.getSecondCategory())
                 .tags(folderItem.getTags())
                 .content(folderItem.getContent())
-                .createdDate(folderItem.getCreatedAt())
+                .createdAt(folderItem.getCreatedAt())
+                .views(folderItem.getViews())
                 .build();
     }
 }

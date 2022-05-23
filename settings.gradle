@@ -1,6 +1,6 @@
 rootProject.name = 'iam'
 
-include ':applications:app-demo', ':components:module-demo'
+include ':applications:app-demo'
 include ':components:module-posts'
 include ':components:module-member', ':components:member'
 include ':components:module-folder'

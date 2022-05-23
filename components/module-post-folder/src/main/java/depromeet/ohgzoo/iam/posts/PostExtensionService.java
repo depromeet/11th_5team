@@ -6,4 +6,6 @@ public interface PostExtensionService {
     CreatePostResult createPost(Long memberId, CreatePostRequest request);
 
     void deletePosts(Long memberId, List<String> postIds);
+
+    void increaseViews(String postId);
 }
