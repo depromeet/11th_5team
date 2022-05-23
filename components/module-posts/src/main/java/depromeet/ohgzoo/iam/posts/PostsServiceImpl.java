@@ -115,8 +115,10 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public PostsDto getPostsById(String postId) {
-        return new PostsDto(postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new));
+    public OnePostsDto getPostsById(Long memberId, String postId) {
+        Posts posts = postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new);
+        if (posts.getMemberId().equals(memberId)) return new OnePostsDto(new PostsDto(posts), true);
+        else return new OnePostsDto(new PostsDto(posts), false);
     }
 
     @Transactional(readOnly = true)

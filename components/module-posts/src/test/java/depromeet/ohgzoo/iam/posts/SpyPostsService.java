@@ -20,8 +20,9 @@ public class SpyPostsService implements PostsService {
     public Long getRecentlyUnwrittenPosts_argumentMemberId;
     public List<PostsDto> getRecentlyUnwrittenPosts_returnValue;
     public String increaseViews_argumentPostId;
+    public Long getPostsById_argumentMemberId;
     public String getPostsById_argumentId;
-    public PostsDto getPostsById_returnValue;
+    public OnePostsDto getPostsById_returnValue;
     public int getAllPosts_argumentPage;
     public int getAllPosts_argumentSize;
     public List<PostsDto> getAllPosts_returnValue;
@@ -77,7 +78,8 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public PostsDto getPostsById(String postId) {
+    public OnePostsDto getPostsById(Long memberId, String postId) {
+        getPostsById_argumentMemberId = memberId;
         getPostsById_argumentId = postId;
         return getPostsById_returnValue;
     }

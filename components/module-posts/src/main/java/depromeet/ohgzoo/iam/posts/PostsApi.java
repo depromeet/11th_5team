@@ -59,8 +59,8 @@ public class PostsApi {
     }
 
     @GetMapping("/{postId}")
-    public PostsDto getPostsById(@PathVariable String postId) {
-        return postsService.getPostsById(postId);
+    public OnePostsDto getPostsById(@Login Long memberId, @PathVariable String postId) {
+        return postsService.getPostsById(memberId, postId);
     }
 
     @GetMapping("/all")

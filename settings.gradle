@@ -13,5 +13,6 @@ include ':components:support-jpa'
 include ':components:module-post-folder'
 include ':components:postEvent'
 include ':components:module-category', ':components:category'
-
+include 'components:module-sharing'
+findProject(':components:module-sharing')?.name = 'module-sharing'
 

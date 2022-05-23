@@ -236,7 +236,7 @@ class PostsServiceImplTest {
 
     @Test
     void getPostsById_throwException() {
-        assertThatThrownBy(() -> postsService.getPostsById("1")).isInstanceOf(PostsNotFoundException.class);
+        assertThatThrownBy(() -> postsService.getPostsById(0L, "1")).isInstanceOf(PostsNotFoundException.class);
     }
 
     @Test
