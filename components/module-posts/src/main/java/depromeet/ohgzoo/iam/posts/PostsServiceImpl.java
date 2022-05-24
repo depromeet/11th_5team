@@ -185,6 +185,7 @@ public class PostsServiceImpl implements PostsService {
                 .tags(p.getTags())
                 .content(p.getContent())
                 .createdAt(p.getCreatedAt())
+                .views(p.getViews())
                 .build();
     }
 }

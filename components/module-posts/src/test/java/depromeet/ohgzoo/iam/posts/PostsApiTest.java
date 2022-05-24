@@ -297,6 +297,7 @@ class PostsApiTest {
                 .secondCategory(SecondCategory.ANXIOUS)
                 .tags(List.of("tag"))
                 .content("content")
+                .views(1)
                 .createdAt(LocalDateTime.of(2022, 5, 16, 17, 9, 30)).build()));
 
 
@@ -308,6 +309,7 @@ class PostsApiTest {
                 .andExpect(jsonPath("$.posts[0].tags[0]", equalTo("tag")))
                 .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
                 .andExpect(jsonPath("$.posts[0].createdAt", equalTo("2022-05-16 17:09:30")))
+                .andExpect(jsonPath("$.posts[0].views", equalTo(1)))
                 .andDo(print());
     }
 }
