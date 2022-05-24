@@ -319,13 +319,13 @@ class PostsServiceImplTest {
                         .postId("2")
                         .firstCategory(FirstCategory.ANXIOUS)
                         .secondCategory(SecondCategory.DONTKNOW)
-                        .createdDate(tomorrow)
+                        .createdAt(tomorrow)
                         .build(),
                 CategoryItemDTO.builder()
                         .postId("1")
                         .firstCategory(FirstCategory.DONTKNOW)
                         .secondCategory(SecondCategory.SADNESS)
-                        .createdDate(now)
+                        .createdAt(now)
                         .build());
     }
 }

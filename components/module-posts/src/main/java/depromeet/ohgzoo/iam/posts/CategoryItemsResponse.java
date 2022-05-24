@@ -35,19 +35,19 @@ public class CategoryItemsResponse {
         private List<String> tags;
         private String content;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime createdDate;
+        private LocalDateTime createdAt;
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             CategoryItemDTO that = (CategoryItemDTO) o;
-            return Objects.equals(postId, that.postId) && firstCategory == that.firstCategory && secondCategory == that.secondCategory && Objects.equals(tags, that.tags) && Objects.equals(content, that.content) && Objects.equals(createdDate, that.createdDate);
+            return Objects.equals(postId, that.postId) && firstCategory == that.firstCategory && secondCategory == that.secondCategory && Objects.equals(tags, that.tags) && Objects.equals(content, that.content) && Objects.equals(createdAt, that.createdAt);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(postId, firstCategory, secondCategory, tags, content, createdDate);
+            return Objects.hash(postId, firstCategory, secondCategory, tags, content, createdAt);
         }
     }
 }

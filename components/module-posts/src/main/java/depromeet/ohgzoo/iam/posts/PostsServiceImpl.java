@@ -184,7 +184,7 @@ public class PostsServiceImpl implements PostsService {
                 .secondCategory(p.getSecondCategory())
                 .tags(p.getTags())
                 .content(p.getContent())
-                .createdDate(p.getCreatedAt())
+                .createdAt(p.getCreatedAt())
                 .build();
     }
 }

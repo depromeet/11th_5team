@@ -297,7 +297,7 @@ class PostsApiTest {
                 .secondCategory(SecondCategory.ANXIOUS)
                 .tags(List.of("tag"))
                 .content("content")
-                .createdDate(LocalDateTime.of(2022, 5, 16, 17, 9, 30)).build()));
+                .createdAt(LocalDateTime.of(2022, 5, 16, 17, 9, 30)).build()));
 
 
         mockMvc.perform(get("/api/v1/posts/categories/1"))
@@ -307,7 +307,7 @@ class PostsApiTest {
                 .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("ANXIOUS")))
                 .andExpect(jsonPath("$.posts[0].tags[0]", equalTo("tag")))
                 .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
-                .andExpect(jsonPath("$.posts[0].createdDate", equalTo("2022-05-16 17:09:30")))
+                .andExpect(jsonPath("$.posts[0].createdAt", equalTo("2022-05-16 17:09:30")))
                 .andDo(print());
     }
 }
