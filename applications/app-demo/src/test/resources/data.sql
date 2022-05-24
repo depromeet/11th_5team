@@ -43,3 +43,7 @@ insert into folder_item
  views, folder_id)
 values ('3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNESS', 1, '3', 'SADNESS', 'tag1,tag2', 3,
         1);
+
+insert into sharing_post
+(id, created_at, updated_at, receiver_name, sharing_category, post_id, member_id)
+values (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'nickname', 'SORRY', '1', 1);

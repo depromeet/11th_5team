@@ -1,0 +1,16 @@
+= Sharing APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+
+== 글 공유하기
+
+operation::sharing-integration-test/sharing-post[snippets='http-request,http-response']
+
+== 공유한 글 조회
+
+operation::sharing-integration-test/get-sharing-post[snippets='http-request,http-response']

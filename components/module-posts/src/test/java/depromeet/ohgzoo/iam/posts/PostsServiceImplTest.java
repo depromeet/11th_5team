@@ -241,7 +241,7 @@ class PostsServiceImplTest {
 
     @Test
     void getPostsById_throwException() {
-        assertThatThrownBy(() -> postsService.getPostsById("1")).isInstanceOf(PostsNotFoundException.class);
+        assertThatThrownBy(() -> postsService.getPostsById(0L, "1")).isInstanceOf(PostsNotFoundException.class);
     }
 
     @Test
@@ -304,10 +304,10 @@ class PostsServiceImplTest {
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
 
         spyPostsRepository.findByMemberId_returnValue = List.of(
-                Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).createdAt(now).build(),
-                Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).createdAt(tomorrow).build(),
-                Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).createdAt(yesterday).build(),
-                Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now).build()
+                Posts.builder().id("1").views(1).firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).createdAt(now).build(),
+                Posts.builder().id("2").views(1).firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).createdAt(tomorrow).build(),
+                Posts.builder().id("3").views(1).firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).createdAt(yesterday).build(),
+                Posts.builder().id("4").views(1).firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now).build()
         );
 
         CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(0, 20));
@@ -319,13 +319,15 @@ class PostsServiceImplTest {
                         .postId("2")
                         .firstCategory(FirstCategory.ANXIOUS)
                         .secondCategory(SecondCategory.DONTKNOW)
-                        .createdDate(tomorrow)
+                        .createdAt(tomorrow)
+                        .views(1)
                         .build(),
                 CategoryItemDTO.builder()
                         .postId("1")
                         .firstCategory(FirstCategory.DONTKNOW)
                         .secondCategory(SecondCategory.SADNESS)
-                        .createdDate(now)
+                        .createdAt(now)
+                        .views(1)
                         .build());
     }
 }

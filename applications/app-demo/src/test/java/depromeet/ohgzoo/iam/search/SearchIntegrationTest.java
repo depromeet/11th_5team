@@ -72,4 +72,10 @@ public class SearchIntegrationTest extends IntegrationTest {
                         .param("keyword", "first"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getRankingTags() throws Exception {
+        mockMvc.perform(get("/api/v1/search/ranking/tag"))
+                .andExpect(status().isOk());
+    }
 }

@@ -16,6 +16,8 @@ public class SpySearchService implements SearchService {
     public String searchByCategory_argumentKeyword;
     public Long searchByCategory_argumentMemberId;
     public String searchByTag_argumentOrder;
+    public boolean getRankingTag_wasCalled;
+    public List<TagRank> getRankingTag_returnValue;
 
     @Override
     public SearchResult search(String keyword, Long memberId) {
@@ -38,4 +40,11 @@ public class SpySearchService implements SearchService {
         searchByCategory_argumentMemberId = memberId;
         return SearchResult.of(searchByCategory_returnValue);
     }
+
+    @Override
+    public List<TagRank> getRankingTag() {
+        getRankingTag_wasCalled = true;
+        return getRankingTag_returnValue;
+    }
+
 }

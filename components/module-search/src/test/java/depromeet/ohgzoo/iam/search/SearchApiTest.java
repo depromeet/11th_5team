@@ -232,4 +232,32 @@ class SearchApiTest {
         assertThat(spySearchService.searchByCategory_argumentMemberId).isNull();
     }
 
+    @Test
+    void getRankingTag_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/search/ranking/tag"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getRankingTag_returnsTags_orderByFrequency() throws Exception {
+        spySearchService.getRankingTag_returnValue = List.of(
+                new TagRank("tag1",  10),
+                new TagRank("tag2",  9)
+        );
+
+        mockMvc.perform(get("/api/v1/search/ranking/tag"))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].tag", equalTo("tag1")))
+                .andExpect(jsonPath("$[0].frequency", equalTo(10)))
+                .andExpect(jsonPath("$[1].tag", equalTo("tag2")))
+                .andExpect(jsonPath("$[1].frequency", equalTo(9)))
+        ;
+    }
+
+    @Test
+    void getRankingTag_callsGetRankingTag() throws Exception {
+        mockMvc.perform(get("/api/v1/search/ranking/tag"));
+
+        assertThat(spySearchService.getRankingTag_wasCalled).isTrue();
+    }
 }
