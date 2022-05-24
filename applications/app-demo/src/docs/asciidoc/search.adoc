@@ -21,3 +21,7 @@ operation::search-integration-test/search-by-tag_order-by-created-at[snippets='h
 == Category 로 검색
 
 operation::search-integration-test/search-by-category[snippets='http-request,http-response']
+
+== 태그랭킹 조회
+
+operation::search-integration-test/get-ranking-tags[snippets='http-request,http-response']

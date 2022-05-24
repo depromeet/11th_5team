@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -53,6 +57,36 @@ public class SearchServiceImpl implements SearchService {
                 .toArray(SearchModel[]::new);
 
         return SearchResult.of(filtered);
+    }
+
+    @Override
+    public List<TagRank> getRankingTag() {
+        List<SearchEntity> result = searchRepository.findAll();
+
+        Map<String, TagRank> tagFrequency = getTagFrequency(result);
+
+        return tagFrequency.values()
+                .stream()
+                .sorted(Comparator.comparing(TagRank::getFrequency).reversed())
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, TagRank> getTagFrequency(List<SearchEntity> result) {
+        Map<String, TagRank> tagFrequency = new HashMap<>();
+        for (var item : result) {
+            applyTagFrequency(tagFrequency, item);
+        }
+        return tagFrequency;
+    }
+
+    private void applyTagFrequency(Map<String, TagRank> tagFrequency, SearchEntity item) {
+        for (var tag : item.getTags()) {
+            if (tagFrequency.containsKey(tag)) {
+                tagFrequency.get(tag).increase();
+            } else {
+                tagFrequency.put(tag, new TagRank(tag, 1));
+            }
+        }
     }
 
     private boolean containsCategory(String keyword, SearchEntity entity) {

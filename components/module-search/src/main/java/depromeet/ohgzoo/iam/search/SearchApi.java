@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/search")
@@ -27,5 +29,10 @@ public class SearchApi {
     @GetMapping("category")
     public SearchResult searchByCategory(@RequestParam String keyword, @Login Long memberId) {
         return searchService.searchByCategory(keyword, memberId);
+    }
+
+    @GetMapping("ranking/tag")
+    public List<TagRank> getRankingTag() {
+        return searchService.getRankingTag();
     }
 }

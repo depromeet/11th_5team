@@ -171,4 +171,39 @@ class SearchServiceImplTest {
         assertThat(actual.getId()).isEqualTo("2");
         assertThat(actual.isMy()).isFalse();
     }
+
+    @Test
+    void getRankingTag_callsFindAll() {
+        sut.getRankingTag();
+
+        assertThat(spyPostRepository.findAll_wasCalled).isTrue();
+    }
+
+    @Test
+    void getRankingTag_returnsTagRanks_orderByTagFrequency() {
+        spyPostRepository.findAll_returnValue = List.of(
+                new SearchEntity("1", 1L, "", "", "", List.of("tag1"), 0, LocalDateTime.now()),
+                new SearchEntity("2", 1L, "", "", "", List.of("tag1", "tag2"), 0, LocalDateTime.now()),
+                new SearchEntity("3", 1L, "", "", "", List.of("tag1", "tag2", "tag3"), 0, LocalDateTime.now())
+        );
+
+        List<TagRank> result = sut.getRankingTag();
+
+        assertThat(result).hasSize(3);
+        assertThat(result.get(0).getTag()).isEqualTo("tag1");
+        assertThat(result.get(0).getFrequency()).isEqualTo(3);
+        assertThat(result.get(1).getTag()).isEqualTo("tag2");
+        assertThat(result.get(1).getFrequency()).isEqualTo(2);
+        assertThat(result.get(2).getTag()).isEqualTo("tag3");
+        assertThat(result.get(2).getFrequency()).isEqualTo(1);
+    }
+
+    @Test
+    void getRankingTag_returnsEmptyList_whenNotExistsPosts() {
+        spyPostRepository.findAll_returnValue = List.of();
+
+        List<TagRank> result = sut.getRankingTag();
+
+        assertThat(result).isEmpty();
+    }
 }
