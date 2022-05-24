@@ -13,7 +13,7 @@ public interface PostsService {
     List<PostsDto> getPostsOrderByPopular(int page, int size);
     List<PostsDto> getRecentlyUnwrittenPosts(Long memberId);
     void increaseViews(String postId);
-    PostsDto getPostsById(String postId);
+    OnePostsDto getPostsById(Long memberId, String postId);
     List<PostsDto> getAllPosts();
 
     List<CategoryResponse> getCategories(Long memberId);

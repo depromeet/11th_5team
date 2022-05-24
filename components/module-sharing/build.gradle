@@ -1,0 +1,7 @@
+dependencies {
+    api project(':components:category')
+    implementation project(':components:support-jwt')
+    implementation project(':components:support-jpa')
+    implementation project(':components:module-posts')
+    implementation project(':components:member')
+}
