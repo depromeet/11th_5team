@@ -38,5 +38,13 @@ public class CategoryItemsResponse {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
         private int views;
+
+        public String getFirstCategoryName() {
+            return firstCategory.getDescription();
+        }
+
+        public String getSecondCategoryName() {
+            return secondCategory.getDescription();
+        }
     }
 }
