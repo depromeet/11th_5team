@@ -123,8 +123,8 @@ public class PostsServiceImpl implements PostsService {
     @Transactional(readOnly = true)
     public OnePostsDto getPostsById(Long memberId, String postId) {
         Posts posts = postsRepository.findById(postId).orElseThrow(PostsNotFoundException::new);
-        if (posts.getMemberId().equals(memberId)) return new OnePostsDto(new PostsDto(posts), true);
-        else return new OnePostsDto(new PostsDto(posts), false);
+        if (posts.getMemberId().equals(memberId)) return new OnePostsDto(posts, true);
+        else return new OnePostsDto(posts, false);
     }
 
     @Transactional(readOnly = true)
