@@ -39,7 +39,7 @@ spring:
         type: depromeet.ohgzoo.iam.folder.ValidationException
       folderNameExists:
         code: 403
-        msg: '중복된 폴더 이름입니다. '
+        msg: '이미 존재하는 폴더명이에요. '
         type: depromeet.ohgzoo.iam.folder.ExistedNameException
       folderItemNotExists:
         code: 400
