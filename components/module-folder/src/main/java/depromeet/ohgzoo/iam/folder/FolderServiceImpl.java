@@ -118,7 +118,7 @@ public class FolderServiceImpl implements FolderService {
                 .limit(pageable.getPageSize())
                 .collect(Collectors.toList());
 
-        return new FolderItemsGetResponse(folder.getFolderItems().size(), folder.getName(), folderItems.stream()
+        return new FolderItemsGetResponse(folder.getFolderItems().size(), folder.getName(), folder.isDefault(), folderItems.stream()
                 .map(FolderItemDto::of).collect(Collectors.toList()));
     }
 
