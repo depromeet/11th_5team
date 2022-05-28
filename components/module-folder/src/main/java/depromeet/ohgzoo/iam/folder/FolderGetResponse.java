@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class FolderGetResponse {
 
     private Long folderId;
+    private boolean isDefault;
     private String folderName;
     private String coverImg;
     private int postCount;
@@ -18,6 +19,7 @@ public class FolderGetResponse {
     public static FolderGetResponse of(Folder folder) {
         return new FolderGetResponse(
                 folder.getId(),
+                folder.isDefault(),
                 folder.getName(),
                 folder.getCoverImg(),
                 folder.getFolderItems().size()

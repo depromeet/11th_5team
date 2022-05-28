@@ -21,10 +21,16 @@ public class SpyFolderRepository implements FolderRepository {
     public Folder findByName_returnValue;
     public List<Folder> findAllByMemberId_returnValue;
     public Long findAllByMemberId_argumentId;
+    public Folder findByIsDefaultTrue_returnValue;
 
     @Override
     public Optional<Folder> findByName(String name) {
         return Optional.ofNullable(findByName_returnValue);
+    }
+
+    @Override
+    public Folder findByIsDefaultTrue() {
+        return findByIsDefaultTrue_returnValue;
     }
 
     @Override

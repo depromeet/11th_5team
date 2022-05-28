@@ -211,7 +211,7 @@ class FolderApiTest {
         FolderItem folderItem2 = FolderItem.builder().postId("2").build();
         folderItem1.setFolder(folder);
         folderItem2.setFolder(folder);
-        spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2, "미분류", new ArrayList<>(Arrays.asList(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2))));
+        spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2, "미분류", true, new ArrayList<>(Arrays.asList(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2))));
 
         mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
                         .header("AUTH_TOKEN", "givenToken"))
