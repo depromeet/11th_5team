@@ -172,7 +172,10 @@ public class PostsServiceImpl implements PostsService {
                 .map(getPostsToCategoryItemDTOFunction())
                 .collect(Collectors.toList());
 
-        return new CategoryItemsResponse(categoryItemDTOList);
+        return new CategoryItemsResponse(
+                posts.size(),
+                category.getDescription(),
+                categoryItemDTOList);
     }
 
     private Comparator<Posts> getCreatedDateReverseComparator() {

@@ -291,7 +291,7 @@ class PostsApiTest {
 
     @Test
     public void getCategoryItems_returnsCategoryGetResponse() throws Exception {
-        spyPostsService.getCategoryItems_returnValue = new CategoryItemsResponse(List.of(CategoryItemDTO.builder()
+        spyPostsService.getCategoryItems_returnValue = new CategoryItemsResponse(1, "모르겠어요", List.of(CategoryItemDTO.builder()
                 .postId("postId")
                 .firstCategory(FirstCategory.DONTKNOW)
                 .secondCategory(SecondCategory.ANXIOUS)
@@ -300,9 +300,9 @@ class PostsApiTest {
                 .views(1)
                 .createdAt(LocalDateTime.of(2022, 5, 16, 17, 9, 30)).build()));
 
-
-        mockMvc.perform(get("/api/v1/posts/categories/1"))
+        mockMvc.perform(get("/api/v1/posts/categories/12"))
                 .andExpect(jsonPath("$.totalCount", equalTo(1)))
+                .andExpect(jsonPath("$.categoryName", equalTo("모르겠어요")))
                 .andExpect(jsonPath("$.posts[0].postId", equalTo("postId")))
                 .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("DONTKNOW")))
                 .andExpect(jsonPath("$.posts[0].firstCategoryName", equalTo("모르겠어요")))

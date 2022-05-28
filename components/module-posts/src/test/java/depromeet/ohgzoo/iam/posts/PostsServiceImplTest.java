@@ -310,7 +310,7 @@ class PostsServiceImplTest {
                 Posts.builder().id("4").views(1).firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now).build()
         );
 
-        CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(0, 20));
+        CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(0, 2));
 
         assertThat(result.getTotalCount()).isEqualTo(3);
 
