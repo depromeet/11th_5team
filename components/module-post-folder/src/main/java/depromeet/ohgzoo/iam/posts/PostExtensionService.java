@@ -7,5 +7,7 @@ public interface PostExtensionService {
 
     void deletePosts(Long memberId, List<String> postIds);
 
+    void updatePost(String postId, UpdatePostRequest request, Long memberId);
+
     void increaseViews(String postId);
 }

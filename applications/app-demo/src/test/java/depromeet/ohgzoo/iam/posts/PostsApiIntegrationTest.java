@@ -70,15 +70,16 @@ public class PostsApiIntegrationTest extends IntegrationTest {
         Posts posts = aPost().content("test").memberId(1L).build();
         postsRepository.save(posts);
 
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.SADNESS)
-                .content("content").tags(List.of("tag1", "tag2")).disclosure(false).build();
+        UpdatePostRequest request = UpdatePostRequest.builder().secondCategory(SecondCategory.SADNESS)
+                .content("content").tags(List.of("tag1", "tag2")).disclosure(false).folderId(1L).build();
         String json = objectMapper.writeValueAsString(request);
-
-        mockMvc.perform(patch("/api/v1/posts/" + posts.getId())
+        
+        mockMvc.perform(patch("/api/v1/posts/{postId}", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk());
     }
+
 
     @Test
     void deletePosts() throws Exception {

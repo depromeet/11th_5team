@@ -11,13 +11,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static depromeet.ohgzoo.iam.folder.folderItem.FolderItemFixtures.aFolderItem;
+
 public class SpyFolderItemRepository implements FolderItemRepository {
     public FolderItem save_argumentFolderItem;
     public Long latestFolderItems_argumentMemberId;
-    public String deleteFolderItem_argumentPostId;
+    public String findByPostId_argumentPostId;
+    public FolderItem findByPostId_returnValue;
     public FolderItem findById_returnValue;
     public FolderItem latestFolderItem_returnValue;
     public List<FolderItem> latestFolderItems_returnValue;
+    public FolderItem save_returnValue = aFolderItem().build();
 
 
     @Override
@@ -168,8 +172,8 @@ public class SpyFolderItemRepository implements FolderItemRepository {
 
     @Override
     public Optional<FolderItem> findByPostId(String postId) {
-        deleteFolderItem_argumentPostId = postId;
-        return Optional.ofNullable(findById_returnValue);
+        findByPostId_argumentPostId = postId;
+        return Optional.ofNullable(findByPostId_returnValue);
     }
 
     @Override

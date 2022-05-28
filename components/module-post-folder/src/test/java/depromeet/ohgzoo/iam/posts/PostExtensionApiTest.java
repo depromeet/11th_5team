@@ -120,6 +120,31 @@ class PostExtensionApiTest {
     }
 
     @Test
+    void updatePosts_isOk() throws Exception {
+        mockMvc.perform(patch("/api/v1/posts/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePosts_passesRequestToService() throws Exception {
+        UpdatePostRequest request = UpdatePostRequest.builder().secondCategory(SecondCategory.SADNESS)
+                .content("content").tags(List.of("tag")).disclosure(true).build();
+        String json = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(patch("/api/v1/posts/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json));
+
+        assertThat(spyPostExtensionService.updatePost_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
+        assertThat(spyPostExtensionService.updatePost_argumentRequest.getContent()).isEqualTo("content");
+        assertThat(spyPostExtensionService.updatePost_argumentRequest.getTags()).isEqualTo(List.of("tag"));
+        assertThat(spyPostExtensionService.updatePost_argumentRequest.getDisclosure()).isEqualTo(true);
+    }
+
+
+    @Test
     public void increaseViews_isOk() throws Exception {
         mockMvc.perform(patch("/api/v1/posts/1/views"))
                 .andExpect(status().isOk());
