@@ -62,4 +62,9 @@ public class SpyFolderItemService implements FolderItemService {
     public void increaseViews(String postId) {
         increaseViews_argumentPostId = postId;
     }
+
+    @Override
+    public FolderItem getFolderItemByPostId(String postId) {
+        return null;
+    }
 }

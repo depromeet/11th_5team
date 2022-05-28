@@ -220,6 +220,20 @@ public class FolderServiceImplTest {
     }
 
     @Test
+    void createFolderItem_callsFindDefaultFolder_whenFolderIdIsNull() {
+        folderService.createFolderItem(1L, null, new FolderItemCreateRequest("1", FirstCategory.SADNESS, SecondCategory.ANXIOUS, "post content", null, false));
+
+        assertThat(spyFolderRepository.findByIsDefaultTrue_wasCalled).isTrue();
+    }
+
+    @Test
+    void createFolderItem_doesNotCallsFindDefaultFolder_whenFolderIdIsNull() {
+        folderService.createFolderItem(1L, 1L, new FolderItemCreateRequest("1", FirstCategory.SADNESS, SecondCategory.ANXIOUS, "post content", null, false));
+
+        assertThat(spyFolderRepository.findByIsDefaultTrue_wasCalled).isFalse();
+    }
+
+    @Test
     void moveFolderItem_MovesFolderItemNewFolder() {
         FolderItem folderItem = aFolderItem()
                 .id(1L)
@@ -392,5 +406,24 @@ public class FolderServiceImplTest {
         folderItemService.increaseViews("1");
 
         assertThat(spyFolderItemRepository.findByPostId_returnValue.getViews()).isEqualTo(1);
+    }
+
+    @Test
+    void getFolderByPost_returnsFolderGetResponse() {
+        FolderItem givenFolderItem = aFolderItem().build();
+        Folder givenFolder = aFolder()
+                .id(1L)
+                .name("name")
+                .coverImg("image")
+                .build();
+        givenFolderItem.setFolder(givenFolder);
+
+        spyFolderItemRepository.findByPostId_returnValue = givenFolderItem;
+
+        FolderGetResponse result = folderService.getFolderByPost("post id");
+
+        assertThat(result.getFolderId()).isEqualTo(1L);
+        assertThat(result.getFolderName()).isEqualTo("name");
+        assertThat(result.getCoverImg()).isEqualTo("image");
     }
 }

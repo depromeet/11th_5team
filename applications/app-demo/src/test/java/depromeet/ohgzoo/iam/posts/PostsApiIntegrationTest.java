@@ -42,7 +42,9 @@ public class PostsApiIntegrationTest extends IntegrationTest {
 
     @Test
     void getMyPosts() throws Exception {
-        mockMvc.perform(get("/api/v1/posts"))
+        mockMvc.perform(get("/api/v1/posts")
+                        .param("page", "0")
+                        .param("size", "20"))
                 .andExpect(status().isOk());
     }
 
@@ -73,7 +75,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
         UpdatePostRequest request = UpdatePostRequest.builder().secondCategory(SecondCategory.SADNESS)
                 .content("content").tags(List.of("tag1", "tag2")).disclosure(false).folderId(1L).build();
         String json = objectMapper.writeValueAsString(request);
-        
+
         mockMvc.perform(patch("/api/v1/posts/{postId}", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

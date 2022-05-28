@@ -45,7 +45,7 @@ public class FolderIntegrationTest extends IntegrationTest {
 
     @Test
     void addFolderItem() throws Exception {
-        mockMvc.perform(post("/api/v1/folders/posts/1")
+        mockMvc.perform(post("/api/v1/folders/1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstCategory\":\"SADNESS\",\"secondCategory\":\"SADNESS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false,\"postId\":10}"))
                 .andExpect(status().isOk());
@@ -53,16 +53,22 @@ public class FolderIntegrationTest extends IntegrationTest {
 
     @Test
     void getFolderItems() throws Exception {
-        mockMvc.perform(get("/api/v1/folders/posts/1?page=0&size=20")
+        mockMvc.perform(get("/api/v1/folders/1/posts?page=0&size=20")
                         .header("AUTH_TOKEN", "givenToken"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void moveFolderItem() throws Exception {
-        mockMvc.perform(patch("/api/v1/folders/posts/2")
+        mockMvc.perform(patch("/api/v1/folders/2/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"postId\":1}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getFolderByPost() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1"))
                 .andExpect(status().isOk());
     }
 }

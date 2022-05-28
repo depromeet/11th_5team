@@ -21,7 +21,8 @@ public class SpyFolderRepository implements FolderRepository {
     public Folder findByName_returnValue;
     public List<Folder> findAllByMemberId_returnValue;
     public Long findAllByMemberId_argumentId;
-    public Folder findByIsDefaultTrue_returnValue;
+    public Folder findByIsDefaultTrue_returnValue = aFolder().isDefault(true).build();
+    public boolean findByIsDefaultTrue_wasCalled;
 
     @Override
     public Optional<Folder> findByName(String name) {
@@ -30,6 +31,7 @@ public class SpyFolderRepository implements FolderRepository {
 
     @Override
     public Folder findByIsDefaultTrue() {
+        findByIsDefaultTrue_wasCalled = true;
         return findByIsDefaultTrue_returnValue;
     }
 

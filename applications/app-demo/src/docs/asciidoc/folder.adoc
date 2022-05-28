@@ -33,3 +33,7 @@ operation::folder-integration-test/get-folder-items[snippets='http-request,http-
 == 폴더 글 이동
 
 operation::folder-integration-test/move-folder-item[snippets='http-request,http-response']
+
+== 게시글 id로 폴더 조회
+
+operation::folder-integration-test/get-folder-by-post[snippets='http-request,http-response']
