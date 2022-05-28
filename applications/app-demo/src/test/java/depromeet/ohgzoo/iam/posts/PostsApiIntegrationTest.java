@@ -70,7 +70,7 @@ public class PostsApiIntegrationTest extends IntegrationTest {
         Posts posts = aPost().content("test").memberId(1L).build();
         postsRepository.save(posts);
 
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.SADNESS)
+        UpdatePostRequest request = UpdatePostRequest.builder().secondCategory(SecondCategory.SADNESS)
                 .content("content").tags(List.of("tag1", "tag2")).disclosure(false).build();
         String json = objectMapper.writeValueAsString(request);
 

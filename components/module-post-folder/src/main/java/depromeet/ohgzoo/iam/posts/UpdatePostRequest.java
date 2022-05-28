@@ -10,18 +10,20 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class UpdatePostsRequest {
+public class UpdatePostRequest {
 
     private SecondCategory secondCategory;
     private String content;
     private List<String> tags = new ArrayList<>();
     private Boolean disclosure;
+    private Long folderId;
 
     @Builder
-    public UpdatePostsRequest(SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
+    public UpdatePostRequest(SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long folderId) {
         this.secondCategory = secondCategory;
         this.content = content;
         this.tags.addAll(tags);
         this.disclosure = disclosure;
+        this.folderId = folderId;
     }
 }

@@ -3,6 +3,7 @@ package depromeet.ohgzoo.iam.posts;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
+import depromeet.ohgzoo.iam.postEvent.PostUpdateEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class PostExtensionServiceImpl implements PostExtensionService {
 
     @Override
     public CreatePostResult createPost(Long memberId, CreatePostRequest request) {
-        PostCreateEvent event = mapToEvent(memberId, request);
+        PostCreateEvent event = mapToCreateEvent(memberId, request);
         eventPublisher.publishEvent(event);
         return new CreatePostResult(event.getPostId());
     }
@@ -28,13 +29,23 @@ public class PostExtensionServiceImpl implements PostExtensionService {
     }
 
     @Override
+    public void updatePost(String postId, UpdatePostRequest request, Long memberId) {
+        PostUpdateEvent event = mapToUpdateEvent(memberId, postId, request);
+        eventPublisher.publishEvent(event);
+    }
+
+    @Override
     public void increaseViews(String postId) {
         eventPublisher.publishEvent(new IncreaseViewEvent(this, postId));
     }
 
-    private PostCreateEvent mapToEvent(Long memberId, CreatePostRequest request) {
+    private PostCreateEvent mapToCreateEvent(Long memberId, CreatePostRequest request) {
         String postId = getPostId();
         return new PostCreateEvent(this, memberId, request.getFirstCategory(), request.getSecondCategory(), request.getContent(), request.getTags(), request.isDisclosure(), request.getFolderId(), postId);
+    }
+
+    private PostUpdateEvent mapToUpdateEvent(Long memberId, String postId, UpdatePostRequest request) {
+        return new PostUpdateEvent(this, memberId, postId, request.getSecondCategory(), request.getContent(), request.getTags(), request.getDisclosure(), request.getFolderId());
     }
 
     private String getPostId() {
