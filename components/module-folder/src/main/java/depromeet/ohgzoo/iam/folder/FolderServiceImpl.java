@@ -83,10 +83,17 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request) {
-        Folder folder = folderRepository.findById(folderId)
-                .orElseThrow(NotExistsFolderException::new);
+        Folder folder = getFolderOrDefault(folderId);
 
         folderItemService.createFolderItem(memberId, folder, request);
+    }
+
+    private Folder getFolderOrDefault(Long folderId) {
+        if (null == folderId) {
+            return folderRepository.findByIsDefaultTrue();
+        }
+        return folderRepository.findById(folderId)
+                .orElseThrow(NotExistsFolderException::new);
     }
 
     @Override

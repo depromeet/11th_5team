@@ -220,6 +220,20 @@ public class FolderServiceImplTest {
     }
 
     @Test
+    void createFolderItem_callsFindDefaultFolder_whenFolderIdIsNull() {
+        folderService.createFolderItem(1L, null, new FolderItemCreateRequest("1", FirstCategory.SADNESS, SecondCategory.ANXIOUS, "post content", null, false));
+
+        assertThat(spyFolderRepository.findByIsDefaultTrue_wasCalled).isTrue();
+    }
+
+    @Test
+    void createFolderItem_doesNotCallsFindDefaultFolder_whenFolderIdIsNull() {
+        folderService.createFolderItem(1L, 1L, new FolderItemCreateRequest("1", FirstCategory.SADNESS, SecondCategory.ANXIOUS, "post content", null, false));
+
+        assertThat(spyFolderRepository.findByIsDefaultTrue_wasCalled).isFalse();
+    }
+
+    @Test
     void moveFolderItem_MovesFolderItemNewFolder() {
         FolderItem folderItem = aFolderItem()
                 .id(1L)
