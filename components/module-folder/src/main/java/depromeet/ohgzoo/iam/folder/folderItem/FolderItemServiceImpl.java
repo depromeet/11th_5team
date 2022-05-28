@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.folder.folderItem;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
+import depromeet.ohgzoo.iam.folder.InvalidUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,10 +44,20 @@ public class FolderItemServiceImpl implements FolderItemService {
     }
 
     @Override
+    public void updateFolderItem(Long memberId, String postId, Folder folder, FolderItemUpdateRequest request) {
+        FolderItem folderItem = folderItemRepository.findByPostId(postId)
+                .orElseThrow(NotExistsFolderItemException::new);
+        if (folderItem.getMemberId() != memberId) throw new InvalidUserException();
+        if (folderItem.getFolder().getId() != request.getFolderId()) {
+            moveFolderItem(memberId, folder, new FolderItemMoveRequest(folderItem.getPostId()));
+        }
+        folderItem.updateFolderItem(request);
+    }
+
+    @Override
     public void deleteFolderItems(Long memberId, List<String> postIds) {
         for (String postId : postIds) {
-            FolderItem folderItem = folderItemRepository.findByPostId(postId)
-                    .orElseThrow(NotExistsFolderItemException::new);
+            FolderItem folderItem = folderItemRepository.findByPostId(postId).orElseThrow(NotExistsFolderItemException::new);
             folderItemRepository.delete(folderItem);
         }
     }
@@ -72,8 +83,7 @@ public class FolderItemServiceImpl implements FolderItemService {
 
     @Override
     public void increaseViews(String postId) {
-        FolderItem folderItem = folderItemRepository.findByPostId(postId)
-                .orElseThrow(NotExistsFolderItemException::new);
+        FolderItem folderItem = folderItemRepository.findByPostId(postId).orElseThrow(NotExistsFolderItemException::new);
         folderItem.increaseViews();
     }
 }

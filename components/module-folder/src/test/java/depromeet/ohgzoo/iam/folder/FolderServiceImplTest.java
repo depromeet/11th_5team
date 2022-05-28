@@ -7,6 +7,7 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import depromeet.ohgzoo.iam.folder.folderItem.NotExistsFolderItemException;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemRepository;
@@ -214,7 +215,7 @@ public class FolderServiceImplTest {
         Folder oldFolder = aFolder().id(1L).build();
         folderItem.setFolder(oldFolder);
         Folder newFolder = aFolder().id(2L).build();
-        spyFolderItemRepository.findById_returnValue = folderItem;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem;
         spyFolderRepository.findById_returnValue = newFolder;
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem;
         folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest("1"));
@@ -232,12 +233,70 @@ public class FolderServiceImplTest {
         Folder newFolder = aFolder().build();
         folderItem2.setFolder(newFolder);
 
-        spyFolderItemRepository.findById_returnValue = folderItem1;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem1;
         spyFolderRepository.findById_returnValue = newFolder;
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem1;
 
         folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest("2"));
         assertThat(newFolder.getCoverImg()).isEqualTo(givenCategory.getImage());
+    }
+
+    @Test
+    void updateFolderItem_passesFolderItemIdToRepository() {
+        Folder newFolder = aFolder().build();
+        FolderItem folderItem = aFolderItem().build();
+        folderItem.setFolder(newFolder);
+        spyFolderRepository.findById_returnValue = newFolder;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem;
+        FolderItemUpdateRequest given = new FolderItemUpdateRequest(SecondCategory.ANXIOUS, "contect", List.of("tag1", "tag2", "tag3"),
+                true, 1L);
+
+        folderItemService.updateFolderItem(1L, "post id", newFolder, given);
+
+        assertThat(spyFolderItemRepository.findByPostId_argumentPostId).isEqualTo("post id");
+    }
+
+    @Test
+    void updateFolderItem_throwsNotExistsFolderItemException_whenFolderItemIsNotPresent() {
+        Folder folder = aFolder().build();
+        spyFolderItemRepository.findByPostId_returnValue = null;
+
+        Assertions.assertThatThrownBy(() -> folderItemService.updateFolderItem(1L, "post id", folder, null))
+                .isInstanceOf(NotExistsFolderItemException.class);
+    }
+
+    @Test
+    void updateFolderItem_throwsException_whenMemberIdIsNotEqualsFolder() {
+        Folder folder = aFolder().build();
+        FolderItem folderItem = aFolderItem().build();
+        spyFolderItemRepository.findByPostId_returnValue = folderItem;
+        spyFolderItemRepository.save_returnValue = aFolderItem()
+                .memberId(2L)
+                .build();
+
+        FolderItemUpdateRequest given = new FolderItemUpdateRequest(SecondCategory.ANXIOUS, "contect", List.of("tag1", "tag2", "tag3"),
+                true, 1L);
+
+        Assertions.assertThatThrownBy(() -> folderItemService.updateFolderItem(2L, "post id", folder, given))
+                .isInstanceOf(InvalidUserException.class);
+    }
+
+    @Test
+    void updateFolderItem_updateFolderItem() {
+        Folder folder = aFolder().build();
+        FolderItem folderItem = aFolderItem().build();
+        folderItem.setFolder(folder);
+        spyFolderRepository.findById_returnValue = folder;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem;
+        FolderItemUpdateRequest given = new FolderItemUpdateRequest(SecondCategory.ANXIOUS, "new content", List.of("tag1", "tag2", "tag3"),
+                false, 1L);
+
+        folderItemService.updateFolderItem(1L, "post id", folder, given);
+
+        assertThat(folderItem.getContent()).isEqualTo("new content");
+        assertThat(folderItem.getSecondCategory()).isEqualTo(SecondCategory.ANXIOUS);
+        assertThat(folderItem.getTags()).isEqualTo(List.of("tag1", "tag2", "tag3"));
+        assertThat(folderItem.getDisclosure()).isEqualTo(false);
     }
 
     @Test
@@ -308,18 +367,18 @@ public class FolderServiceImplTest {
         Folder folder = aFolder().id(1L).build();
         folderItem1.setFolder(folder);
 
-        spyFolderItemRepository.findById_returnValue = folderItem1;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem1;
         folderItemService.deleteFolderItems(1L, List.of("1"));
 
-        assertThat(spyFolderItemRepository.deleteFolderItem_argumentPostId).isEqualTo("1");
+        assertThat(spyFolderItemRepository.findByPostId_argumentPostId).isEqualTo("1");
     }
 
     @Test
     public void increaseViews() {
-        spyFolderItemRepository.findById_returnValue = aFolderItem().views(0).build();
+        spyFolderItemRepository.findByPostId_returnValue = aFolderItem().views(0).build();
 
         folderItemService.increaseViews("1");
 
-        assertThat(spyFolderItemRepository.findById_returnValue.getViews()).isEqualTo(1);
+        assertThat(spyFolderItemRepository.findByPostId_returnValue.getViews()).isEqualTo(1);
     }
 }

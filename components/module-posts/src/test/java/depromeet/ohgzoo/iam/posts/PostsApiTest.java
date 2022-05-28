@@ -10,7 +10,6 @@ import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -22,7 +21,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,30 +39,6 @@ class PostsApiTest {
         mockMvc = MockMvcBuilders.standaloneSetup(new PostsApi(spyPostsService))
                 .setCustomArgumentResolvers(new LoginMemberArgumentResolver(spyJwtService), new PageableHandlerMethodArgumentResolver())
                 .build();
-    }
-
-    @Test
-    void updatePosts_isOk() throws Exception {
-        mockMvc.perform(patch("/api/v1/posts/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void updatePosts_passesRequestToService() throws Exception {
-        UpdatePostsRequest request = UpdatePostsRequest.builder().secondCategory(SecondCategory.SADNESS)
-                .content("content").tags(List.of("tag")).disclosure(true).build();
-        String json = objectMapper.writeValueAsString(request);
-
-        mockMvc.perform(patch("/api/v1/posts/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json));
-
-        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
-        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getContent()).isEqualTo("content");
-        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getTags()).isEqualTo(List.of("tag"));
-        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getDisclosure()).isEqualTo(true);
     }
 
     @Test

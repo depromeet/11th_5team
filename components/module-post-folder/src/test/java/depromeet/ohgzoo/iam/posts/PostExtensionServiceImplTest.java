@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
+import depromeet.ohgzoo.iam.postEvent.PostUpdateEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -74,6 +75,34 @@ class PostExtensionServiceImplTest {
         CreatePostResult result = postExtensionService.createPost(1L, givenRequest);
 
         assertThat(result.getPostId()).isEqualTo(givenUUID.toString());
+    }
+
+    @Test
+    void updatePost_passesPostUpdateEventToEventPublisher() {
+
+        UpdatePostRequest givenRequest = new UpdatePostRequest(
+                SecondCategory.DONTKNOW,
+                "givenContent",
+                List.of("tag1", "tag2", "tag3"),
+                true,
+                1L
+        );
+
+        postExtensionService.updatePost("1", givenRequest, 1L);
+
+        PostUpdateEvent expected = new PostUpdateEvent(
+                postExtensionService,
+                1L,
+                "1",
+                SecondCategory.DONTKNOW,
+                "givenContent",
+                List.of("tag1", "tag2", "tag3"),
+                true,
+                1L
+        );
+
+        assertThat((PostUpdateEvent) spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test

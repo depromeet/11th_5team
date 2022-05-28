@@ -11,6 +11,8 @@ public interface FolderItemService {
 
     void moveFolderItem(Long memberId, Folder folder, FolderItemMoveRequest request);
 
+    void updateFolderItem(Long memberId, String postId, Folder folder, FolderItemUpdateRequest request);
+
     void changeFolderCoverImage(Folder folder);
 
     List<FolderItem> getRecentFolderItems(Long memberId);

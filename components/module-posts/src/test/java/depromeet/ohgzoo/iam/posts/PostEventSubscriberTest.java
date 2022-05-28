@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
+import depromeet.ohgzoo.iam.postEvent.PostUpdateEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +42,26 @@ class PostEventSubscriberTest {
         assertThat(spyPostsService.createPosts_argumentRequest.getContent()).isEqualTo("content");
         assertThat(spyPostsService.createPosts_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
         assertThat(spyPostsService.createPosts_argumentRequest.isDisclosure()).isTrue();
+    }
+
+    @Test
+    void handlePostUpdateEvent_passesUpdateRequestToService() {
+        PostUpdateEvent givenEvent = new PostUpdateEvent(this,
+                1L,
+                "1",
+                SecondCategory.SADNESS,
+                "content",
+                List.of("tag1", "tag2", "tag3"),
+                true,
+                null);
+
+        postEventSubscriber.handlePostUpdateEvent(givenEvent);
+
+        assertThat(spyPostsService.updatePostsRequest_argumentMemberId).isEqualTo(1L);
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getContent()).isEqualTo("content");
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getTags()).containsExactly("tag1", "tag2", "tag3");
+        assertThat(spyPostsService.updatePostsRequest_argumentRequest.getDisclosure()).isTrue();
     }
 
     @Test

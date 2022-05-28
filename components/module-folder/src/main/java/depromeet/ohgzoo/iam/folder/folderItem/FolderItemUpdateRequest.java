@@ -1,4 +1,4 @@
-package depromeet.ohgzoo.iam.posts;
+package depromeet.ohgzoo.iam.folder.folderItem;
 
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.Getter;
@@ -9,16 +9,18 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class UpdatePostsRequest {
+public class FolderItemUpdateRequest {
     private SecondCategory secondCategory;
     private String content;
     private List<String> tags = new ArrayList<>();
     private Boolean disclosure;
+    private Long folderId;
 
-    public UpdatePostsRequest(SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
+    public FolderItemUpdateRequest(SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long folderId) {
         this.secondCategory = secondCategory;
         this.content = content;
-        this.tags.addAll(tags);
+        this.tags = tags;
         this.disclosure = disclosure;
+        this.folderId = folderId;
     }
 }

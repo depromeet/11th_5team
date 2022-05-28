@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.category.SecondCategory;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,16 +10,20 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class UpdatePostsRequest {
+public class UpdatePostRequest {
+
     private SecondCategory secondCategory;
     private String content;
     private List<String> tags = new ArrayList<>();
     private Boolean disclosure;
+    private Long folderId;
 
-    public UpdatePostsRequest(SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure) {
+    @Builder
+    public UpdatePostRequest(SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long folderId) {
         this.secondCategory = secondCategory;
         this.content = content;
-        this.tags.addAll(tags);
+        this.tags = tags;
         this.disclosure = disclosure;
+        this.folderId = folderId;
     }
 }
