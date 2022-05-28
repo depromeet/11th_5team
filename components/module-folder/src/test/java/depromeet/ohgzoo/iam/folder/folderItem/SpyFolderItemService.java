@@ -12,6 +12,8 @@ public class SpyFolderItemService implements FolderItemService {
     public List<String> deleteFolderItems_argumentPostIds;
     public FolderItemMoveRequest moveFolderItem_argumentRequest;
     public FolderItemCreateRequest createFolderItem_argumentRequest;
+    public FolderItemUpdateRequest updateFolderItem_argumentRequest;
+    public Folder updateFolderItem_argumentFolder;
     public List<FolderItem> getFolderItem_returnValue;
     public String increaseViews_argumentPostId;
 
@@ -27,6 +29,13 @@ public class SpyFolderItemService implements FolderItemService {
     public void moveFolderItem(Long memberId, Folder folder, FolderItemMoveRequest request) {
         argument_memberId = memberId;
         moveFolderItem_argumentRequest = request;
+    }
+
+    @Override
+    public void updateFolderItem(Long memberId, String postId, Folder folder, FolderItemUpdateRequest request) {
+        argument_memberId = memberId;
+        updateFolderItem_argumentFolder = folder;
+        updateFolderItem_argumentRequest = request;
     }
 
     @Override

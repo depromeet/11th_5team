@@ -9,6 +9,8 @@ public class SpyPostsService implements PostsService {
     public CreatePostsRequest createPosts_argumentRequest;
     public CreatePostsResult createPosts_returnValue;
     public UpdatePostsRequest updatePostsRequest_argumentRequest;
+    public String updatePostsRequest_argumentPostId;
+    public Long updatePostsRequest_argumentMemberId;
     public Long getPostsByMemberId_argumentMemberId;
     public List<PostsDto> getPostsByMemberId_returnValue;
     public int getPostsByMemberId_argumentPage;
@@ -50,6 +52,8 @@ public class SpyPostsService implements PostsService {
     @Override
     public void updatePosts(String postId, UpdatePostsRequest request, Long memberId) {
         updatePostsRequest_argumentRequest = request;
+        updatePostsRequest_argumentMemberId = memberId;
+        updatePostsRequest_argumentPostId = postId;
     }
 
     @Override

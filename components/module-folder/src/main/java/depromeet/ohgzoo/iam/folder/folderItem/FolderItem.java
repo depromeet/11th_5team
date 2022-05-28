@@ -84,6 +84,13 @@ public class FolderItem extends BaseEntity {
         newFolder.getFolderItems().add(this);
     }
 
+    public void updateFolderItem(FolderItemUpdateRequest request) {
+        this.secondCategory = request.getSecondCategory();
+        this.content = request.getContent();
+        this.tags = request.getTags();
+        this.disclosure = request.getDisclosure();
+    }
+
     public void increaseViews() {
         views++;
     }

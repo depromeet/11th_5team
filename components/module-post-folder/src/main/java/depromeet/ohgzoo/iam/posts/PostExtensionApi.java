@@ -32,9 +32,9 @@ public class PostExtensionApi {
         postExtensionService.deletePosts(memberId, postIds);
     }
 
-    @PatchMapping("/{postid}")
+    @PatchMapping("/{postId}")
     public void updatePosts(
-            @PathVariable("postid") String postId,
+            @PathVariable("postId") String postId,
             @RequestBody UpdatePostRequest request,
             @Login Long memberId) {
         postExtensionService.updatePost(postId, request, memberId);

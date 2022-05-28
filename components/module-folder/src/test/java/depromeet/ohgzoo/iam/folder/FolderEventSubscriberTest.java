@@ -3,10 +3,12 @@ package depromeet.ohgzoo.iam.folder;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.member.MemberCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
+import depromeet.ohgzoo.iam.postEvent.PostUpdateEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -72,6 +74,45 @@ class FolderEventSubscriberTest {
         MemberCreateEvent givenEvent = new MemberCreateEvent(this,
                 1L);
         folderEventSubscriber.handleMemberCreateEvent(givenEvent);
+        assertThat(spyFolderService.argument_memberId).isEqualTo(1L);
+    }
+
+    @Test
+    void handlePostUpdateEvent_passesRequestToService() {
+        PostUpdateEvent givenEvent = new PostUpdateEvent(this,
+                1L,
+                "post id",
+                SecondCategory.SADNESS,
+                "content",
+                List.of("tag1", "tag2", "tag3"),
+                true,
+                1L);
+
+        folderEventSubscriber.handlePostUpdateEvent(givenEvent);
+
+        FolderItemUpdateRequest expected = spyFolderService.updateFolderItem_argumentRequest;
+
+        assertThat(expected.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
+        assertThat(expected.getFolderId()).isEqualTo(1L);
+        assertThat(expected.getContent()).isEqualTo("content");
+        assertThat(expected.getTags()).containsExactly("tag1", "tag2", "tag3");
+        assertThat(expected.getDisclosure()).isTrue();
+    }
+
+    @Test
+    void handlePostUpdateEvent_passesMemberIdAndFolderIdToService() {
+        PostUpdateEvent givenEvent = new PostUpdateEvent(this,
+                1L,
+                "post id",
+                null,
+                null,
+                Collections.emptyList(),
+                false,
+                null);
+
+        folderEventSubscriber.handlePostUpdateEvent(givenEvent);
+
+        assertThat(spyFolderService.updateFolderItem_argumentPostId).isEqualTo("post id");
         assertThat(spyFolderService.argument_memberId).isEqualTo(1L);
     }
 

@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDto;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -92,6 +93,14 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public void updateFolderItem(Long memberId, String postId, FolderItemUpdateRequest request) {
+        Folder newFolder = folderRepository.findById(request.getFolderId())
+                .orElseThrow(NotExistsFolderException::new);
+
+        folderItemService.updateFolderItem(memberId, postId, newFolder, request);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable) {
         Folder folder = folderRepository.findById(folderId)
@@ -123,4 +132,6 @@ public class FolderServiceImpl implements FolderService {
     public void increaseViews(String postId) {
         folderItemService.increaseViews(postId);
     }
+
+
 }
