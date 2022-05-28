@@ -104,11 +104,9 @@ class PostsServiceImplTest {
     void getPostsByMemberId_returnsPagingPosts() {
         spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(
                 List.of(
-                Posts.builder().id("1").build(),
-                Posts.builder().id("2").build(),
-                Posts.builder().id("3").build(),
-                Posts.builder().id("4").build()
-        ));
+                        Posts.builder().id("3").build(),
+                        Posts.builder().id("4").build()
+                ));
 
         List<PostsDto> result = postsService.getPostsByMemberId(1L, PageRequest.of(2, 2)).getPosts();
 
@@ -210,6 +208,8 @@ class PostsServiceImplTest {
         postsService.getRecentlyUnwrittenPosts(1L);
 
         assertThat(spyPostsRepository.findByMemberId_argumentId).isEqualTo(1L);
+        assertThat(spyPostsRepository.findByMemberId_argumentPageable.getPageNumber()).isEqualTo(0);
+        assertThat(spyPostsRepository.findByMemberId_argumentPageable.getPageSize()).isEqualTo(Integer.MAX_VALUE);
     }
 
     @Test

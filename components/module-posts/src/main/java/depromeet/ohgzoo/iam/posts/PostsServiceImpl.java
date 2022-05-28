@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,11 +66,8 @@ public class PostsServiceImpl implements PostsService {
 
     @Transactional(readOnly = true)
     public PostsPage getPostsByMemberId(Long memberId, Pageable pageable) {
-        Page<Posts> postPage = postsRepository.findByMemberId(memberId);
-        List<PostsDto> posts = postPage
-                .stream()
-                .skip(pageable.getPageNumber())
-                .limit(pageable.getPageSize())
+        Page<Posts> postPage = postsRepository.findByMemberId(memberId, pageable);
+        List<PostsDto> posts = postPage.stream()
                 .map(PostsDto::new)
                 .collect(Collectors.toList());
 
@@ -100,7 +98,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Transactional(readOnly = true)
     public List<PostsDto> getRecentlyUnwrittenPosts(Long memberId) {
-        return postsRepository.findByMemberId(memberId)
+        return postsRepository.findByMemberId(memberId, PageRequest.of(0, Integer.MAX_VALUE))
                 .stream()
                 .filter(posts -> SecondCategory.Unwritten.equals(posts.getSecondCategory()))
                 .filter(posts -> LocalDateTime.now().minusDays(7).isBefore(posts.getCreatedAt()))
@@ -142,7 +140,7 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponse> getCategories(Long memberId) {
-        Page<Posts> postsList = postsRepository.findByMemberId(memberId);
+        Page<Posts> postsList = postsRepository.findByMemberId(memberId, PageRequest.of(0, Integer.MAX_VALUE));
         List<SecondCategory> categories = categoryService.secondCategoryList();
 
         return categories.stream()
@@ -164,7 +162,7 @@ public class PostsServiceImpl implements PostsService {
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
 
-        List<Posts> posts = postsRepository.findByMemberId(memberId)
+        List<Posts> posts = postsRepository.findByMemberId(memberId, PageRequest.of(0, Integer.MAX_VALUE))
                 .stream()
                 .filter(p -> p.containsCategory(category))
                 .collect(Collectors.toList());
