@@ -20,10 +20,9 @@ public class PostsApi {
     private final PostsService postsService;
 
     @GetMapping
-    public List<PostsDto> getMyPosts(@Login Long memberId,
-                                     @RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "20") int size) {
-        return postsService.getPostsByMemberId(memberId, page, size);
+    public PostsPage getMyPosts(@Login Long memberId,
+                                     @PageableDefault(size = 20) Pageable pageable) {
+        return postsService.getPostsByMemberId(memberId, pageable);
     }
 
     @GetMapping("/search")

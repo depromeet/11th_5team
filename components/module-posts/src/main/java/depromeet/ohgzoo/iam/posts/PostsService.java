@@ -8,7 +8,7 @@ public interface PostsService {
     void updatePosts(String postId, UpdatePostsRequest request, Long memberId);
     void deletePosts(List<String> postIds, Long memberId);
     CreatePostsResult createPosts(Long memberId, CreatePostsRequest request);
-    List<PostsDto> getPostsByMemberId(Long memberId, int page, int size);
+    PostsPage getPostsByMemberId(Long memberId, Pageable pageable);
     List<PostsDto> getPostsByTag(String tag, int page, int size);
     List<PostsDto> getPostsOrderByPopular(int page, int size);
     List<PostsDto> getRecentlyUnwrittenPosts(Long memberId);

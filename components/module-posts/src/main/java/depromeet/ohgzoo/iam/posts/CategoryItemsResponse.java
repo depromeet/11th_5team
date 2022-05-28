@@ -18,12 +18,13 @@ public class CategoryItemsResponse {
 
     private List<CategoryItemDTO> posts = new ArrayList<>();
 
-    public CategoryItemsResponse(List<CategoryItemDTO> posts) {
-        this.posts.addAll(posts);
-    }
+    private int totalCount;
+    private String categoryName;
 
-    public int getTotalCount() {
-        return this.posts.size();
+    public CategoryItemsResponse(int totalCount, String categoryName, List<CategoryItemDTO> posts) {
+        this.totalCount = totalCount;
+        this.categoryName = categoryName;
+        this.posts.addAll(posts);
     }
 
     @Getter
