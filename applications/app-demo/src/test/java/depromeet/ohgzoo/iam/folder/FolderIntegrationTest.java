@@ -65,4 +65,10 @@ public class FolderIntegrationTest extends IntegrationTest {
                         .content("{\"postId\":1}"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getFolderByPost() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1"))
+                .andExpect(status().isOk());
+    }
 }

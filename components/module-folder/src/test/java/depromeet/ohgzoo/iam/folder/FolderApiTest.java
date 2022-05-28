@@ -219,4 +219,30 @@ class FolderApiTest {
                 .andExpect(jsonPath("$['posts'][0].postId", equalTo("1")))
                 .andExpect(jsonPath("$['posts'][1].postId", equalTo("2")));
     }
+
+    @Test
+    void getFolderByPost_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getFolderByPost_returnsFolderGetResponse() throws Exception {
+        spyFolderService.getFolderByPost_returnValue = new FolderGetResponse(1L, false, "folder name", "cover image", 1);
+
+        mockMvc.perform(get("/api/v1/folders/posts/1"))
+                .andExpect(jsonPath("$.folderId", equalTo(1)))
+                .andExpect(jsonPath("$.default", equalTo(false)))
+                .andExpect(jsonPath("$.folderName", equalTo("folder name")))
+                .andExpect(jsonPath("$.coverImg", equalTo("cover image")))
+                .andExpect(jsonPath("$.postCount", equalTo(1)))
+        ;
+    }
+
+    @Test
+    void getFolderByPost_passesPostIdToService() throws Exception {
+        mockMvc.perform(get("/api/v1/folders/posts/1"));
+
+        assertThat(spyFolderService.getFolderByPost_argumentPostId).isEqualTo("1");
+    }
 }

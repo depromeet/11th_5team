@@ -72,4 +72,9 @@ public class FolderApi {
                                                  @PageableDefault(size = 20) Pageable pageable) {
         return folderService.getFolderItems(memberId, folderId, pageable);
     }
+
+    @GetMapping("posts/{postId}")
+    public FolderGetResponse getFolderByPost(@PathVariable String postId) {
+        return folderService.getFolderByPost(postId);
+    }
 }

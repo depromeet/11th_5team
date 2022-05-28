@@ -86,4 +86,10 @@ public class FolderItemServiceImpl implements FolderItemService {
         FolderItem folderItem = folderItemRepository.findByPostId(postId).orElseThrow(NotExistsFolderItemException::new);
         folderItem.increaseViews();
     }
+
+    @Override
+    public FolderItem getFolderItemByPostId(String postId) {
+        return folderItemRepository.findByPostId(postId)
+                .orElseThrow(NotExistsFolderItemException::new);
+    }
 }

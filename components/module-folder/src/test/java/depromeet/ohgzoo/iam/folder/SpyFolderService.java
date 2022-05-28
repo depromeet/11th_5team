@@ -27,6 +27,8 @@ public class SpyFolderService implements FolderService {
     public Long createFolderItem_argumentMemberId;
     public Long createFolderItem_argumentFolderId;
     public String increaseViews_argumentPostId;
+    public String getFolderByPost_argumentPostId;
+    public FolderGetResponse getFolderByPost_returnValue;
 
 
     @Override
@@ -94,5 +96,11 @@ public class SpyFolderService implements FolderService {
         argument_memberId = memberId;
         updateFolderItem_argumentPostId = postId;
         updateFolderItem_argumentRequest = request;
+    }
+
+    @Override
+    public FolderGetResponse getFolderByPost(String postId) {
+        getFolderByPost_argumentPostId = postId;
+        return getFolderByPost_returnValue;
     }
 }

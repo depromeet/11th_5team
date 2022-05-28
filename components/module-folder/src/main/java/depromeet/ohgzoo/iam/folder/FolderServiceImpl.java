@@ -113,6 +113,12 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public FolderGetResponse getFolderByPost(String postId) {
+        FolderItem folderItem = folderItemService.getFolderItemByPostId(postId);
+        return FolderGetResponse.of(folderItem.getFolder());
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable) {
         Folder folder = folderRepository.findById(folderId)

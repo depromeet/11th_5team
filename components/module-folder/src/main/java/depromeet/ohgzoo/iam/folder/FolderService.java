@@ -30,4 +30,6 @@ public interface FolderService {
     void increaseViews(String postId);
 
     void updateFolderItem(Long memberId, String postId, FolderItemUpdateRequest request);
+
+    FolderGetResponse getFolderByPost(String postId);
 }

@@ -407,4 +407,23 @@ public class FolderServiceImplTest {
 
         assertThat(spyFolderItemRepository.findByPostId_returnValue.getViews()).isEqualTo(1);
     }
+
+    @Test
+    void getFolderByPost_returnsFolderGetResponse() {
+        FolderItem givenFolderItem = aFolderItem().build();
+        Folder givenFolder = aFolder()
+                .id(1L)
+                .name("name")
+                .coverImg("image")
+                .build();
+        givenFolderItem.setFolder(givenFolder);
+
+        spyFolderItemRepository.findByPostId_returnValue = givenFolderItem;
+
+        FolderGetResponse result = folderService.getFolderByPost("post id");
+
+        assertThat(result.getFolderId()).isEqualTo(1L);
+        assertThat(result.getFolderName()).isEqualTo("name");
+        assertThat(result.getCoverImg()).isEqualTo("image");
+    }
 }
