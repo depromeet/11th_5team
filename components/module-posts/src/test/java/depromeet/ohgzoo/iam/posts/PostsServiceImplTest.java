@@ -7,6 +7,7 @@ import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
@@ -94,21 +95,22 @@ class PostsServiceImplTest {
 
     @Test
     void getPostsByMemberId_passesMemberIdToRepository() {
-        postsService.getPostsByMemberId(1L, 0, 0);
+        postsService.getPostsByMemberId(1L, PageRequest.ofSize(1));
 
         assertThat(spyPostsRepository.findByMemberId_argumentId).isEqualTo(1L);
     }
 
     @Test
     void getPostsByMemberId_returnsPagingPosts() {
-        spyPostsRepository.findByMemberId_returnValue = List.of(
+        spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(
+                List.of(
                 Posts.builder().id("1").build(),
                 Posts.builder().id("2").build(),
                 Posts.builder().id("3").build(),
                 Posts.builder().id("4").build()
-        );
+        ));
 
-        List<PostsDto> result = postsService.getPostsByMemberId(1L, 2, 2);
+        List<PostsDto> result = postsService.getPostsByMemberId(1L, PageRequest.of(2, 2)).getPosts();
 
         assertThat(result).containsExactly(
                 PostsDto.builder().id("3").build(),
@@ -201,9 +203,9 @@ class PostsServiceImplTest {
 
     @Test
     void getRecentlyUnwrittenPosts_passesMemberIdToRepository() {
-        spyPostsRepository.findByMemberId_returnValue = List.of(
+        spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(List.of(
                 Posts.builder().id("3").secondCategory(SecondCategory.Unwritten).createdAt(LocalDateTime.now()).build()
-        );
+        ));
 
         postsService.getRecentlyUnwrittenPosts(1L);
 
@@ -217,12 +219,12 @@ class PostsServiceImplTest {
         LocalDateTime before7Day = now.minusDays(6).minusNanos(1);
         LocalDateTime before8Day = now.minusDays(7).minusNanos(1);
 
-        spyPostsRepository.findByMemberId_returnValue = List.of(
+        spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(List.of(
                 Posts.builder().id("1").secondCategory(SecondCategory.SADNESS).build(),
                 Posts.builder().id("2").secondCategory(SecondCategory.DONTKNOW).build(),
                 Posts.builder().id("3").secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build(),
                 Posts.builder().id("4").secondCategory(SecondCategory.Unwritten).createdAt(before8Day).build()
-        );
+        ));
 
         List<PostsDto> result = postsService.getRecentlyUnwrittenPosts(1L);
 
@@ -272,12 +274,12 @@ class PostsServiceImplTest {
 
     @Test
     public void getCategories_returnsCategoryResponse() throws Exception {
-        spyPostsRepository.findByMemberId_returnValue = List.of(
+        spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(List.of(
                 Posts.builder().id("1").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).build(),
                 Posts.builder().id("2").firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).build(),
                 Posts.builder().id("3").firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).build(),
                 Posts.builder().id("4").firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).build()
-        );
+        ));
 
         List<CategoryResponse> result = postsService.getCategories(1L);
 
@@ -303,12 +305,12 @@ class PostsServiceImplTest {
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
 
-        spyPostsRepository.findByMemberId_returnValue = List.of(
+        spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(List.of(
                 Posts.builder().id("1").views(1).firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.SADNESS).createdAt(now).build(),
                 Posts.builder().id("2").views(1).firstCategory(FirstCategory.ANXIOUS).secondCategory(SecondCategory.DONTKNOW).createdAt(tomorrow).build(),
                 Posts.builder().id("3").views(1).firstCategory(FirstCategory.DONTKNOW).secondCategory(SecondCategory.JOY).createdAt(yesterday).build(),
                 Posts.builder().id("4").views(1).firstCategory(FirstCategory.SADNESS).secondCategory(SecondCategory.JOY).createdAt(now).build()
-        );
+        ));
 
         CategoryItemsResponse result = postsService.getCategoryItems(1L, 12, PageRequest.of(0, 2));
 

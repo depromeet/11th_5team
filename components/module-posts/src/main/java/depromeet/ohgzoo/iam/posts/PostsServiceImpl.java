@@ -4,6 +4,7 @@ import depromeet.ohgzoo.iam.category.CategoryService;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,13 +64,16 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostsDto> getPostsByMemberId(Long memberId, int page, int size) {
-        return postsRepository.findByMemberId(memberId)
+    public PostsPage getPostsByMemberId(Long memberId, Pageable pageable) {
+        Page<Posts> postPage = postsRepository.findByMemberId(memberId);
+        List<PostsDto> posts = postPage
                 .stream()
-                .skip(page)
-                .limit(size)
+                .skip(pageable.getPageNumber())
+                .limit(pageable.getPageSize())
                 .map(PostsDto::new)
                 .collect(Collectors.toList());
+
+        return new PostsPage(postPage.getTotalElements(), posts);
     }
 
     @Transactional(readOnly = true)
@@ -138,7 +142,7 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponse> getCategories(Long memberId) {
-        List<Posts> postsList = postsRepository.findByMemberId(memberId);
+        Page<Posts> postsList = postsRepository.findByMemberId(memberId);
         List<SecondCategory> categories = categoryService.secondCategoryList();
 
         return categories.stream()
@@ -146,7 +150,7 @@ public class PostsServiceImpl implements PostsService {
                 .collect(Collectors.toList());
     }
 
-    private int getCategoryContainsCount(List<Posts> postsList, SecondCategory category) {
+    private int getCategoryContainsCount(Page<Posts> postsList, SecondCategory category) {
         return (int) postsList.stream()
                 .filter(posts -> posts.containsCategory(category))
                 .count();

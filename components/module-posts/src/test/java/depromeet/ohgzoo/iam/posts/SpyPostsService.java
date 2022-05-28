@@ -10,7 +10,7 @@ public class SpyPostsService implements PostsService {
     public CreatePostsResult createPosts_returnValue;
     public UpdatePostsRequest updatePostsRequest_argumentRequest;
     public Long getPostsByMemberId_argumentMemberId;
-    public List<PostsDto> getPostsByMemberId_returnValue;
+    public PostsPage getPostsByMemberId_returnValue;
     public int getPostsByMemberId_argumentPage;
     public int getPostsByMemberId_argumentSize;
     public List<PostsDto> getPostsByTag_returnValue;
@@ -53,10 +53,10 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public List<PostsDto> getPostsByMemberId(Long memberId, int page, int size) {
+    public PostsPage getPostsByMemberId(Long memberId, Pageable pageable) {
         getPostsByMemberId_argumentMemberId = memberId;
-        getPostsByMemberId_argumentPage = page;
-        getPostsByMemberId_argumentSize = size;
+        getPostsByMemberId_argumentPage = pageable.getPageNumber();
+        getPostsByMemberId_argumentSize = pageable.getPageSize();
         return getPostsByMemberId_returnValue;
     }
 

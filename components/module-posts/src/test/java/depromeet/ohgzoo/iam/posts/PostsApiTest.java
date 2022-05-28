@@ -75,7 +75,7 @@ class PostsApiTest {
 
     @Test
     void getMyPosts_returnsPostsDtoList() throws Exception {
-        spyPostsService.getPostsByMemberId_returnValue = List.of(
+        spyPostsService.getPostsByMemberId_returnValue = new PostsPage(1, List.of(
                 new PostsDto(
                         "1",
                         FirstCategory.SADNESS,
@@ -83,19 +83,20 @@ class PostsApiTest {
                         "content",
                         List.of("1", "2"), true, 1,
                         LocalDateTime.of(2022, 4, 24, 12, 30, 30))
-        );
+        ));
 
         mockMvc.perform(get("/api/v1/posts"))
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", equalTo("1")))
-                .andExpect(jsonPath("$[0].firstCategory", equalTo("SADNESS")))
-                .andExpect(jsonPath("$[0].secondCategory", equalTo("SADNESS")))
-                .andExpect(jsonPath("$[0].content", equalTo("content")))
-                .andExpect(jsonPath("$[0].tags", contains("1", "2")))
-                .andExpect(jsonPath("$[0].disclosure", equalTo(true)))
-                .andExpect(jsonPath("$[0].views", equalTo(1)))
-                .andExpect(jsonPath("$[0].createdAt", equalTo("2022-04-24 12:30:30")))
+                .andExpect(jsonPath("$.totalCount", equalTo(1)))
+                .andExpect(jsonPath("$.posts").isArray())
+                .andExpect(jsonPath("$.posts", hasSize(1)))
+                .andExpect(jsonPath("$.posts[0].id", equalTo("1")))
+                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
+                .andExpect(jsonPath("$.posts[0].tags", contains("1", "2")))
+                .andExpect(jsonPath("$.posts[0].disclosure", equalTo(true)))
+                .andExpect(jsonPath("$.posts[0].views", equalTo(1)))
+                .andExpect(jsonPath("$.posts[0].createdAt", equalTo("2022-04-24 12:30:30")))
         ;
     }
 
