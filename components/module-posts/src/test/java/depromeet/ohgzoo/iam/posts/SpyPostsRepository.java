@@ -14,7 +14,8 @@ import java.util.function.Function;
 public class SpyPostsRepository implements PostsRepository {
     public Posts save_entity;
     public Long findByMemberId_argumentId;
-    public List<Posts> findByMemberId_returnValue = Collections.emptyList();
+    public Pageable findByMemberId_argumentPageable;
+    public Page<Posts> findByMemberId_returnValue = Page.empty();
     public boolean findAll_wasCalled;
     public List<Posts> findAll_returnValue = Collections.emptyList();
     public Optional<Posts> findById;
@@ -176,8 +177,9 @@ public class SpyPostsRepository implements PostsRepository {
     }
 
     @Override
-    public List<Posts> findByMemberId(Long memberId) {
+    public Page<Posts> findByMemberId(Long memberId, Pageable pageable) {
         findByMemberId_argumentId = memberId;
+        findByMemberId_argumentPageable = pageable;
         return findByMemberId_returnValue;
     }
 

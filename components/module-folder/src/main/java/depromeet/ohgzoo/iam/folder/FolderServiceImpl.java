@@ -43,6 +43,11 @@ public class FolderServiceImpl implements FolderService {
         if (folder.getMemberId() != memberId) throw new InvalidUserException();
         if (folder.isDefault() == true) throw new ProtectedFolderException();
 
+        Folder defaultFolder = folderRepository.findByIsDefaultTrue();
+        for (FolderItem folderItem : folder.getFolderItems()) {
+            folderItem.setFolder(defaultFolder);
+        }
+
         folderRepository.deleteById(folderId);
     }
 
@@ -113,7 +118,7 @@ public class FolderServiceImpl implements FolderService {
                 .limit(pageable.getPageSize())
                 .collect(Collectors.toList());
 
-        return new FolderItemsGetResponse(folder.getFolderItems().size(), folder.getName(), folderItems.stream()
+        return new FolderItemsGetResponse(folder.getFolderItems().size(), folder.getName(), folder.isDefault(), folderItems.stream()
                 .map(FolderItemDto::of).collect(Collectors.toList()));
     }
 

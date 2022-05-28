@@ -109,6 +109,18 @@ public class FolderServiceImplTest {
                 .isInstanceOf(ProtectedFolderException.class);
     }
 
+    @Test
+    void deleteFolder_changesFolderItemToDefaultFolder() {
+        FolderItem folderItem = aFolderItem().build();
+        Folder defaultFolder = aFolder().build();
+        Folder folder = aFolder().id(2L).build();
+        folderItem.setFolder(folder);
+
+        spyFolderRepository.findById_returnValue = folder;
+        spyFolderRepository.findByIsDefaultTrue_returnValue = defaultFolder;
+        folderService.deleteFolder(1L, 2L);
+    }
+
 
     @Test
     void updateFolder_passesFolderIdToRepository() {
