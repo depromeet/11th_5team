@@ -138,7 +138,7 @@ class FolderApiTest {
 
     @Test
     void addFolderItem_OKHttpStatus() throws Exception {
-        mockMvc.perform(post("/api/v1/folders/posts/1")
+        mockMvc.perform(post("/api/v1/folders/1/posts")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstCategory\":\"SADNESS\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false,\"postId\":1}"))
@@ -147,7 +147,7 @@ class FolderApiTest {
 
     @Test
     void addFolderItem_passesFolderNameToService() throws Exception {
-        mockMvc.perform(post("/api/v1/folders/posts/1")
+        mockMvc.perform(post("/api/v1/folders/1/posts")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstCategory\":\"SADNESS\",\"secondCategory\":\"ANXIOUS\",\"content\":\"post content\",\"tags\":[\"orange\",\"apple\"],\"disclosure\":false,\"postId\":1}"))
@@ -158,7 +158,7 @@ class FolderApiTest {
 
     @Test
     void moveFolderItem_OkHttpStatus() throws Exception {
-        mockMvc.perform(patch("/api/v1/folders/posts/1")
+        mockMvc.perform(patch("/api/v1/folders/1/posts")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"postId\":1}"))
@@ -167,7 +167,7 @@ class FolderApiTest {
 
     @Test
     void moveFolderItem_passesFolderNameToService() throws Exception {
-        mockMvc.perform(patch("/api/v1/folders/posts/1")
+        mockMvc.perform(patch("/api/v1/folders/1/posts")
                         .header("AUTH_TOKEN", "givenToken")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"postId\":1}"))
@@ -199,7 +199,7 @@ class FolderApiTest {
 
     @Test
     void getFolderItems_OKHttpStatus() throws Exception {
-        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+        mockMvc.perform(get("/api/v1/folders/1/posts?page=1&size=20")
                         .header("AUTH_TOKEN", "givenToken"))
                 .andExpect(status().isOk());
     }
@@ -213,7 +213,7 @@ class FolderApiTest {
         folderItem2.setFolder(folder);
         spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2, "미분류", true, new ArrayList<>(Arrays.asList(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2))));
 
-        mockMvc.perform(get("/api/v1/folders/posts/1?page=1&size=20")
+        mockMvc.perform(get("/api/v1/folders/1/posts?page=1&size=20")
                         .header("AUTH_TOKEN", "givenToken"))
                 .andExpect(jsonPath("$.totalCount", equalTo(2)))
                 .andExpect(jsonPath("$['posts'][0].postId", equalTo("1")))

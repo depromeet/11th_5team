@@ -14,17 +14,19 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
 
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/folders")
 @RestController
 public class FolderApi {
     private final FolderService folderService;
 
-    @PostMapping("/api/v1/folders")
+    @PostMapping
     public FolderResponse addFolder(@Login Long memberId, @Valid @RequestBody FolderCreateRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
 
@@ -32,13 +34,13 @@ public class FolderApi {
         return response;
     }
 
-    @DeleteMapping("/api/v1/folders/{folderId}")
+    @DeleteMapping("{folderId}")
     public void deleteFolder(@Login Long memberId,
                              @PathVariable Long folderId) {
         folderService.deleteFolder(memberId, folderId);
     }
 
-    @PatchMapping("/api/v1/folders/{folderId}")
+    @PatchMapping("{folderId}")
     public FolderResponse updateFolder(@Login Long memberId,
                                        @PathVariable Long folderId,
                                        @Valid @RequestBody FolderUpdateRequest request, BindingResult errors) {
@@ -46,26 +48,26 @@ public class FolderApi {
         return folderService.updateFolder(memberId, folderId, request);
     }
 
-    @PostMapping("/api/v1/folders/posts/{folderId}")
+    @PostMapping("{folderId}/posts")
     public void addFolderItem(@Login Long memberId, @PathVariable Long folderId,
                               @Valid @RequestBody FolderItemCreateRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.createFolderItem(memberId, folderId, request);
     }
 
-    @PatchMapping("/api/v1/folders/posts/{folderId}")
+    @PatchMapping("{folderId}/posts")
     public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId,
                                @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors) {
         if (errors.hasErrors()) throw new ValidationException();
         folderService.moveFolderItem(memberId, folderId, request);
     }
 
-    @GetMapping("/api/v1/folders")
+    @GetMapping
     public FoldersGetResponse getFolders(@Login Long memberId) {
         return folderService.getFolders(memberId);
     }
 
-    @GetMapping("/api/v1/folders/posts/{folderId}")
+    @GetMapping("{folderId}/posts")
     public FolderItemsGetResponse getFolderItems(@Login Long memberId, @PathVariable Long folderId,
                                                  @PageableDefault(size = 20) Pageable pageable) {
         return folderService.getFolderItems(memberId, folderId, pageable);
