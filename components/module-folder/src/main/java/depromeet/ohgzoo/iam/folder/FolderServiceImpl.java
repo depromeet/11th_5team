@@ -43,6 +43,11 @@ public class FolderServiceImpl implements FolderService {
         if (folder.getMemberId() != memberId) throw new InvalidUserException();
         if (folder.isDefault() == true) throw new ProtectedFolderException();
 
+        Folder defaultFolder = folderRepository.findByIsDefaultTrue();
+        for (FolderItem folderItem : folder.getFolderItems()) {
+            folderItem.setFolder(defaultFolder);
+        }
+
         folderRepository.deleteById(folderId);
     }
 

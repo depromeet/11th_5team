@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +35,7 @@ public class Folder extends BaseEntity {
 
     private boolean isDefault;
 
-    @OneToMany(mappedBy = "folder", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "folder")
     private List<FolderItem> folderItems = new ArrayList<>();
 
     @Builder
