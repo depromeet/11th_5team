@@ -23,6 +23,14 @@ public class PostsDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    public String getFirstCategoryName() {
+        return firstCategory.getDescription();
+    }
+
+    public String getSecondCategoryName() {
+        return secondCategory.getDescription();
+    }
+
     @Builder
     public PostsDto(String id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, boolean disclosure, int views, LocalDateTime createdAt) {
         this.id = id;
