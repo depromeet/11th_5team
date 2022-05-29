@@ -100,7 +100,7 @@ public class PostsServiceImpl implements PostsService {
     public List<PostsDto> getRecentlyUnwrittenPosts(Long memberId) {
         return postsRepository.findByMemberId(memberId, PageRequest.of(0, Integer.MAX_VALUE))
                 .stream()
-                .filter(posts -> SecondCategory.Unwritten.equals(posts.getSecondCategory()))
+                .filter(posts -> SecondCategory.DONTKNOW.equals(posts.getSecondCategory()))
                 .filter(posts -> LocalDateTime.now().minusDays(7).isBefore(posts.getCreatedAt()))
                 .sorted(Comparator.comparing(Posts::getId).reversed())
                 .map(PostsDto::new)
