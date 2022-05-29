@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static depromeet.ohgzoo.iam.folder.folderItem.FolderItemFixtures.aFolderItem;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -207,17 +209,20 @@ class FolderApiTest {
     @Test
     void getFolderItems_returnsResponse() throws Exception {
         Folder folder = Folder.builder().id(1L).build();
-        FolderItem folderItem1 = FolderItem.builder().postId("1").build();
-        FolderItem folderItem2 = FolderItem.builder().postId("2").build();
+        FolderItem folderItem1 = aFolderItem().postId("1").build();
+        FolderItem folderItem2 = aFolderItem().postId("2").build();
         folderItem1.setFolder(folder);
         folderItem2.setFolder(folder);
-        spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2, "미분류", true, new ArrayList<>(Arrays.asList(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2))));
+        spyFolderService.getFolderItems_returnValue = new FolderItemsGetResponse(2,
+                "미분류",
+                true, List.of(FolderItemDto.of(folderItem1), FolderItemDto.of(folderItem2)));
 
         mockMvc.perform(get("/api/v1/folders/1/posts?page=1&size=20")
                         .header("AUTH_TOKEN", "givenToken"))
+                .andDo(print())
                 .andExpect(jsonPath("$.totalCount", equalTo(2)))
-                .andExpect(jsonPath("$['posts'][0].postId", equalTo("1")))
-                .andExpect(jsonPath("$['posts'][1].postId", equalTo("2")));
+                .andExpect(jsonPath("$.posts[0].postId", equalTo("1")))
+                .andExpect(jsonPath("$.posts[1].postId", equalTo("2")));
     }
 
     @Test

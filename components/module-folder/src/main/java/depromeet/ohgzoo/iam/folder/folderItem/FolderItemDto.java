@@ -21,6 +21,14 @@ public class FolderItemDto {
     private LocalDateTime createdAt;
     private int views;
 
+    public String getFirstCategoryName() {
+        return firstCategory.getDescription();
+    }
+
+    public String getSecondCategoryName() {
+        return secondCategory.getDescription();
+    }
+
     public static FolderItemDto of(FolderItem folderItem) {
         return FolderItemDto.builder()
                 .postId(folderItem.getPostId())
