@@ -221,15 +221,14 @@ class PostsServiceImplTest {
 
         spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(List.of(
                 Posts.builder().id("1").secondCategory(SecondCategory.SADNESS).build(),
-                Posts.builder().id("2").secondCategory(SecondCategory.DONTKNOW).build(),
-                Posts.builder().id("3").secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build(),
-                Posts.builder().id("4").secondCategory(SecondCategory.Unwritten).createdAt(before8Day).build()
+                Posts.builder().id("3").secondCategory(SecondCategory.DONTKNOW).createdAt(before7Day).build(),
+                Posts.builder().id("4").secondCategory(SecondCategory.DONTKNOW).createdAt(before8Day).build()
         ));
 
         List<PostsDto> result = postsService.getRecentlyUnwrittenPosts(1L);
 
         assertThat(result).containsExactly(
-                PostsDto.builder().id("3").secondCategory(SecondCategory.Unwritten).createdAt(before7Day).build());
+                PostsDto.builder().id("3").secondCategory(SecondCategory.DONTKNOW).createdAt(before7Day).build());
     }
 
     @Test
