@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.folder;
 
+import depromeet.ohgzoo.iam.category.ImageLoader;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDto;
@@ -70,10 +71,10 @@ public class FolderServiceImpl implements FolderService {
         List<Folder> folders = folderRepository.findAllByMemberId(memberId);
         List<FolderItem> folderItems = folderItemService.getRecentFolderItems(memberId);
 
-        List<String> coverImages = Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage);
+        List<String> coverImages = Arrays.asList(ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE);
         for (int i = 0; i < folderItems.size(); i++) {
             if (folderItems.get(i) != null)
-                coverImages.set(i, CoverImageUrl.returnCoverImage(folderItems.get(i).getFirstCategory()));
+                coverImages.set(i, folderItems.get(i).getFirstCategory().getImage());
         }
 
         return new FoldersGetResponse(folders.stream()
@@ -142,7 +143,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void createDefaultFolder(Long memberId) {
-        Folder folder = new Folder("미분류", CoverImageUrl.defaultImage, memberId, true);
+        Folder folder = new Folder("미분류", ImageLoader.DEFAULT_IMAGE, memberId, true);
         folderRepository.save(folder);
     }
 
@@ -150,6 +151,4 @@ public class FolderServiceImpl implements FolderService {
     public void increaseViews(String postId) {
         folderItemService.increaseViews(postId);
     }
-
-
 }
