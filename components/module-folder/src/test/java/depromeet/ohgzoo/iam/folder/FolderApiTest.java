@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.ImageLoader;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDto;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
@@ -190,13 +191,13 @@ class FolderApiTest {
         spyJwtService.getSubject_returnValue = "1";
         Folder folder = Folder.builder().memberId(1L).id(1L).name("folder name").build();
         List<FolderGetResponse> folders = new ArrayList<FolderGetResponse>(Arrays.asList(FolderGetResponse.of(folder)));
-        spyFolderService.getFolders_returnValue = new FoldersGetResponse(folders, new ArrayList<String>(Arrays.asList(CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage, CoverImageUrl.defaultImage)));
+        spyFolderService.getFolders_returnValue = new FoldersGetResponse(folders, new ArrayList<String>(Arrays.asList(ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE)));
 
         mockMvc.perform(get("/api/v1/folders")
                         .header("AUTH_TOKEN", "givenToken"))
                 .andExpect(jsonPath("$.['folders'][0].folderId", equalTo(1)))
                 .andExpect(jsonPath("$['folders'][0].folderName", equalTo("folder name")))
-                .andExpect(jsonPath("$['postsThumbnail'][0]", equalTo(CoverImageUrl.defaultImage)));
+                .andExpect(jsonPath("$['postsThumbnail'][0]", equalTo(ImageLoader.DEFAULT_IMAGE)));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.ImageLoader;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
@@ -252,19 +253,18 @@ public class FolderServiceImplTest {
     @Test
     void moveFolderItem_ChangesFolderCoverImage() {
         FolderItem folderItem1 = aFolderItem().id(2L).firstCategory(FirstCategory.SADNESS).build();
-        FirstCategory givenCategory = FirstCategory.ANXIOUS;
-        FolderItem folderItem2 = aFolderItem().id(1L).firstCategory(givenCategory).build();
+        FolderItem folderItem2 = aFolderItem().id(1L).firstCategory(FirstCategory.ANXIOUS).build();
         Folder oldFolder = aFolder().id(1L).build();
         folderItem1.setFolder(oldFolder);
-        Folder newFolder = aFolder().build();
+        Folder newFolder = aFolder().id(2L).build();
         folderItem2.setFolder(newFolder);
 
-        spyFolderItemRepository.findByPostId_returnValue = folderItem1;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem1;//sadness
         spyFolderRepository.findById_returnValue = newFolder;
         spyFolderItemRepository.latestFolderItem_returnValue = folderItem1;
 
         folderItemService.moveFolderItem(1L, newFolder, new FolderItemMoveRequest("2"));
-        assertThat(newFolder.getCoverImg()).isEqualTo(givenCategory.getImage());
+        assertThat(newFolder.getCoverImg()).isEqualTo(FirstCategory.SADNESS.getImage());
     }
 
     @Test
@@ -362,7 +362,7 @@ public class FolderServiceImplTest {
         assertThat(result.getFolders().get(0).getFolderName()).isEqualTo("folder name");
         assertThat(result.getFolders().get(1).getFolderId()).isEqualTo(2L);
 
-        assertThat(result.getPostsThumbnail().get(0)).isEqualTo(CoverImageUrl.defaultImage);
+        assertThat(result.getPostsThumbnail().get(0)).isEqualTo(ImageLoader.DEFAULT_IMAGE);
     }
 
     @Test

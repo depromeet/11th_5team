@@ -60,6 +60,6 @@ public class Folder extends BaseEntity {
     }
 
     public void changeCoverImg(FirstCategory firstCategory) {
-        this.coverImg = CoverImageUrl.returnCoverImage(firstCategory);
+        this.coverImg = firstCategory.getImage();
     }
 }
