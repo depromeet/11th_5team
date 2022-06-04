@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -71,10 +71,10 @@ public class FolderServiceImpl implements FolderService {
         List<Folder> folders = folderRepository.findAllByMemberId(memberId);
         List<FolderItem> folderItems = folderItemService.getRecentFolderItems(memberId);
 
-        List<String> coverImages = Arrays.asList(ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE, ImageLoader.DEFAULT_IMAGE);
+        List<String> coverImages = new ArrayList<>();
         for (int i = 0; i < folderItems.size(); i++) {
             if (folderItems.get(i) != null)
-                coverImages.set(i, folderItems.get(i).getFirstCategory().getImage());
+                coverImages.add(folderItems.get(i).getFirstCategory().getImage());
         }
 
         return new FoldersGetResponse(folders.stream()
