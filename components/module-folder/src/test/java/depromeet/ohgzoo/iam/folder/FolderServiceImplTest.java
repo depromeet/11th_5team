@@ -1,7 +1,6 @@
 package depromeet.ohgzoo.iam.folder;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
-import depromeet.ohgzoo.iam.category.ImageLoader;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
@@ -361,8 +360,6 @@ public class FolderServiceImplTest {
         assertThat(result.getFolders().get(0).getFolderId()).isEqualTo(1L);
         assertThat(result.getFolders().get(0).getFolderName()).isEqualTo("folder name");
         assertThat(result.getFolders().get(1).getFolderId()).isEqualTo(2L);
-
-        assertThat(result.getPostsThumbnail().get(0)).isEqualTo(ImageLoader.DEFAULT_IMAGE);
     }
 
     @Test
