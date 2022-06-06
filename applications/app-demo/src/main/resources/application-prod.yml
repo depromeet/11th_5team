@@ -3,7 +3,7 @@ spring:
     secret: ${JWT_KEY}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       use-new-id-generator-mappings: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
