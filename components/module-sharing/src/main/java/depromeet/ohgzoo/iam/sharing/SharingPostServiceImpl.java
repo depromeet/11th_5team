@@ -20,6 +20,8 @@ public class SharingPostServiceImpl implements SharingPostService {
 
     @Transactional
     public SharingResponse sharingPost(Long memberId, SharingRequest request) {
+        if(postsRepository.findById(request.getPostId()).isEmpty()) throw new PostsNotFoundException();
+
         SharingPost sharingPost = SharingPost.builder()
                 .receiverName(request.getReceiverName()).sharingCategory(request.getCategory()).postId(request.getPostId())
                 .memberId(memberId).build();
