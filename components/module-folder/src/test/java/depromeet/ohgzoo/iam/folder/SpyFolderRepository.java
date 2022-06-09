@@ -30,7 +30,8 @@ public class SpyFolderRepository implements FolderRepository {
     }
 
     @Override
-    public Folder findByIsDefaultTrue() {
+    public Folder findByMemberIdAndIsDefaultTrue(Long memberId) {
+        findById_argumentId = memberId;
         findByIsDefaultTrue_wasCalled = true;
         return findByIsDefaultTrue_returnValue;
     }

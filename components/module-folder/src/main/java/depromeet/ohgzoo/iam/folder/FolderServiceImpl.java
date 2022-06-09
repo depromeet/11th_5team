@@ -44,7 +44,7 @@ public class FolderServiceImpl implements FolderService {
         if (folder.getMemberId() != memberId) throw new InvalidUserException();
         if (folder.isDefault() == true) throw new ProtectedFolderException();
 
-        Folder defaultFolder = folderRepository.findByIsDefaultTrue();
+        Folder defaultFolder = folderRepository.findByMemberIdAndIsDefaultTrue(memberId);
         for (FolderItem folderItem : folder.getFolderItems()) {
             folderItem.setFolder(defaultFolder);
         }
@@ -80,14 +80,14 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void createFolderItem(Long memberId, Long folderId, FolderItemCreateRequest request) {
-        Folder folder = getFolderOrDefault(folderId);
+        Folder folder = getFolderOrDefault(memberId, folderId);
 
         folderItemService.createFolderItem(memberId, folder, request);
     }
 
-    private Folder getFolderOrDefault(Long folderId) {
+    private Folder getFolderOrDefault(Long memberId, Long folderId) {
         if (null == folderId) {
-            return folderRepository.findByIsDefaultTrue();
+            return folderRepository.findByMemberIdAndIsDefaultTrue(memberId);
         }
         return folderRepository.findById(folderId)
                 .orElseThrow(NotExistsFolderException::new);
