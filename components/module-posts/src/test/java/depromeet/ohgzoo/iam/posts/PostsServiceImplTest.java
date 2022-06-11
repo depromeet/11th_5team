@@ -102,18 +102,18 @@ class PostsServiceImplTest {
 
     @Test
     void getPostsByMemberId_returnsPagingPosts() {
+        LocalDateTime now = LocalDateTime.now();
         spyPostsRepository.findByMemberId_returnValue = new PageImpl<>(
                 List.of(
-                        Posts.builder().id("3").build(),
-                        Posts.builder().id("4").build()
+                        Posts.builder().id("3").createdAt(now).build(),
+                        Posts.builder().id("4").createdAt(now.plusDays(1)).build()
                 ));
 
         List<PostsDto> result = postsService.getPostsByMemberId(1L, PageRequest.of(2, 2)).getPosts();
 
-        assertThat(result).containsExactly(
-                PostsDto.builder().id("3").build(),
-                PostsDto.builder().id("4").build()
-        );
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0)).isEqualTo(PostsDto.builder().id("4").createdAt(now.plusDays(1)).build());
+        assertThat(result.get(1)).isEqualTo(PostsDto.builder().id("3").createdAt(now).build());
     }
 
     @Test

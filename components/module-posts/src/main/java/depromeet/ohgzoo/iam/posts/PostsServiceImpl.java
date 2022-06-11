@@ -69,6 +69,7 @@ public class PostsServiceImpl implements PostsService {
         Page<Posts> postPage = postsRepository.findByMemberId(memberId, pageable);
         List<PostsDto> posts = postPage.stream()
                 .map(PostsDto::new)
+                .sorted(Comparator.comparing(PostsDto::getCreatedAt).reversed())
                 .collect(Collectors.toList());
 
         return new PostsPage(postPage.getTotalElements(), posts);
