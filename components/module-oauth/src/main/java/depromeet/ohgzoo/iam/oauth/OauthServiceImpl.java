@@ -49,7 +49,7 @@ public class OauthServiceImpl implements OauthService {
         Long memberId = memberService.getMemberId(identifyToken);
 
         return new AuthToken(
-                jwtService.issuedToken(memberId.toString(), "USER", 3600),
+                jwtService.issuedToken(memberId.toString(), "USER", 3600 * 31 * 12),
                 jwtService.issuedToken(memberId.toString(), "USER", 36000)
         );
     }
