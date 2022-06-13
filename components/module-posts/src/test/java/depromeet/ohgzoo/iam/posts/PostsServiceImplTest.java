@@ -261,13 +261,13 @@ class PostsServiceImplTest {
                 Posts.builder().id("4").build()
         );
 
-        List<PostsDto> result = postsService.getAllPosts();
+        List<PostResponse> result = postsService.getAllPosts();
 
         assertThat(result).containsExactly(
-                PostsDto.builder().id("1").build(),
-                PostsDto.builder().id("2").build(),
-                PostsDto.builder().id("3").build(),
-                PostsDto.builder().id("4").build()
+                PostResponse.builder().id("1").build(),
+                PostResponse.builder().id("2").build(),
+                PostResponse.builder().id("3").build(),
+                PostResponse.builder().id("4").build()
         );
     }
 

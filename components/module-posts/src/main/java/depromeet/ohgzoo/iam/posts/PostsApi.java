@@ -49,7 +49,7 @@ public class PostsApi {
     }
 
     @GetMapping("/all")
-    public List<PostsDto> getAllPosts() {
+    public List<PostResponse> getAllPosts() {
         return postsService.getAllPosts();
     }
 

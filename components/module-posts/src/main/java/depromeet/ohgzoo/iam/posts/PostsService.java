@@ -14,7 +14,7 @@ public interface PostsService {
     List<PostsDto> getRecentlyUnwrittenPosts(Long memberId);
     void increaseViews(String postId);
     OnePostsDto getPostsById(Long memberId, String postId);
-    List<PostsDto> getAllPosts();
+    List<PostResponse> getAllPosts();
 
     List<CategoryResponse> getCategories(Long memberId);
 
