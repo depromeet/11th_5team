@@ -28,7 +28,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public FolderResponse createFolder(Long memberId, FolderCreateRequest request) {
-        Optional<Folder> existedFolder = folderRepository.findByName(request.getFolderName());
+        Optional<Folder> existedFolder = folderRepository.findByMemberIdAndName(memberId, request.getFolderName());
         if (existedFolder.isPresent()) throw new ExistedNameException();
 
         Folder folder = new Folder(request.getFolderName(), "", memberId);
@@ -57,7 +57,7 @@ public class FolderServiceImpl implements FolderService {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(NotExistsFolderException::new);
 
-        Optional<Folder> existedFolder = folderRepository.findByName(request.getFolderName());
+        Optional<Folder> existedFolder = folderRepository.findByMemberIdAndName(memberId, request.getFolderName());
         if (existedFolder.isPresent()) throw new ExistedNameException();
         if (folder.getMemberId() != memberId) throw new InvalidUserException();
 
