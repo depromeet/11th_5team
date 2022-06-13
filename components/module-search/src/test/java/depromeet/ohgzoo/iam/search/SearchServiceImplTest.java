@@ -5,7 +5,6 @@ import depromeet.ohgzoo.iam.search.batch.SearchEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,8 +31,8 @@ class SearchServiceImplTest {
     @Test
     void search_returnsContainedKeywordSearchResult() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
-                new SearchEntity("2", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0),
+                new SearchEntity("2", 1L, "", "", "hello", Collections.emptyList(), 0)
         );
 
         SearchResult result = sut.search("hi", null);
@@ -50,9 +49,9 @@ class SearchServiceImplTest {
     void search_returnsContainedKeywordSearchResult_whenLogin() {
 
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0, LocalDateTime.now()),
-                new SearchEntity("2", 2L, "", "", "hi hi", Collections.emptyList(), 0, LocalDateTime.now()),
-                new SearchEntity("3", 1L, "", "", "hello", Collections.emptyList(), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0),
+                new SearchEntity("2", 2L, "", "", "hi hi", Collections.emptyList(), 0),
+                new SearchEntity("3", 1L, "", "", "hello", Collections.emptyList(), 0)
         );
 
         SearchResult result = sut.search("hi", 1L);
@@ -78,9 +77,9 @@ class SearchServiceImplTest {
     @Test
     void searchByTag_returnsContainedTagSearchResult_orderByViews() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0, LocalDateTime.now()),
-                new SearchEntity("2", 1L, "", "", "content2", List.of("hi"), 1, LocalDateTime.now()),
-                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0),
+                new SearchEntity("2", 1L, "", "", "content2", List.of("hi"), 1),
+                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0)
         );
 
         SearchResult result = sut.searchByTag("hi", null, null);
@@ -93,29 +92,12 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void searchByTag_returnsContainedTagSearchResult_orderByCreatedAt() {
-        LocalDateTime givenNow = LocalDateTime.now();
-        spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0, givenNow.minusDays(1)),
-                new SearchEntity("2", 1L, "", "", "content2", List.of("hi"), 0, givenNow)
-        );
-
-        SearchResult result = sut.searchByTag("hi", null, "new");
-
-        assertThat(result.getPosts()).hasSize(2);
-        assertThat(result.getPosts().get(0).getId()).isEqualTo("2");
-        assertThat(result.getPosts().get(0).getCreatedAt()).isEqualTo(givenNow);
-        assertThat(result.getPosts().get(1).getId()).isEqualTo("1");
-        assertThat(result.getPosts().get(1).getCreatedAt()).isEqualTo(givenNow.minusDays(1));
-    }
-
-    @Test
     void searchByTag_returnsContainedTagSearchResult_whenLogin() {
 
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0, LocalDateTime.now()),
-                new SearchEntity("2", 2L, "", "", "content2", List.of("hi", "hello"), 0, LocalDateTime.now()),
-                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0),
+                new SearchEntity("2", 2L, "", "", "content2", List.of("hi", "hello"), 0),
+                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0)
         );
 
         SearchResult result = sut.searchByTag("hi", 1L, null );
@@ -141,8 +123,8 @@ class SearchServiceImplTest {
     @Test
     void searchByCategory_returnsSearchResult_containsFirstCategory() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "hi", "", "content1", List.of("tag1"), 0, LocalDateTime.now()),
-                new SearchEntity("2", 1L, "", "", "content2", List.of("tag2"), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "hi", "", "content1", List.of("tag1"), 0),
+                new SearchEntity("2", 1L, "", "", "content2", List.of("tag2"), 0)
         );
 
         SearchResult result = sut.searchByCategory("hi", null);
@@ -158,8 +140,8 @@ class SearchServiceImplTest {
     @Test
     void searchByCategory_returnsSearchResult_containsSecondCategory() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "content1", List.of("tag1"), 0, LocalDateTime.now()),
-                new SearchEntity("2", 1L, "", "hi", "content2", List.of("tag2"), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "content1", List.of("tag1"), 0),
+                new SearchEntity("2", 1L, "", "hi", "content2", List.of("tag2"), 0)
         );
 
         SearchResult result = sut.searchByCategory("hi", null);
@@ -182,9 +164,9 @@ class SearchServiceImplTest {
     @Test
     void getRankingTag_returnsTagRanks_orderByTagFrequency() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "", List.of("tag1"), 0, LocalDateTime.now()),
-                new SearchEntity("2", 1L, "", "", "", List.of("tag1", "tag2"), 0, LocalDateTime.now()),
-                new SearchEntity("3", 1L, "", "", "", List.of("tag1", "tag2", "tag3"), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "", List.of("tag1"), 0),
+                new SearchEntity("2", 1L, "", "", "", List.of("tag1", "tag2"), 0),
+                new SearchEntity("3", 1L, "", "", "", List.of("tag1", "tag2", "tag3"), 0)
         );
 
         List<TagRank> result = sut.getRankingTag();
@@ -210,7 +192,7 @@ class SearchServiceImplTest {
     @Test
     void getRankingTag_excludeEmptyTag() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "", List.of(""), 0, LocalDateTime.now())
+                new SearchEntity("1", 1L, "", "", "", List.of(""), 0)
         );
 
         List<TagRank> result = sut.getRankingTag();
