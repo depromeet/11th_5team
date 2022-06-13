@@ -47,3 +47,16 @@ values ('3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'post content', 1, 'SADNE
 insert into sharing_post
 (id, created_at, updated_at, receiver_name, sharing_category, post_id, member_id)
 values (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'nickname', 'SORRY', '1', 1);
+
+
+insert into search_entity
+(id, content, created_at, updated_at, first_category, member_id, second_category, tags, views)
+values ('1', 'content1', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'SADNESS', 1, 'SADNESS', 'tag1,tag2', 0);
+
+insert into search_entity
+(id, content, created_at, updated_at, first_category, member_id, second_category, tags, views)
+values ('2', 'content2', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'SADNESS', 1, 'SADNESS', 'tag1,tag2', 0);
+
+insert into search_entity
+(id, content, created_at, updated_at, first_category, member_id, second_category, tags, views)
+values ('3', 'content3', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'SADNESS', 1, 'Unwritten', 'tag1,tag2', 0);

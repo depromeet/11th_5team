@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
-    Optional<Folder> findByName(String name);
+    Optional<Folder> findByMemberIdAndName(Long memberId, String name);
 
     Folder findByMemberIdAndIsDefaultTrue(Long memberId);
 

@@ -25,7 +25,7 @@ public class SpyFolderRepository implements FolderRepository {
     public boolean findByIsDefaultTrue_wasCalled;
 
     @Override
-    public Optional<Folder> findByName(String name) {
+    public Optional<Folder> findByMemberIdAndName(Long memberId, String name) {
         return Optional.ofNullable(findByName_returnValue);
     }
 

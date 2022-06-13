@@ -52,14 +52,15 @@ public class BatchConfig {
     @Bean
     @StepScope
     public ItemProcessor<RemotePosts, SearchEntity> processPosts() {
-        return posts -> new SearchEntity(posts.getId(),
+        return posts -> new SearchEntity(
+                posts.getId(),
                 posts.getMemberId(),
                 posts.getFirstCategory(),
                 posts.getSecondCategory(),
                 posts.getContent(),
                 posts.getTags(),
-                posts.getViews(),
-                posts.getCreatedAt());
+                posts.getViews()
+        );
     }
 
     @Bean
