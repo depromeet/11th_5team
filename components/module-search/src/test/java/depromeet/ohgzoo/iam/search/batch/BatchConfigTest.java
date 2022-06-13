@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +35,7 @@ class BatchConfigTest {
     void processPosts_convertToSearchEntity() throws Exception {
         ItemProcessor<RemotePosts, SearchEntity> processor = sut.processPosts();
 
-        RemotePosts givenPosts = new RemotePosts("id", 1L, "first", "second", "content", List.of("tag1"), 1, LocalDateTime.of(2022, 5,12, 0, 0));
+        RemotePosts givenPosts = new RemotePosts("id", 1L, "first", "second", "content", List.of("tag1"), 1);
 
         SearchEntity result = processor.process(givenPosts);
 
@@ -46,7 +45,6 @@ class BatchConfigTest {
         assertThat(result.getSecondCategory()).isEqualTo("second");
         assertThat(result.getTags()).contains("tag1");
         assertThat(result.getViews()).isEqualTo(1);
-        assertThat(result.getCreatedAt()).isEqualTo(LocalDateTime.of(2022, 5,12, 0, 0));
     }
 
     @Test

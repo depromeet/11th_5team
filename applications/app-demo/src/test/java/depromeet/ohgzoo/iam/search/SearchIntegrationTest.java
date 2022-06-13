@@ -13,7 +13,6 @@ import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -33,8 +32,8 @@ public class SearchIntegrationTest extends IntegrationTest {
     void setUp() throws Exception {
         given(postsClient.getPosts()).willReturn(ResultModel.of(
                 List.of(
-                        new RemotePosts("id1", 1L, "first category", "second category", "content1", List.of("tag1", "tag2"), 0, LocalDateTime.now()),
-                        new RemotePosts("id2", 2L, "first category", "second category", "content2", List.of("tag2", "tag3"), 0, LocalDateTime.now())
+                        new RemotePosts("id1", 1L, "first category", "second category", "content1", List.of("tag1", "tag2"), 0),
+                        new RemotePosts("id2", 2L, "first category", "second category", "content2", List.of("tag2", "tag3"), 0)
                 )));
 
         JobParameters jobParameters = new JobParametersBuilder()
