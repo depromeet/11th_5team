@@ -81,6 +81,10 @@ public class SearchServiceImpl implements SearchService {
 
     private void applyTagFrequency(Map<String, TagRank> tagFrequency, SearchEntity item) {
         for (var tag : item.getTags()) {
+            if ("".equals(tag)) {
+                continue;
+            }
+
             if (tagFrequency.containsKey(tag)) {
                 tagFrequency.get(tag).increase();
             } else {

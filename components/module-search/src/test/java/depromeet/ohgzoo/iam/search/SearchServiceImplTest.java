@@ -206,4 +206,15 @@ class SearchServiceImplTest {
 
         assertThat(result).isEmpty();
     }
+
+    @Test
+    void getRankingTag_excludeEmptyTag() {
+        spyPostRepository.findAll_returnValue = List.of(
+                new SearchEntity("1", 1L, "", "", "", List.of(""), 0, LocalDateTime.now())
+        );
+
+        List<TagRank> result = sut.getRankingTag();
+
+        assertThat(result).hasSize(0);
+    }
 }
