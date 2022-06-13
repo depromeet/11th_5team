@@ -30,7 +30,7 @@ public class SpyPostsService implements PostsService {
     public OnePostsDto getPostsById_returnValue;
     public int getAllPosts_argumentPage;
     public int getAllPosts_argumentSize;
-    public List<PostsDto> getAllPosts_returnValue;
+    public List<PostResponse> getAllPosts_returnValue;
     public Long createPosts_argumentMemberId;
     public Long deletePosts_argumentMemberId;
     public List<String> deletePosts_argumentPostsId;
@@ -99,7 +99,7 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
-    public List<PostsDto> getAllPosts() {
+    public List<PostResponse> getAllPosts() {
         return getAllPosts_returnValue;
     }
 

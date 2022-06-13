@@ -131,10 +131,10 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostsDto> getAllPosts() {
+    public List<PostResponse> getAllPosts() {
         return postsRepository.findAll()
                 .stream()
-                .map(PostsDto::new)
+                .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
 
