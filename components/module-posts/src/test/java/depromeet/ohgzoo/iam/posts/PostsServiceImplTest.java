@@ -289,12 +289,12 @@ class PostsServiceImplTest {
         assertThat(result.get(2)).isEqualTo(new CategoryResponse(0, SecondCategory.RELIEF));
         assertThat(result.get(3)).isEqualTo(new CategoryResponse(0, SecondCategory.EASYGOING));
         assertThat(result.get(4)).isEqualTo(new CategoryResponse(0, SecondCategory.CALMDOWN));
-        assertThat(result.get(5)).isEqualTo(new CategoryResponse(0, SecondCategory.LETHARGY));
-        assertThat(result.get(6)).isEqualTo(new CategoryResponse(0, SecondCategory.DISAPPOINTMENT));
-        assertThat(result.get(7)).isEqualTo(new CategoryResponse(2, SecondCategory.SADNESS));
-        assertThat(result.get(8)).isEqualTo(new CategoryResponse(0, SecondCategory.REGRET));
-        assertThat(result.get(9)).isEqualTo(new CategoryResponse(0, SecondCategory.IRRITATION));
-        assertThat(result.get(10)).isEqualTo(new CategoryResponse(1, SecondCategory.ANXIOUS));
+        assertThat(result.get(5)).isEqualTo(new CategoryResponse(0, SecondCategory.REGRET));
+        assertThat(result.get(6)).isEqualTo(new CategoryResponse(2, SecondCategory.SADNESS));
+        assertThat(result.get(7)).isEqualTo(new CategoryResponse(0, SecondCategory.DISAPPOINTMENT));
+        assertThat(result.get(8)).isEqualTo(new CategoryResponse(0, SecondCategory.LETHARGY));
+        assertThat(result.get(9)).isEqualTo(new CategoryResponse(1, SecondCategory.ANXIOUS));
+        assertThat(result.get(10)).isEqualTo(new CategoryResponse(0, SecondCategory.IRRITATION));
         assertThat(result.get(11)).isEqualTo(new CategoryResponse(3, SecondCategory.DONTKNOW));
     }
 
