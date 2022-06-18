@@ -25,12 +25,12 @@ public enum SecondCategory {
     EASYGOING(CategoryType.POSITIVE, 4, "홀가분해요", EASYGOING_IMAGE),
     CALMDOWN(CategoryType.POSITIVE, 5, "차분해요", CALMDOWN_IMAGE),
 
-    REGRET(CategoryType.NEGATIVE, 9, "후회해요", REGRET_IMAGE),
-    SADNESS(CategoryType.NEGATIVE, 8, "슬퍼요", SADNESS_IMAGE),
-    DISAPPOINTMENT(CategoryType.NEGATIVE, 7, "실망했어요", DISAPPOINTMENT_IMAGE),
     LETHARGY(CategoryType.NEGATIVE, 6, "무기력해요", LETHARGY_IMAGE),
-    ANXIOUS(CategoryType.NEGATIVE, 11, "불안해요", ANXIOUS_IMAGE),
+    DISAPPOINTMENT(CategoryType.NEGATIVE, 7, "실망했어요", DISAPPOINTMENT_IMAGE),
+    SADNESS(CategoryType.NEGATIVE, 8, "슬퍼요", SADNESS_IMAGE),
+    REGRET(CategoryType.NEGATIVE, 9, "후회해요", REGRET_IMAGE),
     IRRITATION(CategoryType.NEGATIVE, 10, "짜증나요", IRRITATION_IMAGE),
+    ANXIOUS(CategoryType.NEGATIVE, 11, "불안해요", ANXIOUS_IMAGE),
     DONTKNOW(CategoryType.NATURAL, 12, "모르겠어요", DONTKNOW_IMAGE),
     Unwritten(CategoryType.NONE, 13, "Unwritten", TEMP_IMAGE);
 
