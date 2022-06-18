@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.search.batch;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.search.SpySearchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,14 +37,14 @@ class BatchConfigTest {
     void processPosts_convertToSearchEntity() throws Exception {
         ItemProcessor<RemotePosts, SearchEntity> processor = sut.processPosts();
 
-        RemotePosts givenPosts = new RemotePosts("id", 1L, "first", "second", "content", List.of("tag1"), 1);
+        RemotePosts givenPosts = new RemotePosts("id", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content", List.of("tag1"), 1);
 
         SearchEntity result = processor.process(givenPosts);
 
         assertThat(result.getId()).isEqualTo("id");
         assertThat(result.getMemberId()).isEqualTo(1L);
-        assertThat(result.getFirstCategory()).isEqualTo("first");
-        assertThat(result.getSecondCategory()).isEqualTo("second");
+        assertThat(result.getFirstCategory()).isEqualTo(FirstCategory.SADNESS);
+        assertThat(result.getSecondCategory()).isEqualTo(SecondCategory.SADNESS);
         assertThat(result.getTags()).contains("tag1");
         assertThat(result.getViews()).isEqualTo(1);
     }

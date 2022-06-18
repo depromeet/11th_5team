@@ -1,6 +1,8 @@
 package depromeet.ohgzoo.iam.search;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -23,8 +25,8 @@ public class SearchResult {
     @Getter
     static class SearchModel {
         private String id;
-        private String firstCategory;
-        private String secondCategory;
+        private FirstCategory firstCategory;
+        private SecondCategory secondCategory;
         private String content;
         private List<String> tags;
         private int views;
@@ -32,7 +34,15 @@ public class SearchResult {
         private LocalDateTime createdAt;
         private boolean my;
 
-        public SearchModel(String id, String firstCategory, String secondCategory, String content, List<String> tags, int views, LocalDateTime createdAt, boolean my) {
+        public String getFirstCategoryName() {
+            return firstCategory.getDescription();
+        }
+
+        public String getSecondCategoryName() {
+            return secondCategory.getDescription();
+        }
+
+        public SearchModel(String id, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, int views, LocalDateTime createdAt, boolean my) {
             this.id = id;
             this.firstCategory = firstCategory;
             this.secondCategory = secondCategory;

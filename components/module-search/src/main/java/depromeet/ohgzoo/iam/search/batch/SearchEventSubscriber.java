@@ -20,8 +20,8 @@ public class SearchEventSubscriber {
         searchRepository.save(new SearchEntity(
                 event.getPostId(),
                 event.getMemberId(),
-                event.getFirstCategory().name(),
-                event.getSecondCategory().name(),
+                event.getFirstCategory(),
+                event.getSecondCategory(),
                 event.getContent(),
                 event.getTags(),
                 0));
@@ -34,7 +34,7 @@ public class SearchEventSubscriber {
 
         searchEntity.update(new UpdatePostRequest(
                 event.getMemberId(),
-                event.getSecondCategory().name(),
+                event.getSecondCategory(),
                 event.getContent(),
                 event.getTags()));
     }

@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.search;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.jwt.LoginMemberArgumentResolver;
 import depromeet.ohgzoo.iam.jwt.SpyJwtService;
 import depromeet.ohgzoo.iam.search.SearchResult.SearchModel;
@@ -44,8 +46,8 @@ class SearchApiTest {
     void search_returnsSearchResult() throws Exception {
         spySearchService.search_returnValue = new SearchModel(
                 "id",
-                "NO1",
-                "NO1",
+                FirstCategory.SADNESS,
+                SecondCategory.JOY,
                 "content",
                 List.of("1", "2"),
                 1,
@@ -58,8 +60,10 @@ class SearchApiTest {
                 .andExpect(jsonPath("$.posts").isArray())
                 .andExpect(jsonPath("$.posts", hasSize(1)))
                 .andExpect(jsonPath("$.posts[0].id", equalTo("id")))
-                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("JOY")))
+                .andExpect(jsonPath("$.posts[0].firstCategoryName", equalTo("슬퍼요")))
+                .andExpect(jsonPath("$.posts[0].secondCategoryName", equalTo("기뻐요")))
                 .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
                 .andExpect(jsonPath("$.posts[0].tags", contains("1", "2")))
                 .andExpect(jsonPath("$.posts[0].views", equalTo(1)))
@@ -107,8 +111,8 @@ class SearchApiTest {
     void searchByTag_returnsSearchResult() throws Exception {
         spySearchService.searchByTag_returnValue = List.of(new SearchModel(
                 "id",
-                "NO1",
-                "NO1",
+                FirstCategory.SADNESS,
+                SecondCategory.SADNESS,
                 "content",
                 List.of("1", "2"),
                 1,
@@ -121,8 +125,10 @@ class SearchApiTest {
                 .andExpect(jsonPath("$.posts").isArray())
                 .andExpect(jsonPath("$.posts", hasSize(1)))
                 .andExpect(jsonPath("$.posts[0].id", equalTo("id")))
-                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$.posts[0].firstCategoryName", equalTo("슬퍼요")))
+                .andExpect(jsonPath("$.posts[0].secondCategoryName", equalTo("슬퍼요")))
                 .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
                 .andExpect(jsonPath("$.posts[0].tags", contains("1", "2")))
                 .andExpect(jsonPath("$.posts[0].views", equalTo(1)))
@@ -180,8 +186,8 @@ class SearchApiTest {
     void searchByCategory_returnsSearchResult() throws Exception {
         spySearchService.searchByCategory_returnValue = new SearchModel(
                 "id",
-                "NO1",
-                "NO1",
+                FirstCategory.SADNESS,
+                SecondCategory.SADNESS,
                 "content",
                 List.of("1", "2"),
                 1,
@@ -194,8 +200,10 @@ class SearchApiTest {
                 .andExpect(jsonPath("$.posts").isArray())
                 .andExpect(jsonPath("$.posts", hasSize(1)))
                 .andExpect(jsonPath("$.posts[0].id", equalTo("id")))
-                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("NO1")))
-                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("NO1")))
+                .andExpect(jsonPath("$.posts[0].firstCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$.posts[0].secondCategory", equalTo("SADNESS")))
+                .andExpect(jsonPath("$.posts[0].firstCategoryName", equalTo("슬퍼요")))
+                .andExpect(jsonPath("$.posts[0].secondCategoryName", equalTo("슬퍼요")))
                 .andExpect(jsonPath("$.posts[0].content", equalTo("content")))
                 .andExpect(jsonPath("$.posts[0].tags", contains("1", "2")))
                 .andExpect(jsonPath("$.posts[0].views", equalTo(1)))
