@@ -2,6 +2,8 @@ package depromeet.ohgzoo.iam.search.batch;
 
 import depromeet.ohgzoo.iam.BaseEntity;
 import depromeet.ohgzoo.iam.ListToStringConverter;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +24,17 @@ public class SearchEntity extends BaseEntity {
     @Id
     private String id;
     private Long memberId;
-    private String firstCategory;
-    private String secondCategory;
+    @Enumerated(EnumType.STRING)
+    private FirstCategory firstCategory;
+    @Enumerated(EnumType.STRING)
+    private SecondCategory secondCategory;
     private String content;
     @Convert(converter = ListToStringConverter.class)
     private List<String> tags = new ArrayList<>();
     private int views;
 
     @Builder
-    public SearchEntity(String id, Long memberId, String firstCategory, String secondCategory, String content, List<String> tags, int views) {
+    public SearchEntity(String id, Long memberId, FirstCategory firstCategory, SecondCategory secondCategory, String content, List<String> tags, int views) {
         this.id = id;
         this.memberId = memberId;
         this.firstCategory = firstCategory;

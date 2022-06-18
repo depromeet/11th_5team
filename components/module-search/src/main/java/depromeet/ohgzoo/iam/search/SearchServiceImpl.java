@@ -94,8 +94,8 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private boolean containsCategory(String keyword, SearchEntity entity) {
-        return entity.getFirstCategory().contains(keyword)
-                || entity.getSecondCategory().contains(keyword);
+        return entity.getFirstCategory().name().contains(keyword)
+                || entity.getSecondCategory().name().contains(keyword);
     }
 
     private SearchModel mapToSearchModel(SearchEntity post, Long memberId) {

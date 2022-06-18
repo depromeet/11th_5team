@@ -1,6 +1,8 @@
 package depromeet.ohgzoo.iam.search;
 
 import depromeet.ohgzoo.iam.IntegrationTest;
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.search.batch.PostsClient;
 import depromeet.ohgzoo.iam.search.batch.RemotePosts;
 import depromeet.ohgzoo.iam.search.batch.ResultModel;
@@ -32,8 +34,8 @@ public class SearchIntegrationTest extends IntegrationTest {
     void setUp() throws Exception {
         given(postsClient.getPosts()).willReturn(ResultModel.of(
                 List.of(
-                        new RemotePosts("id1", 1L, "first category", "second category", "content1", List.of("tag1", "tag2"), 0),
-                        new RemotePosts("id2", 2L, "first category", "second category", "content2", List.of("tag2", "tag3"), 0)
+                        new RemotePosts("id1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content1", List.of("tag1", "tag2"), 0),
+                        new RemotePosts("id2", 2L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content2", List.of("tag2", "tag3"), 0)
                 )));
 
         JobParameters jobParameters = new JobParametersBuilder()

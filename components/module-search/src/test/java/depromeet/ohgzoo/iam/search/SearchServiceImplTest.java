@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.search;
 
+import depromeet.ohgzoo.iam.category.FirstCategory;
+import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.search.SearchResult.SearchModel;
 import depromeet.ohgzoo.iam.search.batch.SearchEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +33,8 @@ class SearchServiceImplTest {
     @Test
     void search_returnsContainedKeywordSearchResult() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0),
-                new SearchEntity("2", 1L, "", "", "hello", Collections.emptyList(), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "hi", Collections.emptyList(), 0),
+                new SearchEntity("2", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "hello", Collections.emptyList(), 0)
         );
 
         SearchResult result = sut.search("hi", null);
@@ -49,9 +51,9 @@ class SearchServiceImplTest {
     void search_returnsContainedKeywordSearchResult_whenLogin() {
 
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "hi", Collections.emptyList(), 0),
-                new SearchEntity("2", 2L, "", "", "hi hi", Collections.emptyList(), 0),
-                new SearchEntity("3", 1L, "", "", "hello", Collections.emptyList(), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "hi", Collections.emptyList(), 0),
+                new SearchEntity("2", 2L, FirstCategory.SADNESS, SecondCategory.SADNESS, "hi hi", Collections.emptyList(), 0),
+                new SearchEntity("3", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "hello", Collections.emptyList(), 0)
         );
 
         SearchResult result = sut.search("hi", 1L);
@@ -77,9 +79,9 @@ class SearchServiceImplTest {
     @Test
     void searchByTag_returnsContainedTagSearchResult_orderByViews() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0),
-                new SearchEntity("2", 1L, "", "", "content2", List.of("hi"), 1),
-                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content1", List.of("hi"), 0),
+                new SearchEntity("2", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content2", List.of("hi"), 1),
+                new SearchEntity("3", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content3", List.of("hello"), 0)
         );
 
         SearchResult result = sut.searchByTag("hi", null, null);
@@ -95,9 +97,9 @@ class SearchServiceImplTest {
     void searchByTag_returnsContainedTagSearchResult_whenLogin() {
 
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "content1", List.of("hi"), 0),
-                new SearchEntity("2", 2L, "", "", "content2", List.of("hi", "hello"), 0),
-                new SearchEntity("3", 1L, "", "", "content3", List.of("hello"), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content1", List.of("hi"), 0),
+                new SearchEntity("2", 2L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content2", List.of("hi", "hello"), 0),
+                new SearchEntity("3", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content3", List.of("hello"), 0)
         );
 
         SearchResult result = sut.searchByTag("hi", 1L, null );
@@ -123,16 +125,16 @@ class SearchServiceImplTest {
     @Test
     void searchByCategory_returnsSearchResult_containsFirstCategory() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "hi", "", "content1", List.of("tag1"), 0),
-                new SearchEntity("2", 1L, "", "", "content2", List.of("tag2"), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.JOY, "content1", List.of("tag1"), 0),
+                new SearchEntity("2", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content2", List.of("tag2"), 0)
         );
 
-        SearchResult result = sut.searchByCategory("hi", null);
+        SearchResult result = sut.searchByCategory("JOY", null);
 
         assertThat(result.getPosts()).hasSize(1);
 
         SearchModel actual = result.getPosts().get(0);
-        assertThat(actual.getFirstCategory()).isEqualTo("hi");
+        assertThat(actual.getFirstCategory()).isEqualTo(FirstCategory.SADNESS);
         assertThat(actual.getId()).isEqualTo("1");
         assertThat(actual.isMy()).isFalse();
     }
@@ -140,16 +142,16 @@ class SearchServiceImplTest {
     @Test
     void searchByCategory_returnsSearchResult_containsSecondCategory() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "content1", List.of("tag1"), 0),
-                new SearchEntity("2", 1L, "", "hi", "content2", List.of("tag2"), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "content1", List.of("tag1"), 0),
+                new SearchEntity("2", 1L, FirstCategory.SADNESS, SecondCategory.JOY, "content2", List.of("tag2"), 0)
         );
 
-        SearchResult result = sut.searchByCategory("hi", null);
+        SearchResult result = sut.searchByCategory("JOY", null);
 
         assertThat(result.getPosts()).hasSize(1);
 
         SearchModel actual = result.getPosts().get(0);
-        assertThat(actual.getSecondCategory()).isEqualTo("hi");
+        assertThat(actual.getSecondCategory()).isEqualTo(SecondCategory.JOY);
         assertThat(actual.getId()).isEqualTo("2");
         assertThat(actual.isMy()).isFalse();
     }
@@ -164,9 +166,9 @@ class SearchServiceImplTest {
     @Test
     void getRankingTag_returnsTagRanks_orderByTagFrequency() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "", List.of("tag1"), 0),
-                new SearchEntity("2", 1L, "", "", "", List.of("tag1", "tag2"), 0),
-                new SearchEntity("3", 1L, "", "", "", List.of("tag1", "tag2", "tag3"), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "", List.of("tag1"), 0),
+                new SearchEntity("2", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "", List.of("tag1", "tag2"), 0),
+                new SearchEntity("3", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "", List.of("tag1", "tag2", "tag3"), 0)
         );
 
         List<TagRank> result = sut.getRankingTag();
@@ -192,7 +194,7 @@ class SearchServiceImplTest {
     @Test
     void getRankingTag_excludeEmptyTag() {
         spyPostRepository.findAll_returnValue = List.of(
-                new SearchEntity("1", 1L, "", "", "", List.of(""), 0)
+                new SearchEntity("1", 1L, FirstCategory.SADNESS, SecondCategory.SADNESS, "", List.of(""), 0)
         );
 
         List<TagRank> result = sut.getRankingTag();
