@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum FirstCategory {
-    REGRET(SecondCategory.REGRET),
-    SADNESS(SecondCategory.SADNESS),
-    DISAPPOINTMENT(SecondCategory.DISAPPOINTMENT),
     LETHARGY(SecondCategory.LETHARGY),
-    ANXIOUS(SecondCategory.ANXIOUS),
+    DISAPPOINTMENT(SecondCategory.DISAPPOINTMENT),
+    SADNESS(SecondCategory.SADNESS),
+    REGRET(SecondCategory.REGRET),
     IRRITATION(SecondCategory.IRRITATION),
+    ANXIOUS(SecondCategory.ANXIOUS),
     DONTKNOW(SecondCategory.DONTKNOW);
 
     private CategoryType type;
