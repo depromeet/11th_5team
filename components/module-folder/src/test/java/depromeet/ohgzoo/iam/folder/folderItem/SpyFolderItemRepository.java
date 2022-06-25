@@ -22,6 +22,7 @@ public class SpyFolderItemRepository implements FolderItemRepository {
     public FolderItem latestFolderItem_returnValue;
     public List<FolderItem> latestFolderItems_returnValue;
     public FolderItem save_returnValue = aFolderItem().build();
+    public Long deleteFolderItemByMemberId_argumentMemberId;
 
 
     @Override
@@ -193,7 +194,7 @@ public class SpyFolderItemRepository implements FolderItemRepository {
     }
 
     @Override
-    public void deleteFolderItemByMemberId(Long memberId) {
-
+    public void deleteFolderItemsByMemberId(Long memberId) {
+        this.deleteFolderItemByMemberId_argumentMemberId = memberId;
     }
 }

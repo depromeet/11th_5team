@@ -331,4 +331,10 @@ class PostsServiceImplTest {
                         .views(1)
                         .build());
     }
+
+    @Test
+    public void deleteAllPosts_passesMemberIdToRepository() {
+        postsService.deleteAllPosts(1L);
+        assertThat(spyPostsRepository.deletePostsByMemberId_argumentMemberId).isEqualTo(1L);
+    }
 }

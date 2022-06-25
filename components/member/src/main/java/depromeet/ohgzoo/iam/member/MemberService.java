@@ -9,5 +9,5 @@ public interface MemberService {
 
     MemberResponse getMySelf(String token);
 
-    void delete(Long userId);
+    void delete(Long memberId);
 }

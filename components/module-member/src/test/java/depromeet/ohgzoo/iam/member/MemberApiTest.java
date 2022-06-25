@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.member;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -8,6 +9,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static depromeet.ohgzoo.iam.jwt.TokenName.AUTH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,5 +49,19 @@ class MemberApiTest {
                 .andExpect(jsonPath("$.profileImg", equalTo("givenProfileImg")))
                 .andExpect(jsonPath("$.nickname", equalTo("givenNickName")))
         ;
+    }
+
+    @Test
+    public void delete_isOk() throws Exception {
+        mockMvc.perform(delete("/users/{userId}", "1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void delete_passMemberIdToService() throws Exception {
+        mockMvc.perform(delete("/users/{userId}", "2"))
+                .andExpect(status().isOk());
+
+        assertThat(spyMemberService.delete_argumentMemberId).isEqualTo(2L);
     }
 }

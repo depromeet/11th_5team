@@ -30,7 +30,7 @@ public class PostEventSubscriber {
     }
 
     @EventListener
-    public void handlePostAllDeleteEvent(MemberDeleteEvent memberDeleteEvent) {
+    public void handlePostDeleteAllEvent(MemberDeleteEvent memberDeleteEvent) {
         postsService.deleteAllPosts(memberDeleteEvent.getMemberId());
     }
 

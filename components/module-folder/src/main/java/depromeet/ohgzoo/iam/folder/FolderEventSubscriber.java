@@ -46,6 +46,6 @@ public class FolderEventSubscriber {
 
     @EventListener
     public void handleMemberDeleteEvent(MemberDeleteEvent memberDeleteEvent) {
-        folderService.deleteAllFolderItems(memberDeleteEvent.getMemberId());
+        folderService.deleteAllFolders(memberDeleteEvent.getMemberId());
     }
 }

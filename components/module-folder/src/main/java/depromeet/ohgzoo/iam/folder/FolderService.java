@@ -33,5 +33,5 @@ public interface FolderService {
 
     FolderGetResponse getFolderByPost(String postId);
 
-    void deleteAllFolderItems(Long memberId);
+    void deleteAllFolders(Long memberId);
 }

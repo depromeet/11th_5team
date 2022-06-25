@@ -17,7 +17,6 @@ public class SpyFolderItemService implements FolderItemService {
     public List<FolderItem> getFolderItem_returnValue;
     public String increaseViews_argumentPostId;
 
-
     @Override
     public void createFolderItem(Long memberId, Folder folder, FolderItemCreateRequest request) {
         argument_memberId = memberId;
@@ -70,6 +69,6 @@ public class SpyFolderItemService implements FolderItemService {
 
     @Override
     public void deleteAllFolderItems(Long memberId) {
-
+        this.argument_memberId = memberId;
     }
 }

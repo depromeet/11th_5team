@@ -23,6 +23,7 @@ public class SpyFolderRepository implements FolderRepository {
     public Long findAllByMemberId_argumentId;
     public Folder findByIsDefaultTrue_returnValue = aFolder().isDefault(true).build();
     public boolean findByIsDefaultTrue_wasCalled;
+    public Long deleteFolderByMemberId_argument;
 
     @Override
     public Optional<Folder> findByMemberIdAndName(Long memberId, String name) {
@@ -40,6 +41,11 @@ public class SpyFolderRepository implements FolderRepository {
     public List<Folder> findAllByMemberId(Long memberId) {
         findAllByMemberId_argumentId = memberId;
         return findAllByMemberId_returnValue;
+    }
+
+    @Override
+    public void deleteFoldersByMemberId(Long memberId) {
+        this.deleteFolderByMemberId_argument = memberId;
     }
 
     @Override

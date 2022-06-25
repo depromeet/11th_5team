@@ -21,6 +21,7 @@ public class SpyPostsRepository implements PostsRepository {
     public Optional<Posts> findById;
     public String findById_argumentId;
     public Posts findById_returnValue;
+    public Long deletePostsByMemberId_argumentMemberId;
 
     @Override
     public List<Posts> findAll() {
@@ -189,6 +190,6 @@ public class SpyPostsRepository implements PostsRepository {
 
     @Override
     public void deletePostsByMemberId(Long memberId) {
-
+        this.deletePostsByMemberId_argumentMemberId = memberId;
     }
 }

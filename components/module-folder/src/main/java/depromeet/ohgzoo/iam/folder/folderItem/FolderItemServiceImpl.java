@@ -95,6 +95,6 @@ public class FolderItemServiceImpl implements FolderItemService {
 
     @Override
     public void deleteAllFolderItems(Long memberId) {
-        folderItemRepository.deleteFolderItemByMemberId(memberId);
+        folderItemRepository.deleteFolderItemsByMemberId(memberId);
     }
 }

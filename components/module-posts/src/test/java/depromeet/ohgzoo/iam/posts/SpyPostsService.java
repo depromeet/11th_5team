@@ -40,6 +40,7 @@ public class SpyPostsService implements PostsService {
     public Integer getCategoryItems_argumentCategoryId;
     public Pageable getCategoryItems_argumentPageable;
     public CategoryItemsResponse getCategoryItems_returnValue;
+    public Long deleteAllPosts_argumentMemberId;
 
 
     @Override
@@ -120,7 +121,7 @@ public class SpyPostsService implements PostsService {
 
     @Override
     public void deleteAllPosts(Long memberId) {
-
+        this.deleteAllPosts_argumentMemberId = memberId;
     }
 
     @Override

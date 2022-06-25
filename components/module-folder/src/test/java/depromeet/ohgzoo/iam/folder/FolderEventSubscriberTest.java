@@ -5,6 +5,7 @@ import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.member.MemberCreateEvent;
+import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
@@ -139,6 +140,14 @@ class FolderEventSubscriberTest {
         IncreaseViewEvent givenEvent = new IncreaseViewEvent(this, "1");
         folderEventSubscriber.handleIncreaseViewEvent(givenEvent);
         assertThat(spyFolderService.increaseViews_argumentPostId).isEqualTo("1");
+    }
+
+    @Test
+    void handleMemberDeleteEvent_passesMemberIdToService() {
+        MemberDeleteEvent givenEvent = new MemberDeleteEvent(this, 1L);
+        folderEventSubscriber.handleMemberDeleteEvent(givenEvent);
+
+        assertThat(spyFolderService.deleteFolders_argumentMemberId).isEqualTo(1L);
     }
 
 }

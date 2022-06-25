@@ -3,6 +3,7 @@ package depromeet.ohgzoo.iam.member;
 public class SpyMemberService implements MemberService {
     public String getMySelf_argumentToken;
     public MemberResponse getMySelf_returnValue;
+    public Long delete_argumentMemberId;
 
     @Override
     public boolean alreadyJoin(String identifyToken) {
@@ -26,7 +27,7 @@ public class SpyMemberService implements MemberService {
     }
 
     @Override
-    public void delete(Long userId) {
-        
+    public void delete(Long memberId) {
+        this.delete_argumentMemberId = memberId;
     }
 }
