@@ -18,6 +18,7 @@ dependencies {
     implementation project(':components:support-jpa')
     implementation project(':components:module-category')
     implementation project(':components:module-sharing')
+    implementation project(':components:member')
 
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'

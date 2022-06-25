@@ -84,9 +84,9 @@ class PostEventSubscriberTest {
     }
 
     @Test
-    void handlePostDeleteAllEvent_passesMemberIdToService() {
+    void handleMemberDeleteEvent_passesMemberIdToService() {
         MemberDeleteEvent givenEvent = new MemberDeleteEvent(this, 1L);
-        postEventSubscriber.handlePostDeleteAllEvent(givenEvent);
+        postEventSubscriber.handleMemberDeleteEvent(givenEvent);
 
         assertThat(spyPostsService.deleteAllPosts_argumentMemberId).isEqualTo(1L);
     }
