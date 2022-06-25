@@ -24,4 +24,9 @@ public class SpyMemberService implements MemberService {
         getMySelf_argumentToken = token;
         return getMySelf_returnValue;
     }
+
+    @Override
+    public void delete(Long userId) {
+        
+    }
 }

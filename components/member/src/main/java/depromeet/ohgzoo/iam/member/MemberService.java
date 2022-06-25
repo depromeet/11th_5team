@@ -8,4 +8,6 @@ public interface MemberService {
     Long getMemberId(String identifyToken);
 
     MemberResponse getMySelf(String token);
+
+    void delete(Long userId);
 }

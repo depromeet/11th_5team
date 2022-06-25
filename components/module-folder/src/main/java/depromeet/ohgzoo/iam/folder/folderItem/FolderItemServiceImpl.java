@@ -92,4 +92,9 @@ public class FolderItemServiceImpl implements FolderItemService {
         return folderItemRepository.findByPostId(postId)
                 .orElseThrow(NotExistsFolderItemException::new);
     }
+
+    @Override
+    public void deleteAllFolderItems(Long memberId) {
+        folderItemRepository.deleteFolderItemByMemberId(memberId);
+    }
 }

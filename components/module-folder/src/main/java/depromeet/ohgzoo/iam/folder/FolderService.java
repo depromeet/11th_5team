@@ -32,4 +32,6 @@ public interface FolderService {
     void updateFolderItem(Long memberId, String postId, FolderItemUpdateRequest request);
 
     FolderGetResponse getFolderByPost(String postId);
+
+    void deleteAllFolderItems(Long memberId);
 }

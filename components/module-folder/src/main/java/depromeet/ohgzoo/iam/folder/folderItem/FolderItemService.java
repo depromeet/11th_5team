@@ -24,4 +24,6 @@ public interface FolderItemService {
     void increaseViews(String postId);
 
     FolderItem getFolderItemByPostId(String postId);
+
+    void deleteAllFolderItems(Long memberId);
 }

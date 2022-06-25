@@ -103,4 +103,9 @@ public class SpyFolderService implements FolderService {
         getFolderByPost_argumentPostId = postId;
         return getFolderByPost_returnValue;
     }
+
+    @Override
+    public void deleteAllFolderItems(Long memberId) {
+
+    }
 }

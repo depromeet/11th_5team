@@ -186,4 +186,9 @@ public class SpyPostsRepository implements PostsRepository {
     @Override
     public void bulkDeletePosts(List<String> postIds) {
     }
+
+    @Override
+    public void deletePostsByMemberId(Long memberId) {
+
+    }
 }

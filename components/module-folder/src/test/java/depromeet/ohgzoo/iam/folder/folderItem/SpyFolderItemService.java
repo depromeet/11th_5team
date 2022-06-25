@@ -67,4 +67,9 @@ public class SpyFolderItemService implements FolderItemService {
     public FolderItem getFolderItemByPostId(String postId) {
         return null;
     }
+
+    @Override
+    public void deleteAllFolderItems(Long memberId) {
+
+    }
 }

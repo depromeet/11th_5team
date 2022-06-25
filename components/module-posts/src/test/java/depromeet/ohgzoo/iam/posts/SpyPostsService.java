@@ -119,6 +119,11 @@ public class SpyPostsService implements PostsService {
     }
 
     @Override
+    public void deleteAllPosts(Long memberId) {
+
+    }
+
+    @Override
     public void deletePosts(List<String> postIds, Long memberId) {
         deletePosts_argumentMemberId = memberId;
         deletePosts_argumentPostsId = postIds;

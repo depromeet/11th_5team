@@ -191,4 +191,9 @@ public class SpyFolderItemRepository implements FolderItemRepository {
     public Page<FolderItem> findByFolderAndMemberIdOrderByCreatedAtDesc(Folder folder, Long memberId, Pageable pageable) {
         return null;
     }
+
+    @Override
+    public void deleteFolderItemByMemberId(Long memberId) {
+
+    }
 }

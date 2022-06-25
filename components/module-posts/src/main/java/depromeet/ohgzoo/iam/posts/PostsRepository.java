@@ -15,4 +15,6 @@ public interface PostsRepository extends JpaRepository<Posts, String> {
     @Modifying(clearAutomatically = true)
     @Query("delete from Posts p where p.id in :postIds")
     void bulkDeletePosts(@Param("postIds") List<String> postIds);
+
+    void deletePostsByMemberId(Long memberId);
 }
