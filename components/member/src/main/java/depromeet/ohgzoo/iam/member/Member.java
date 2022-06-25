@@ -35,4 +35,8 @@ public class Member {
     public Member(String profileImg, String nickname, String identifyToken) {
         this(null,profileImg,nickname,identifyToken);
     }
+
+    public void updateMember(UpdateMemberRequest request) {
+        this.nickname = request.getName();
+    }
 }

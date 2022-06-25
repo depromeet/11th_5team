@@ -22,7 +22,7 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
-    implementation 'com.github.zkdlu:api-response-spring-boot-starter:1.0.7'
+    implementation 'com.github.zkdlu:api-response-spring-boot-starter:1.0.8'
 
     runtimeOnly 'com.h2database:h2'
 

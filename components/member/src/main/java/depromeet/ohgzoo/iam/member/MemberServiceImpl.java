@@ -4,6 +4,7 @@ import depromeet.ohgzoo.iam.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -44,6 +45,15 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(NoExistsMemberException::new);
 
         return new MemberResponse(member.getProfileImg(), member.getNickname());
+    }
+
+    @Transactional
+    @Override
+    public void updateMember(final UpdateMemberRequest request, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NoExistsMemberException::new);
+
+        member.updateMember(request);
     }
 
     private Long getMemberIdByToken(String token) {
