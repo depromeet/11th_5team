@@ -34,4 +34,14 @@ public class PostsRepositoryTest {
         assertThat(result.get(0).getContent()).isEqualTo("content3");
     }
 
+    @Test
+    public void deletePostsByMemberId() {
+        postsRepository.save(Posts.builder().id("1").memberId(1L).content("content 1").build());
+        postsRepository.save(Posts.builder().id("2").memberId(1L).content("content 2").build());
+        postsRepository.deletePostsByMemberId(1L);
+        List<Posts> result = postsRepository.findAll();
+
+        assertThat(result).hasSize(0);
+    }
+
 }

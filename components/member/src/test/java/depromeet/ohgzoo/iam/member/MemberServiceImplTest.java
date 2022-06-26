@@ -69,6 +69,15 @@ class MemberServiceImplTest {
     }
 
     @Test
+    void delete_passesMemberDeleteEventToEventPublisher() {
+        memberService.delete(1L);
+        MemberDeleteEvent expected = new MemberDeleteEvent(memberService, 1L);
+
+        assertThat(spyEventPublisher.publishEvent_argumentEvent).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
     void getMemberId_passesIdTokenToRepository() {
         //given
 

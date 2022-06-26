@@ -116,6 +116,12 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public void deleteAllFolders(Long memberId) {
+        folderRepository.deleteFoldersByMemberId(memberId);
+        folderItemService.deleteAllFolderItems(memberId);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable) {
         Folder folder = folderRepository.findById(folderId)

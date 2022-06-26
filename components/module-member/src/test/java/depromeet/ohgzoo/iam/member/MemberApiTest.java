@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static depromeet.ohgzoo.iam.jwt.TokenName.AUTH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -68,5 +69,19 @@ class MemberApiTest {
         UpdateMemberRequest expected = new UpdateMemberRequest("new Name");
         assertThat(spyMemberService.updateMember_argumentRequest).usingRecursiveComparison()
                 .isEqualTo(expected);
+    }
+
+    @Test
+    public void delete_isOk() throws Exception {
+        mockMvc.perform(delete("/users/{userId}", "1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void delete_passMemberIdToService() throws Exception {
+        mockMvc.perform(delete("/users/{userId}", "2"))
+                .andExpect(status().isOk());
+
+        assertThat(spyMemberService.delete_argumentMemberId).isEqualTo(2L);
     }
 }

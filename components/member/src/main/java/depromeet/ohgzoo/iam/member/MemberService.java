@@ -10,4 +10,6 @@ public interface MemberService {
     MemberResponse getMySelf(String token);
 
     void updateMember(UpdateMemberRequest request, Long memberId);
+
+    void delete(Long memberId);
 }

@@ -56,6 +56,11 @@ public class MemberServiceImpl implements MemberService {
         member.updateMember(request);
     }
 
+    @Override
+    public void delete(Long memberId) {
+        eventPublisher.publishEvent(new MemberDeleteEvent(this, memberId));
+    }
+
     private Long getMemberIdByToken(String token) {
         String subject = jwtService.getSubject(token);
         Long memberId = Long.valueOf(subject);

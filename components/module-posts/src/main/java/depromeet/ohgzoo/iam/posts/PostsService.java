@@ -19,4 +19,6 @@ public interface PostsService {
     List<CategoryResponse> getCategories(Long memberId);
 
     CategoryItemsResponse getCategoryItems(Long memberId, Integer categoryId, Pageable pageable);
+
+    void deleteAllPosts(Long memberId);
 }

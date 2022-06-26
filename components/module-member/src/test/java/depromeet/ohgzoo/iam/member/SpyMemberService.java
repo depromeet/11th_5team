@@ -4,6 +4,7 @@ public class SpyMemberService implements MemberService {
     public String getMySelf_argumentToken;
     public MemberResponse getMySelf_returnValue;
     public UpdateMemberRequest updateMember_argumentRequest;
+    public Long delete_argumentMemberId;
 
     @Override
     public boolean alreadyJoin(String identifyToken) {
@@ -29,5 +30,10 @@ public class SpyMemberService implements MemberService {
     @Override
     public void updateMember(UpdateMemberRequest request, Long memberId) {
         updateMember_argumentRequest = request;
+    }
+
+    @Override
+    public void delete(Long memberId) {
+        this.delete_argumentMemberId = memberId;
     }
 }
