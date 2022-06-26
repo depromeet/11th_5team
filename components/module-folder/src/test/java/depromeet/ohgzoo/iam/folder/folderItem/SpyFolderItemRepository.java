@@ -194,7 +194,7 @@ public class SpyFolderItemRepository implements FolderItemRepository {
     }
 
     @Override
-    public void deleteFolderItemsByMemberId(Long memberId) {
+    public void deleteByMemberId(Long memberId) {
         this.deleteFolderItemByMemberId_argumentMemberId = memberId;
     }
 }

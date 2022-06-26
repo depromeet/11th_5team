@@ -2,6 +2,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     api 'org.springframework.batch:spring-batch-test'
 
+    implementation project(':components:member')
     implementation project(':components:support-jpa')
     implementation project(':components:support-jwt')
     implementation project(':components:support-feign')

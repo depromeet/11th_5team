@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.search.batch;
 
+import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
@@ -49,5 +50,10 @@ public class SearchEventSubscriber {
         SearchEntity searchEntity = searchRepository.findById(event.getPostId())
                 .get();
         searchEntity.increaseViews();
+    }
+
+    @EventListener
+    public void handleMemberDeleteEvent(MemberDeleteEvent memberDeleteEvent) {
+        searchRepository.deleteByMemberId(memberDeleteEvent.getMemberId());
     }
 }
