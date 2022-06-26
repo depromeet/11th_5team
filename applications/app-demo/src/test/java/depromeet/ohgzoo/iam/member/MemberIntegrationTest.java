@@ -42,7 +42,7 @@ public class MemberIntegrationTest extends IntegrationTest {
     void delete() throws Exception {
         doNothing().when(memberService).delete(anyLong());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/users/{memberId}", "1"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/me"))
                 .andExpect(status().isOk());
     }
 }
