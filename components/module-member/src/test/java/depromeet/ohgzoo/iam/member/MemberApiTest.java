@@ -22,6 +22,7 @@ class MemberApiTest {
 
     @BeforeEach
     void setUp() {
+
         spyMemberService = new SpyMemberService();
 
         mockMvc = MockMvcBuilders.standaloneSetup(new MemberApi(spyMemberService))
@@ -73,15 +74,7 @@ class MemberApiTest {
 
     @Test
     public void delete_isOk() throws Exception {
-        mockMvc.perform(delete("/users/{userId}", "1"))
+        mockMvc.perform(delete("/users/me"))
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    public void delete_passMemberIdToService() throws Exception {
-        mockMvc.perform(delete("/users/{userId}", "2"))
-                .andExpect(status().isOk());
-
-        assertThat(spyMemberService.delete_argumentMemberId).isEqualTo(2L);
     }
 }
