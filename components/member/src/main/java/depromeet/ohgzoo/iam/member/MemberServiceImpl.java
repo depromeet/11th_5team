@@ -56,8 +56,10 @@ public class MemberServiceImpl implements MemberService {
         member.updateMember(request);
     }
 
+    @Transactional
     @Override
     public void delete(Long memberId) {
+        memberRepository.deleteById(memberId);
         eventPublisher.publishEvent(new MemberDeleteEvent(this, memberId));
     }
 
