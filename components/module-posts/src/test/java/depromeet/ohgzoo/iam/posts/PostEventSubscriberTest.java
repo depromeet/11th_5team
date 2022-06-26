@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
+import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
@@ -80,5 +81,13 @@ class PostEventSubscriberTest {
         IncreaseViewEvent givenEvent = new IncreaseViewEvent(this, "1");
         postEventSubscriber.handleIncreaseViewEvent(givenEvent);
         assertThat(spyPostsService.increaseViews_argumentPostId).isEqualTo("1");
+    }
+
+    @Test
+    void handleMemberDeleteEvent_passesMemberIdToService() {
+        MemberDeleteEvent givenEvent = new MemberDeleteEvent(this, 1L);
+        postEventSubscriber.handleMemberDeleteEvent(givenEvent);
+
+        assertThat(spyPostsService.deleteAllPosts_argumentMemberId).isEqualTo(1L);
     }
 }

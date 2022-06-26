@@ -3,6 +3,7 @@ package depromeet.ohgzoo.iam.folder;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.member.MemberCreateEvent;
+import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
@@ -41,5 +42,10 @@ public class FolderEventSubscriber {
     @EventListener
     public void handleIncreaseViewEvent(IncreaseViewEvent event) {
         folderService.increaseViews(event.getPostId());
+    }
+
+    @EventListener
+    public void handleMemberDeleteEvent(MemberDeleteEvent memberDeleteEvent) {
+        folderService.deleteAllFolders(memberDeleteEvent.getMemberId());
     }
 }

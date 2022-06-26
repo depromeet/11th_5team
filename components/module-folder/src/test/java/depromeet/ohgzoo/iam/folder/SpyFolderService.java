@@ -29,7 +29,7 @@ public class SpyFolderService implements FolderService {
     public String increaseViews_argumentPostId;
     public String getFolderByPost_argumentPostId;
     public FolderGetResponse getFolderByPost_returnValue;
-
+    public Long deleteFolders_argumentMemberId;
 
     @Override
     public FolderResponse createFolder(Long memberId, FolderCreateRequest request) {
@@ -102,5 +102,10 @@ public class SpyFolderService implements FolderService {
     public FolderGetResponse getFolderByPost(String postId) {
         getFolderByPost_argumentPostId = postId;
         return getFolderByPost_returnValue;
+    }
+
+    @Override
+    public void deleteAllFolders(Long memberId) {
+        this.deleteFolders_argumentMemberId = memberId;
     }
 }

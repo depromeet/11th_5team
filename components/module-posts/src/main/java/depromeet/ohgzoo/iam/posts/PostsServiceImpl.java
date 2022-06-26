@@ -181,6 +181,11 @@ public class PostsServiceImpl implements PostsService {
                 categoryItemDTOList);
     }
 
+    @Override
+    public void deleteAllPosts(Long memberId) {
+        postsRepository.deletePostsByMemberId(memberId);
+    }
+
     private Comparator<Posts> getCreatedDateReverseComparator() {
         return Comparator.comparing(Posts::getCreatedAt).reversed();
     }

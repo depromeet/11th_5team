@@ -423,4 +423,12 @@ public class FolderServiceImplTest {
         assertThat(result.getFolderName()).isEqualTo("name");
         assertThat(result.getCoverImg()).isEqualTo("image");
     }
+
+    @Test
+    void deleteAllFolders_passesMemberIdToRepository() {
+        folderService.deleteAllFolders(1L);
+
+        assertThat(spyFolderRepository.deleteFolderByMemberId_argument).isEqualTo(1L);
+        assertThat(spyFolderItemRepository.deleteFolderItemByMemberId_argumentMemberId).isEqualTo(1L);
+    }
 }

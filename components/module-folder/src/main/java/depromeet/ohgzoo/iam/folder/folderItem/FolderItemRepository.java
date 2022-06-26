@@ -16,4 +16,7 @@ public interface FolderItemRepository extends JpaRepository<FolderItem, Long> {
     List<FolderItem> findTop4ByMemberIdOrderByCreatedAtDesc(Long memberId);
 
     Page<FolderItem> findByFolderAndMemberIdOrderByCreatedAtDesc(Folder folder, Long memberId, Pageable pageable);
+
+    void deleteFolderItemsByMemberId(Long memberId);
+
 }

@@ -6,6 +6,14 @@
 :toclevels: 2
 :sectlinks:
 
-== Member API
+== Member 조회
 
 operation::member-integration-test/get-my-self[snippets='curl-request,http-request,http-response']
+
+== Member 회원탈퇴
+
+operation::member-integration-test/delete[snippets='curl-request,http-request,http-response']
+
+== Member 정보변경
+
+operation::member-integration-test/update-member[snippets='curl-request,http-request,http-response']
