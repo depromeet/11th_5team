@@ -164,4 +164,9 @@ public class SpySearchRepository implements SearchRepository {
     public <S extends SearchEntity, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
+
+    @Override
+    public void deleteByMemberId(Long memberId) {
+
+    }
 }

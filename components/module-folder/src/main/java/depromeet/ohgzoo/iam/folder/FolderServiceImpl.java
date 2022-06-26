@@ -117,8 +117,8 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void deleteAllFolders(Long memberId) {
-        folderRepository.deleteFoldersByMemberId(memberId);
         folderItemService.deleteAllFolderItems(memberId);
+        folderRepository.deleteByMemberId(memberId);
     }
 
     @Override

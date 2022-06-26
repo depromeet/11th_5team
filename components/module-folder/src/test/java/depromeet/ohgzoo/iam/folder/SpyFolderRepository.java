@@ -44,7 +44,7 @@ public class SpyFolderRepository implements FolderRepository {
     }
 
     @Override
-    public void deleteFoldersByMemberId(Long memberId) {
+    public void deleteByMemberId(Long memberId) {
         this.deleteFolderByMemberId_argument = memberId;
     }
 
