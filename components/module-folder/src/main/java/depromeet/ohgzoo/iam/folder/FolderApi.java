@@ -7,7 +7,6 @@ import depromeet.ohgzoo.iam.jwt.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,9 +26,7 @@ public class FolderApi {
     private final FolderService folderService;
 
     @PostMapping
-    public FolderResponse addFolder(@Login Long memberId, @Valid @RequestBody FolderCreateRequest request, BindingResult errors) {
-        if (errors.hasErrors()) throw new ValidationException();
-
+    public FolderResponse addFolder(@Login Long memberId, @Valid @RequestBody FolderCreateRequest request) {
         FolderResponse response = folderService.createFolder(memberId, request);
         return response;
     }
@@ -43,23 +40,25 @@ public class FolderApi {
     @PatchMapping("{folderId}")
     public FolderResponse updateFolder(@Login Long memberId,
                                        @PathVariable Long folderId,
-                                       @Valid @RequestBody FolderUpdateRequest request, BindingResult errors) {
-        if (errors.hasErrors()) throw new ValidationException();
+                                       @Valid @RequestBody FolderUpdateRequest request) {
         return folderService.updateFolder(memberId, folderId, request);
     }
 
     @PostMapping("{folderId}/posts")
     public void addFolderItem(@Login Long memberId, @PathVariable Long folderId,
-                              @Valid @RequestBody FolderItemCreateRequest request, BindingResult errors) {
-        if (errors.hasErrors()) throw new ValidationException();
+                              @Valid @RequestBody FolderItemCreateRequest request) {
         folderService.createFolderItem(memberId, folderId, request);
     }
 
     @PatchMapping("{folderId}/posts")
     public void moveFolderItem(@Login Long memberId, @PathVariable Long folderId,
-                               @Valid @RequestBody FolderItemMoveRequest request, BindingResult errors) {
-        if (errors.hasErrors()) throw new ValidationException();
+                               @Valid @RequestBody FolderItemMoveRequest request) {
         folderService.moveFolderItem(memberId, folderId, request);
+    }
+
+    @DeleteMapping("{folderId}/posts")
+    public void deleteAllFolderItems(@Login Long memberId, @PathVariable Long folderId) {
+        folderService.deleteAllFolderItems(memberId, folderId);
     }
 
     @GetMapping

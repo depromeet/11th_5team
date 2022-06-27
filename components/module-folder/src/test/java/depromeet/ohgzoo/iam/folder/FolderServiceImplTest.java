@@ -10,7 +10,9 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemServiceImpl;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import depromeet.ohgzoo.iam.folder.folderItem.NotExistsFolderItemException;
+import depromeet.ohgzoo.iam.folder.folderItem.SpyApplicationEventPublisher;
 import depromeet.ohgzoo.iam.folder.folderItem.SpyFolderItemRepository;
+import depromeet.ohgzoo.iam.folderEvent.FolderItemDeleteEvent;
 import depromeet.ohgzoo.iam.member.Member;
 import depromeet.ohgzoo.iam.member.SpyMemberRepository;
 import org.assertj.core.api.Assertions;
@@ -34,16 +36,18 @@ public class FolderServiceImplTest {
     private SpyFolderRepository spyFolderRepository;
     private SpyFolderItemRepository spyFolderItemRepository;
     private SpyMemberRepository spyMemberRepository;
+    private SpyApplicationEventPublisher spyEventPublisher;
 
     @BeforeEach
     void setUp() {
+        spyEventPublisher = new SpyApplicationEventPublisher();
         spyFolderRepository = new SpyFolderRepository();
         spyMemberRepository = new SpyMemberRepository();
         spyFolderItemRepository = new SpyFolderItemRepository();
         folderItemService = new FolderItemServiceImpl(spyFolderItemRepository);
-        folderService = new FolderServiceImpl(spyFolderRepository, folderItemService);
-
+        folderService = new FolderServiceImpl(spyFolderRepository, folderItemService, spyEventPublisher);
         spyMemberRepository.findById_returnValue = Member.builder().build();
+
     }
 
     @Test
@@ -392,6 +396,37 @@ public class FolderServiceImplTest {
 
         spyFolderItemRepository.findByPostId_returnValue = folderItem1;
         folderItemService.deleteFolderItems(1L, List.of("1"));
+
+        assertThat(spyFolderItemRepository.findByPostId_argumentPostId).isEqualTo("1");
+    }
+
+    @Test
+    void deleteAllFolderItem_passesFolderItemDeleteEventToEventPublisher() {
+        Folder folder1 = aFolder().id(1L).build();
+        FolderItem folderItem = aFolderItem().postId("1").build();
+        folderItem.setFolder(folder1);
+
+        spyFolderRepository.findById_returnValue = folder1;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem;
+
+        folderService.deleteAllFolderItems(1L, 1L);
+
+        FolderItemDeleteEvent expected = new FolderItemDeleteEvent(folderService, 1L, List.of("1"));
+
+        assertThat((FolderItemDeleteEvent) spyEventPublisher.publicEvent_argumentEvent).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    void deleteAllFolderItem_callsDeleteFromRepository() {
+        Folder folder1 = aFolder().id(1L).build();
+        FolderItem folderItem = aFolderItem().postId("1").build();
+        folderItem.setFolder(folder1);
+
+        spyFolderRepository.findById_returnValue = folder1;
+        spyFolderItemRepository.findByPostId_returnValue = folderItem;
+
+        folderService.deleteAllFolderItems(1L, 1L);
 
         assertThat(spyFolderItemRepository.findByPostId_argumentPostId).isEqualTo("1");
     }
