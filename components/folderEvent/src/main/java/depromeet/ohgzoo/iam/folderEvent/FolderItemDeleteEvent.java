@@ -1,4 +1,4 @@
-package depromeet.ohgzoo.iam.folder.folderItem;
+package depromeet.ohgzoo.iam.folderEvent;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

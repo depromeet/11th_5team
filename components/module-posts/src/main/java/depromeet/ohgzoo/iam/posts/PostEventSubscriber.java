@@ -1,6 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
-import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDeleteEvent;
+import depromeet.ohgzoo.iam.folderEvent.FolderItemDeleteEvent;
 import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;

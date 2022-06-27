@@ -3,5 +3,6 @@ dependencies {
     implementation project(':components:support-jwt')
     implementation project(':components:member')
     implementation project(':components:postEvent')
+    implementation project(':components:folderEvent')
     api project(':components:category')
 }
