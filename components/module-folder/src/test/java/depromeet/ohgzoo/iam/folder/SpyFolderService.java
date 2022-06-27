@@ -13,6 +13,7 @@ public class SpyFolderService implements FolderService {
     public Long updateFolder_argumentMemberId;
     public Long updateFolder_argumentFolderId;
     public Long deleteFolder_argumentId;
+    public Long deleteAllFolderItems_argumentFolderId;
     public List<String> deleteFolderItems_argumentPostIds;
     public FolderResponse createFolder_returnValue;
     public FolderResponse updateFolder_returnValue;
@@ -79,6 +80,12 @@ public class SpyFolderService implements FolderService {
     public void deleteFolderItems(Long memberId, List<String> postIds) {
         argument_memberId = memberId;
         deleteFolderItems_argumentPostIds = postIds;
+    }
+
+    @Override
+    public void deleteAllFolderItems(Long memberId, Long folderId) {
+        argument_memberId = memberId;
+        deleteAllFolderItems_argumentFolderId = folderId;
     }
 
     @Override

@@ -62,6 +62,11 @@ public class FolderApi {
         folderService.moveFolderItem(memberId, folderId, request);
     }
 
+    @DeleteMapping("{folderId}/posts")
+    public void deleteAllFolderItems(@Login Long memberId, @PathVariable Long folderId) {
+        folderService.deleteAllFolderItems(memberId, folderId);
+    }
+
     @GetMapping
     public FoldersGetResponse getFolders(@Login Long memberId) {
         return folderService.getFolders(memberId);

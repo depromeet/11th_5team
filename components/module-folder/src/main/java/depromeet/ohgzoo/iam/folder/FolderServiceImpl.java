@@ -3,12 +3,14 @@ package depromeet.ohgzoo.iam.folder;
 import depromeet.ohgzoo.iam.category.ImageLoader;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItem;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDeleteEvent;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDto;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class FolderServiceImpl implements FolderService {
     private final FolderRepository folderRepository;
     private final FolderItemService folderItemService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public FolderResponse createFolder(Long memberId, FolderCreateRequest request) {
@@ -141,6 +144,20 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public void deleteFolderItems(Long memberId, List<String> postIds) {
         folderItemService.deleteFolderItems(memberId, postIds);
+    }
+
+    @Override
+    public void deleteAllFolderItems(Long memberId, Long folderId) {
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(NotExistsFolderException::new);
+
+        List<String> postIds = folder.getFolderItems()
+                .stream()
+                .map(folderItem -> folderItem.getPostId())
+                .collect(Collectors.toList());
+
+        folderItemService.deleteFolderItems(memberId, postIds);
+        eventPublisher.publishEvent(new FolderItemDeleteEvent(this, memberId, postIds));
     }
 
     @Override
