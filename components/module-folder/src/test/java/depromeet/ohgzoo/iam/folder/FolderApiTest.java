@@ -180,6 +180,22 @@ class FolderApiTest {
     }
 
     @Test
+    void deleteAllFolderItems_returnsOkHttpStatus() throws Exception {
+        mockMvc.perform(delete("/api/v1/folders/1/posts")
+                        .header("AUTH_TOKEN", "givenToken"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteAllFolderItems_passesFolderIdToService() throws Exception {
+        mockMvc.perform(delete("/api/v1/folders/1/posts")
+                .header("AUTH_TOKEN", "givenToken"));
+
+        assertThat(spyFolderService.deleteAllFolderItems_argumentFolderId).isEqualTo(1L);
+    }
+
+
+    @Test
     void getFolders_OKHttpStatus() throws Exception {
         mockMvc.perform(get("/api/v1/folders")
                         .header("AUTH_TOKEN", "givenToken"))

@@ -30,7 +30,7 @@ public class FolderItemDto {
     }
 
     public static FolderItemDto of(FolderItem folderItem) {
-        return FolderItemDto.builder()
+        return builder()
                 .postId(folderItem.getPostId())
                 .firstCategory(folderItem.getFirstCategory())
                 .secondCategory(folderItem.getSecondCategory())

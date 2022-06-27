@@ -8,7 +8,9 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemMoveRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemService;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemsGetResponse;
+import depromeet.ohgzoo.iam.folderEvent.FolderItemDeleteEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class FolderServiceImpl implements FolderService {
     private final FolderRepository folderRepository;
     private final FolderItemService folderItemService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public FolderResponse createFolder(Long memberId, FolderCreateRequest request) {
@@ -42,7 +45,7 @@ public class FolderServiceImpl implements FolderService {
 
         Folder folder = folderRepository.findById(folderId).orElseThrow(NotExistsFolderException::new);
         if (folder.getMemberId() != memberId) throw new InvalidUserException();
-        if (folder.isDefault() == true) throw new ProtectedFolderException();
+        if (folder.isDefault()) throw new ProtectedFolderException();
 
         Folder defaultFolder = folderRepository.findByMemberIdAndIsDefaultTrue(memberId);
         for (FolderItem folderItem : folder.getFolderItems()) {
@@ -130,8 +133,8 @@ public class FolderServiceImpl implements FolderService {
         List<FolderItem> folderItems = folder.getFolderItems()
                 .stream()
                 .sorted(Comparator.comparing(FolderItem::getCreatedAt).reversed())
-                .skip(pageable.getPageNumber())
-                .limit(pageable.getPageSize())
+                .skip((long) pageable.getPageNumber())
+                .limit((long) pageable.getPageSize())
                 .collect(Collectors.toList());
 
         return new FolderItemsGetResponse(folder.getFolderItems().size(), folder.getName(), folder.isDefault(), folderItems.stream()
@@ -140,6 +143,20 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void deleteFolderItems(Long memberId, List<String> postIds) {
+        folderItemService.deleteFolderItems(memberId, postIds);
+    }
+
+    @Override
+    public void deleteAllFolderItems(Long memberId, Long folderId) {
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(NotExistsFolderException::new);
+
+        List<String> postIds = folder.getFolderItems()
+                .stream()
+                .map(FolderItem::getPostId)
+                .collect(Collectors.toList());
+
+        eventPublisher.publishEvent(new FolderItemDeleteEvent(this, memberId, postIds));
         folderItemService.deleteFolderItems(memberId, postIds);
     }
 
@@ -156,9 +173,9 @@ public class FolderServiceImpl implements FolderService {
 
     private List<String> getCoverImages(List<FolderItem> folderItems) {
         List<String> coverImages = new ArrayList<>();
-        for (int i = 0; i < folderItems.size(); i++) {
-            if (folderItems.get(i) != null)
-                coverImages.add(folderItems.get(i).getFirstCategory().getImage());
+        for (FolderItem folderItem : folderItems) {
+            if (null != folderItem)
+                coverImages.add(folderItem.getFirstCategory().getImage());
         }
         return coverImages;
     }

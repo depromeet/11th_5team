@@ -7,4 +7,5 @@ dependencies {
     implementation project(':components:support-jwt')
     implementation project(':components:support-feign')
     implementation project(':components:postEvent')
+    implementation project(':components:folderEvent')
 }

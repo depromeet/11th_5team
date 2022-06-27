@@ -136,6 +136,24 @@ class FolderEventSubscriberTest {
     }
 
     @Test
+    void handleFolderItemDeleteEvent_passesMemberIdToService() {
+        PostDeleteEvent givenEvent = new PostDeleteEvent(this,
+                1L,
+                List.of());
+        folderEventSubscriber.handlePostDeleteEvent(givenEvent);
+        assertThat(spyFolderService.argument_memberId).isEqualTo(1L);
+    }
+
+    @Test
+    void handleFolderItemDeleteEvent_passesPostIdsToService() {
+        PostDeleteEvent givenEvent = new PostDeleteEvent(this,
+                null,
+                List.of("1", "2", "3"));
+        folderEventSubscriber.handlePostDeleteEvent(givenEvent);
+        assertThat(spyFolderService.deleteFolderItems_argumentPostIds).isEqualTo(List.of("1", "2", "3"));
+    }
+
+    @Test
     void handleIncreaseViewEvent_passesPostIdToService() {
         IncreaseViewEvent givenEvent = new IncreaseViewEvent(this, "1");
         folderEventSubscriber.handleIncreaseViewEvent(givenEvent);

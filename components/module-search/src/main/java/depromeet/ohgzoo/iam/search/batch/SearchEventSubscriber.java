@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.search.batch;
 
+import depromeet.ohgzoo.iam.folderEvent.FolderItemDeleteEvent;
 import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
@@ -42,6 +43,11 @@ public class SearchEventSubscriber {
 
     @EventListener
     public void handlePostDeleteEvent(PostDeleteEvent event) {
+        searchRepository.deleteAllById(event.getPostIds());
+    }
+
+    @EventListener
+    public void handleFolderDeleteEvent(FolderItemDeleteEvent event) {
         searchRepository.deleteAllById(event.getPostIds());
     }
 
