@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.folder.folderItem.FolderItemDeleteEvent;
 import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
@@ -26,6 +27,11 @@ public class PostEventSubscriber {
 
     @EventListener
     public void handlePostDeleteEvent(PostDeleteEvent event) {
+        postsService.deletePosts(event.getPostIds(), event.getMemberId());
+    }
+
+    @EventListener
+    public void handleFolderItemDeleteEvent(FolderItemDeleteEvent event) {
         postsService.deletePosts(event.getPostIds(), event.getMemberId());
     }
 

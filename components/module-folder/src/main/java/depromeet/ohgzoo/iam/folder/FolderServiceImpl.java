@@ -156,8 +156,8 @@ public class FolderServiceImpl implements FolderService {
                 .map(folderItem -> folderItem.getPostId())
                 .collect(Collectors.toList());
 
-        folderItemService.deleteFolderItems(memberId, postIds);
         eventPublisher.publishEvent(new FolderItemDeleteEvent(this, memberId, postIds));
+        folderItemService.deleteFolderItems(memberId, postIds);
     }
 
     @Override
