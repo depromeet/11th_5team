@@ -59,9 +59,8 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 <details><summary>1. 가가가</summary>설명 1</details>
 <details><summary>2. 나나나</summary>설명 2</details>
 <details><summary>3. 다다다</summary>설명 3</details>
-
-<hr>
 <br/>
+<hr>
 
 ## 🌡 Contributors
 
@@ -72,23 +71,20 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 
 <br/>
 <hr/>
-<br/>
 
 ## 🌡 Server Architecture
 
 <img width="2490" alt="Frame 24225" src="https://user-images.githubusercontent.com/76844556/176011081-18697c24-f7d3-41a5-a228-5c9ad5d24536.png">
 
-
-<hr/>
 <br/>
+<hr/>
 
 ## 🌡 Database Architecture
 
 ![5gzoo](https://user-images.githubusercontent.com/76844556/176010880-6d519336-bb06-458e-aed2-412874f19e2a.png)
 
-
-<hr/>
 <br/>
+<hr/>
 
 ## 🌡 Project Foldering
 
@@ -118,9 +114,8 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
     - Dockerfile
     - settings.gradle
 ```
-
+<br/>
 <hr>
-</br>
 
 ## 🌡 Module dependencies
 
