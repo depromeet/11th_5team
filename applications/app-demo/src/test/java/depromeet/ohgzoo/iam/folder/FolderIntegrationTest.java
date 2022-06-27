@@ -78,5 +78,4 @@ public class FolderIntegrationTest extends IntegrationTest {
                         .header("AUTH_TOKEN", "givenToken"))
                 .andExpect(status().isOk());
     }
-
 }

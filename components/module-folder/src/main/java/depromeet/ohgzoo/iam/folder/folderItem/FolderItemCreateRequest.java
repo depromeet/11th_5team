@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,7 +22,7 @@ public class FolderItemCreateRequest {
     @NotNull
     private String content;
     @NotNull
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
     @NotNull
     private Boolean disclosure;
 
@@ -30,7 +31,7 @@ public class FolderItemCreateRequest {
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;
-        this.tags = tags;
+        this.tags.addAll(tags);
         this.disclosure = disclosure;
     }
 }

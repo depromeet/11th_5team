@@ -19,7 +19,7 @@ public class FolderItemUpdateRequest {
     public FolderItemUpdateRequest(SecondCategory secondCategory, String content, List<String> tags, Boolean disclosure, Long folderId) {
         this.secondCategory = secondCategory;
         this.content = content;
-        this.tags = tags;
+        this.tags.addAll(tags);
         this.disclosure = disclosure;
         this.folderId = folderId;
     }
