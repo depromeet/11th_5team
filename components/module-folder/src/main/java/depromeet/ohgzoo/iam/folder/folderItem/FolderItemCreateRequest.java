@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -31,7 +32,7 @@ public class FolderItemCreateRequest {
         this.firstCategory = firstCategory;
         this.secondCategory = secondCategory;
         this.content = content;
-        this.tags.addAll(tags);
+        Optional.ofNullable(tags).ifPresent(this.tags::addAll);
         this.disclosure = disclosure;
     }
 }
