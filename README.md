@@ -121,45 +121,28 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 ## 🌡 Module dependencies
 
 ```java
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.6.3"
-    }
-}
+dependencies {
+    implementation project(':components:module-oauth')
+    implementation project(':components:support-security')
+    implementation project(':components:module-member')
+    implementation project(':components:module-folder')
+    implementation project(':components:module-posts')
+    implementation project(':components:module-post-folder')
+    implementation project(':components:module-search')
+    implementation project(':components:support-jwt')
+    implementation project(':components:support-jpa')
+    implementation project(':components:module-category')
+    implementation project(':components:module-sharing')
+    implementation project(':components:member')
 
-subprojects {
-    apply plugin: 'java-library'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
-    group = 'depromeet.ohgzoo'
-    version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '11'
+    implementation 'com.github.zkdlu:api-response-spring-boot-starter:1.0.8'
 
-    repositories {
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
+    runtimeOnly 'com.h2database:h2'
 
-    dependencies {
-        implementation platform('org.springframework.cloud:spring-cloud-dependencies:2021.0.1')
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.springframework.boot:spring-boot-starter'
-        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-
-    if (!project.name.contains("app-")) {
-        bootJar { enabled = false }
-    }
+    runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java'
 }
 ```
