@@ -66,10 +66,10 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 
 ## 🌡 Contributors
 
-| ```Lead``` 이 건 | 박수호 | 양형욱 | 이솔 |
+| ```Lead``` 이 건 | 박수호 | 양형욱 | 이 솔 |
 | :-: |  :-: | :-: | :-: |
-| [@zkdlu](https://github.com/zkdlu) |  [@grand7070u](https://github.com/grand7070u)  | [@rere950303](https://github.com/rere950303)  |  [@soleu](https://github.com/soleu) |
-| <img src="https://user-images.githubusercontent.com/76844556/176010120-a2f4aded-3098-42c7-a5b5-70ea73518294.png" width="250"> | <img src="https://user-images.githubusercontent.com/76844556/176010323-31729511-f080-448a-98c7-3415c6f8469a.png" width="250"> | <img src="https://user-images.githubusercontent.com/76844556/176010379-cae874e1-b2df-42a8-a87b-85d825012d11.png" width="250"> | <img src="https://user-images.githubusercontent.com/76844556/176010399-5b89fe77-1417-46b1-9d66-7d4bba4b7cb9.png" width="250"> |
+| [@zkdlu](https://github.com/zkdlu)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |  [@grand7070u](https://github.com/grand7070u)  | [@rere950303](https://github.com/rere950303)  |  [@soleu](https://github.com/soleu)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+| <img src="https://user-images.githubusercontent.com/76844556/176010120-a2f4aded-3098-42c7-a5b5-70ea73518294.png" width=100%> | <img src="https://user-images.githubusercontent.com/76844556/176010323-31729511-f080-448a-98c7-3415c6f8469a.png" width=100%> | <img src="https://user-images.githubusercontent.com/76844556/176010379-cae874e1-b2df-42a8-a87b-85d825012d11.png" width=100%> | <img src="https://user-images.githubusercontent.com/76844556/176010399-5b89fe77-1417-46b1-9d66-7d4bba4b7cb9.png" width=100%> |
 
 <br/>
 
