@@ -6,9 +6,7 @@
 <br/>
 <img width="1016" alt="스크린샷 2022-06-29 오후 9 50 31" src="https://user-images.githubusercontent.com/29244798/176440486-a98d6aad-b62b-4246-9253-e03ac5cc21e3.png">
 
-<br/>
-
-<b>[무드픽 접속하기 ✏️](https://www.moodpic.kr/)</b>
+## <b>[무드픽 접속하기 ✏️](https://www.moodpic.kr/)</b>
 
 <details><summary><b>서버 실행 방법</b></summary>
 
@@ -74,6 +72,11 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 | <img src="https://user-images.githubusercontent.com/76844556/176010120-a2f4aded-3098-42c7-a5b5-70ea73518294.png" width="250"> | <img src="https://user-images.githubusercontent.com/76844556/176010323-31729511-f080-448a-98c7-3415c6f8469a.png" width="250"> | <img src="https://user-images.githubusercontent.com/76844556/176010379-cae874e1-b2df-42a8-a87b-85d825012d11.png" width="250"> | <img src="https://user-images.githubusercontent.com/76844556/176010399-5b89fe77-1417-46b1-9d66-7d4bba4b7cb9.png" width="250"> |
 
 <br/>
+
+## 🌡 Back-end Repository
+
+https://github.com/depromeet/11th_5team
+
 <hr/>
 
 ## 🌡 Server Architecture
@@ -83,7 +86,7 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 <br/>
 <hr/>
 
-## 🌡 Database Architecture
+## 🌡 Database Schema
 
 ![5gzoo](https://user-images.githubusercontent.com/76844556/176010880-6d519336-bb06-458e-aed2-412874f19e2a.png)
 
