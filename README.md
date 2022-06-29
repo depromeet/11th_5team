@@ -4,7 +4,7 @@
 당신의 해소하고 싶은 감정들을 기록하고 공유해보세요. 마음이 한결 편안해질거예요! 📝
 
 <br/>
- <메인 컨셉 이미지>
+<img width="1016" alt="스크린샷 2022-06-29 오후 9 50 31" src="https://user-images.githubusercontent.com/29244798/176440486-a98d6aad-b62b-4246-9253-e03ac5cc21e3.png">
 
 <br/>
 
@@ -55,11 +55,14 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 
 ## 🌡 Feature
 
-<스크린 샷 이미지> 및 설명
+<img width="1045" alt="스크린샷 2022-06-29 오후 9 51 47" src="https://user-images.githubusercontent.com/29244798/176440677-63e21223-0592-4140-8137-f9530be079b1.png">
 
-<details><summary>1. 가가가</summary>설명 1</details>
-<details><summary>2. 나나나</summary>설명 2</details>
-<details><summary>3. 다다다</summary>설명 3</details>
+``` 
+ 1. 감정을 선택하여 글 기록하기
+ 2. 폴더별/감정별로 글 확인하기
+ 3. 다른 사람의 글 둘러보기
+ 4. 편지로 감정 공유하기 
+ ```
 <br/>
 <hr>
 
