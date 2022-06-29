@@ -73,9 +73,9 @@ $  ./gradlew :applications:app-demo:bootRun -PkakaoClientId="{저거}" -PkakaoRe
 
 <br/>
 
-## 🌡 Back-end Repository
+## 🌡 Front-end Repository
 
-https://github.com/depromeet/11th_5team
+https://github.com/depromeet/11th_5team_fe
 
 <hr/>
 
