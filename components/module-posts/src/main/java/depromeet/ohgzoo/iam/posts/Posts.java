@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.BaseEntity;
+import depromeet.ohgzoo.iam.DecryptConverter;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import lombok.AccessLevel;
@@ -34,6 +35,7 @@ public class Posts extends BaseEntity {
     @Enumerated(EnumType.STRING) // 리팩토링 필요
     private SecondCategory secondCategory;
 
+    @Convert(converter = DecryptConverter.class)
     private String content; // 글씨 제한?
 
     @Convert(converter = ListToStringConverter.class)

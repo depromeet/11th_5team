@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.search.batch;
 
 import depromeet.ohgzoo.iam.BaseEntity;
+import depromeet.ohgzoo.iam.DecryptConverter;
 import depromeet.ohgzoo.iam.ListToStringConverter;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
@@ -28,6 +29,7 @@ public class SearchEntity extends BaseEntity {
     private FirstCategory firstCategory;
     @Enumerated(EnumType.STRING)
     private SecondCategory secondCategory;
+    @Convert(converter = DecryptConverter.class)
     private String content;
     @Convert(converter = ListToStringConverter.class)
     private List<String> tags = new ArrayList<>();
