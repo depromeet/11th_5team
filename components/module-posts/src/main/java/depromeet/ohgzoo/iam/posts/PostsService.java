@@ -21,4 +21,6 @@ public interface PostsService {
     CategoryItemsResponse getCategoryItems(Long memberId, Integer categoryId, Pageable pageable);
 
     void deleteAllPosts(Long memberId);
+
+    void encrypt();
 }

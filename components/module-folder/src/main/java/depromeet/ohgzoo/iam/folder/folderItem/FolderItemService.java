@@ -26,4 +26,6 @@ public interface FolderItemService {
     FolderItem getFolderItemByPostId(String postId);
 
     void deleteAllFolderItems(Long memberId);
+
+    void encrypt();
 }

@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.folder.folderItem;
 
 import depromeet.ohgzoo.iam.BaseEntity;
+import depromeet.ohgzoo.iam.DecryptConverter;
 import depromeet.ohgzoo.iam.ListToStringConverter;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.category.SecondCategory;
@@ -37,7 +38,7 @@ public class FolderItem extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private SecondCategory secondCategory;
-
+    @Convert(converter = DecryptConverter.class)
     private String content;
 
     @Convert(converter = ListToStringConverter.class)
@@ -93,5 +94,9 @@ public class FolderItem extends BaseEntity {
 
     public void increaseViews() {
         views++;
+    }
+
+    public void updateContent(String encrypt) {
+        this.content = encrypt;
     }
 }

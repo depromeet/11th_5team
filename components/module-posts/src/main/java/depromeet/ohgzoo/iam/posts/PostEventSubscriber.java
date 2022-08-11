@@ -2,6 +2,7 @@ package depromeet.ohgzoo.iam.posts;
 
 import depromeet.ohgzoo.iam.folderEvent.FolderItemDeleteEvent;
 import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
+import depromeet.ohgzoo.iam.postEvent.EncryptEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
@@ -14,6 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostEventSubscriber {
     private final PostsService postsService;
+
+    @EventListener
+    public void handleEncryptEvent(EncryptEvent event) {
+        postsService.encrypt();
+    }
 
     @EventListener
     public void handlePostCreateEvent(PostCreateEvent event) {

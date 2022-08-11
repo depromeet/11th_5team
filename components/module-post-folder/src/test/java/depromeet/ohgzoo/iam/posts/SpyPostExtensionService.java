@@ -38,4 +38,9 @@ public class SpyPostExtensionService implements PostExtensionService {
         increaseViews_argumentPostId = postId;
     }
 
+    @Override
+    public void encrypt() {
+
+    }
+
 }

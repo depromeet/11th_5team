@@ -2,6 +2,7 @@ dependencies {
     api project(':components:category')
     implementation project(':components:support-jpa')
     implementation project(':components:support-jwt')
+    implementation project(':components:support-util')
     implementation project(':components:postEvent')
     implementation project(':components:folderEvent')
     implementation project(':components:member')

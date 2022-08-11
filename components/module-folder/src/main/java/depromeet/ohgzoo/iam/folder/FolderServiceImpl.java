@@ -125,6 +125,11 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public void encrypt() {
+        folderItemService.encrypt();
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public FolderItemsGetResponse getFolderItems(Long memberId, Long folderId, Pageable pageable) {
         Folder folder = folderRepository.findById(folderId)

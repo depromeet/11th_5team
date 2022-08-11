@@ -10,4 +10,6 @@ public interface PostExtensionService {
     void updatePost(String postId, UpdatePostRequest request, Long memberId);
 
     void increaseViews(String postId);
+
+    void encrypt();
 }

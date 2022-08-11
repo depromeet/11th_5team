@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
+import depromeet.ohgzoo.iam.postEvent.EncryptEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
@@ -37,6 +38,11 @@ public class PostExtensionServiceImpl implements PostExtensionService {
     @Override
     public void increaseViews(String postId) {
         eventPublisher.publishEvent(new IncreaseViewEvent(this, postId));
+    }
+
+    @Override
+    public void encrypt() {
+        eventPublisher.publishEvent(new EncryptEvent(this));
     }
 
     private PostCreateEvent mapToCreateEvent(Long memberId, CreatePostRequest request) {
