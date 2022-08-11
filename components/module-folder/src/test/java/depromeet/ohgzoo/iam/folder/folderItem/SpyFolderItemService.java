@@ -71,4 +71,9 @@ public class SpyFolderItemService implements FolderItemService {
     public void deleteAllFolderItems(Long memberId) {
         this.argument_memberId = memberId;
     }
+
+    @Override
+    public void encrypt() {
+
+    }
 }

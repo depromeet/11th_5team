@@ -115,4 +115,9 @@ public class SpyFolderService implements FolderService {
     public void deleteAllFolders(Long memberId) {
         this.deleteFolders_argumentMemberId = memberId;
     }
+
+    @Override
+    public void encrypt() {
+
+    }
 }

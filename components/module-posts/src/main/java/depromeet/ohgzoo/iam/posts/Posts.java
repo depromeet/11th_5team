@@ -78,4 +78,8 @@ public class Posts extends BaseEntity {
         return this.firstCategory.getCategoryId().equals(category.getCategoryId())
                 || this.secondCategory.getCategoryId().equals(category.getCategoryId());
     }
+
+    public void updateContent(String encrypt) {
+        this.content = encrypt;
+    }
 }

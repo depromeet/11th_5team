@@ -4,6 +4,7 @@ import depromeet.ohgzoo.iam.folder.folderItem.FolderItemCreateRequest;
 import depromeet.ohgzoo.iam.folder.folderItem.FolderItemUpdateRequest;
 import depromeet.ohgzoo.iam.member.MemberCreateEvent;
 import depromeet.ohgzoo.iam.member.MemberDeleteEvent;
+import depromeet.ohgzoo.iam.postEvent.EncryptEvent;
 import depromeet.ohgzoo.iam.postEvent.IncreaseViewEvent;
 import depromeet.ohgzoo.iam.postEvent.PostCreateEvent;
 import depromeet.ohgzoo.iam.postEvent.PostDeleteEvent;
@@ -16,6 +17,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class FolderEventSubscriber {
     private final FolderService folderService;
+
+    @EventListener
+    public void handleEncryptEvent(EncryptEvent event) {
+        folderService.encrypt();
+    }
 
     @EventListener
     public void handlePostCreateEvent(PostCreateEvent event) {

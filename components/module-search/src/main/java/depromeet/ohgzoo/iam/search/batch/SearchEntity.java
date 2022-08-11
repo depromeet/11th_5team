@@ -59,4 +59,8 @@ public class SearchEntity extends BaseEntity {
     public void increaseViews() {
         views++;
     }
+
+    public void updateContent(String encrypt) {
+        this.content = encrypt;
+    }
 }

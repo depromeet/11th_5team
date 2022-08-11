@@ -3,6 +3,7 @@ package depromeet.ohgzoo.iam.folder.folderItem;
 import depromeet.ohgzoo.iam.category.FirstCategory;
 import depromeet.ohgzoo.iam.folder.Folder;
 import depromeet.ohgzoo.iam.folder.InvalidUserException;
+import depromeet.ohgzoo.iam.util.EncryptUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -97,5 +98,18 @@ public class FolderItemServiceImpl implements FolderItemService {
     @Override
     public void deleteAllFolderItems(Long memberId) {
         folderItemRepository.deleteByMemberId(memberId);
+    }
+
+    @Override
+    public void encrypt() {
+        List<FolderItem> all = folderItemRepository.findAll();
+
+        all.forEach(item -> {
+            try {
+                item.updateContent(EncryptUtil.encrypt(item.getContent()));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

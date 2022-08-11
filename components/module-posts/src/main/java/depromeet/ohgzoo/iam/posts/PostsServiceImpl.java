@@ -3,6 +3,7 @@ package depromeet.ohgzoo.iam.posts;
 import depromeet.ohgzoo.iam.category.CategoryService;
 import depromeet.ohgzoo.iam.category.SecondCategory;
 import depromeet.ohgzoo.iam.posts.CategoryItemsResponse.CategoryItemDTO;
+import depromeet.ohgzoo.iam.util.EncryptUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -184,6 +185,20 @@ public class PostsServiceImpl implements PostsService {
     @Override
     public void deleteAllPosts(Long memberId) {
         postsRepository.deletePostsByMemberId(memberId);
+    }
+
+    @Override
+    @Transactional
+    public void encrypt() {
+        List<Posts> all = postsRepository.findAll();
+
+        all.forEach(item -> {
+            try {
+                item.updateContent(EncryptUtil.encrypt(item.getContent()));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private Comparator<Posts> getCreatedDateReverseComparator() {

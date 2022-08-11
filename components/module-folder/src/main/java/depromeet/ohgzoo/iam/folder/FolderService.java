@@ -36,4 +36,7 @@ public interface FolderService {
     FolderGetResponse getFolderByPost(String postId);
 
     void deleteAllFolders(Long memberId);
+
+    void encrypt();
+
 }
