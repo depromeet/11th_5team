@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.posts;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ public class PostsRepositoryTest {
     @Autowired
     PostsRepository postsRepository;
 
+    @Disabled
     @Test
     public void bulkDeletePosts() throws Exception {
         postsRepository.bulkDeletePosts(List.of("1", "2"));
