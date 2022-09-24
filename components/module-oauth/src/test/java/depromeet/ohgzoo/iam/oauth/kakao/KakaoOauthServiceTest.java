@@ -5,7 +5,6 @@ import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
 import depromeet.ohgzoo.iam.member.MemberJoinRequest;
 import depromeet.ohgzoo.iam.member.MemberService;
 import depromeet.ohgzoo.iam.oauth.AuthToken;
-import depromeet.ohgzoo.iam.oauth.Oauth2LoginUrl;
 import depromeet.ohgzoo.iam.oauth.OauthService;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse.KakaoAccount;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse.KakaoProfile;
@@ -36,19 +35,6 @@ class KakaoOauthServiceTest {
         oauthService = new KakaoOauthService(spyKakaoClient, spyJwtService, spyMemberService);
 
         given(spyMemberService.alreadyJoin(any())).willReturn(true);
-    }
-
-    @Test
-    void getLoginUrl_returnsOAuth2LoginUrl() {
-        Oauth2LoginUrl result = oauthService.getLoginUrl();
-
-        String expected = new StringBuilder("https://kauth.kakao.com/oauth/authorize")
-                .append("?client_id=null")
-                .append("&response_type=code")
-                .append("&redirect_uri=null")
-                .toString();
-
-        assertThat(result.getLoginUrl()).isEqualTo(expected);
     }
 
     @Test
