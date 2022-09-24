@@ -1,14 +1,14 @@
-package depromeet.ohgzoo.iam.oauth;
+package depromeet.ohgzoo.iam.oauth.kakao;
 
 import depromeet.ohgzoo.iam.jwt.SpyJwtService;
 import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
 import depromeet.ohgzoo.iam.member.MemberJoinRequest;
 import depromeet.ohgzoo.iam.member.MemberService;
-import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse;
+import depromeet.ohgzoo.iam.oauth.AuthToken;
+import depromeet.ohgzoo.iam.oauth.Oauth2LoginUrl;
+import depromeet.ohgzoo.iam.oauth.OauthService;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse.KakaoAccount;
 import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse.KakaoProfile;
-import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenResponse;
-import depromeet.ohgzoo.iam.oauth.kakao.SpyKakaoClient;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class OauthServiceImplTest {
+class KakaoOauthServiceTest {
 
     private OauthService oauthService;
     private SpyKakaoClient spyKakaoClient;
@@ -33,7 +33,7 @@ class OauthServiceImplTest {
         spyMemberService = mock(MemberService.class);
         spyKakaoClient = new SpyKakaoClient();
         spyJwtService = new SpyJwtService();
-        oauthService = new OauthServiceImpl(spyKakaoClient, spyJwtService, spyMemberService);
+        oauthService = new KakaoOauthService(spyKakaoClient, spyJwtService, spyMemberService);
 
         given(spyMemberService.alreadyJoin(any())).willReturn(true);
     }

@@ -1,20 +1,19 @@
-package depromeet.ohgzoo.iam.oauth;
+package depromeet.ohgzoo.iam.oauth.kakao;
 
 import depromeet.ohgzoo.iam.jwt.JwtService;
 import depromeet.ohgzoo.iam.jwt.UnAuthenticationException;
 import depromeet.ohgzoo.iam.member.MemberJoinRequest;
 import depromeet.ohgzoo.iam.member.MemberService;
-import depromeet.ohgzoo.iam.oauth.kakao.KakaoClient;
-import depromeet.ohgzoo.iam.oauth.kakao.KakaoProfileResponse;
-import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenRequest;
-import depromeet.ohgzoo.iam.oauth.kakao.KakaoTokenResponse;
+import depromeet.ohgzoo.iam.oauth.AuthToken;
+import depromeet.ohgzoo.iam.oauth.Oauth2LoginUrl;
+import depromeet.ohgzoo.iam.oauth.OauthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class OauthServiceImpl implements OauthService {
+public class KakaoOauthService implements OauthService {
     @Value("${kakaoClientId}")
     private String clientId;
 

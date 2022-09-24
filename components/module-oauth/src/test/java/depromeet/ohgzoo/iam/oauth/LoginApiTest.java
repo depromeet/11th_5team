@@ -20,7 +20,8 @@ class LoginApiTest {
     @BeforeEach
     void setUp() {
         spyOauthService = new SpyOauthService();
-        mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(spyOauthService))
+
+        mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(new OauthServiceFactory(spyOauthService)))
                 .build();
     }
 
