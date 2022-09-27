@@ -1,6 +1,7 @@
 package depromeet.ohgzoo.iam.oauth;
 
 import depromeet.ohgzoo.iam.IntegrationTest;
+import depromeet.ohgzoo.iam.oauth.kakao.KakaoOauthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,12 +19,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginApiIntegrationTest extends IntegrationTest {
 
     @MockBean
-    private OauthService oauthService;
+    private KakaoOauthService oauthService;
+
+    @MockBean
+    private OauthServiceFactory serviceFactory;
 
     @BeforeEach
     void setUp() {
         given(oauthService.getToken(any())).willReturn(new AuthToken("auth token", "refresh token"));
         given(oauthService.getRefreshToken(any())).willReturn(new AuthToken("auth token", "refresh token"));
+
+        given(serviceFactory.getOauthService(any())).willReturn(oauthService);
     }
 
     @Test

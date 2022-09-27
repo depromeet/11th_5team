@@ -8,11 +8,6 @@ public class SpyOauthService implements OauthService {
     public AuthToken getRefreshToken_returnValue;
 
     @Override
-    public Oauth2LoginUrl getLoginUrl() {
-        return getLoginUrl_returnValue;
-    }
-
-    @Override
     public AuthToken getToken(String code) {
         getToken_argumentCode = code;
         return getToken_returnValue;

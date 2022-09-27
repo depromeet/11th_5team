@@ -8,6 +8,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static depromeet.ohgzoo.iam.jwt.TokenName.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,11 +19,15 @@ class LoginApiTest {
 
     private MockMvc mockMvc;
     private SpyOauthService spyOauthService;
+    private OauthServiceFactory spyServiceFactory;
 
     @BeforeEach
     void setUp() {
         spyOauthService = new SpyOauthService();
-        mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(spyOauthService))
+        spyServiceFactory = mock(OauthServiceFactory.class);
+        given(spyServiceFactory.getOauthService(any())).willReturn(spyOauthService);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(new LoginApi(spyServiceFactory))
                 .build();
     }
 

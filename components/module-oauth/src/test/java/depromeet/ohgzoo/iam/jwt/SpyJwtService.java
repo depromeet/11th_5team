@@ -1,5 +1,6 @@
 package depromeet.ohgzoo.iam.jwt;
 
+import java.security.PublicKey;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -33,6 +34,11 @@ public class SpyJwtService implements JwtService {
     public String getSubject(String token) {
         getSubject_argumentToken = token;
         return getSubject_returnValue;
+    }
+
+    @Override
+    public String getSubjectBySigningKey(String token, PublicKey publicKey) {
+        return null;
     }
 
 
