@@ -34,7 +34,7 @@ public class AppleOauthService implements OauthService {
     }
 
     private MemberJoinRequest mapToMemberJoinRequest(final AppleProfile profile) {
-        return new MemberJoinRequest("random image", "random nickname", String.valueOf(profile.getId()));
+        return new MemberJoinRequest("http://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_640x640.jpg", "익명", String.valueOf(profile.getId()));
     }
 
     @Override
