@@ -1,5 +1,7 @@
 package depromeet.ohgzoo.iam.jwt;
 
+import java.security.PublicKey;
+
 public class SpyJwtService implements JwtService {
     public String getSubject_returnValue = "0";
 
@@ -16,5 +18,10 @@ public class SpyJwtService implements JwtService {
     @Override
     public String getSubject(String token) {
         return getSubject_returnValue;
+    }
+
+    @Override
+    public String getSubjectBySigningKey(String token, PublicKey publicKey) {
+        return null;
     }
 }
